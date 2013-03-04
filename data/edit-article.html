@@ -1,0 +1,22 @@
+<h1 id="editor-title">記事の追加</h1>
+メインイメージ(必須:サムネイルとしても使います):
+<br />
+<input type="file" name="userfile" />
+<br />
+<form action="./data/insert-article.php" method="post" id="postform">
+	<div id="thumb"></div>
+	<img src="" id="edit-thumb"/>
+	<input type="hidden" name="headimage" value="" />
+	<br />
+	タイトル:
+	<input type="text" name="title" />
+	<br />
+	本文:
+	<textarea id="editor" name="body"></textarea>
+	<br />
+	タグ:
+	<input type="text" name="tag" />
+	<input type="hidden" name="rowid" />
+	<br />
+	<input type="submit" class="btn btn-primary" name="submit1" value="送信" />
+</form>
