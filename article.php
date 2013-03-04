@@ -23,22 +23,24 @@ if (!$result) {
 	die('読み込みに失敗🍣: ' . $sqlerror);
 }
 $data_fts = $result -> fetchArray();
-if($data_article['title'] == null) {
+if ($data_article['title'] == null) {
 	die("指定された記事がありません🍣");
 }
+$dotpos = strrpos($data_article['headimage'], '.');
+$headimage_resized = substr($data_article['headimage'], 0, $dotpos) . 'x640' . substr($data_article['headimage'], $dotpos);
 echo $data_article['timestamp'];
 echo '<h1 id="ar-title">', $data_article['title'], '</h1>';
-echo '<div id="ar-headimage"><img src="./data/' . $data_article['headimage'] . '" /></div>';
-echo '<div id="ar-body">'. $data_article['body'] .'</div>';
+echo '<div id="ar-headimage"><img src="./data/' . $headimage_resized . '" /></div>';
+echo '<div id="ar-body">' . $data_article['body'] . '</div>';
 echo '<br />タグ: <div id="ar-tag">';
 $tags = explode(" ", $data_fts['tag']);
 for ($i = 0; $i < count($tags); $i++) {
 	echo('<a href="?tag=' . $tags[$i] . '" class="ajaxtags">' . $tags[$i] . ' </a>');
 }
 echo '</div>';
-echo '<button class="btn edit" href="./data/edit-article.html" value="'. $input_id .'">編集</button>';
+echo '<button class="btn edit" href="./data/edit-article.html" value="' . $input_id . '">編集</button>';
 echo '<a href="#myModal" role="button" class="btn btn-danger" data-toggle="modal">削除</a>';
-echo ('
+echo('
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -48,7 +50,7 @@ echo ('
 	</div>
 	<div class="modal-body">
 		<p>
-			本当に記事「'. $data_article['title'] .'」を削除しますか？
+			本当に記事「' . $data_article['title'] . '」を削除しますか？
 		</p>
 	</div>
 	<div class="modal-footer">

@@ -11,7 +11,7 @@ $sql = "select id, timestamp, title, headimage, tag from article, fts_tag where 
 $result = $db -> query($sql);
 while ($row = $result -> fetchArray()) {
 	$dotpos = strrpos($row['headimage'], '.');
-	$headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x640' . substr($row['headimage'], $dotpos);
+	$headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x320' . substr($row['headimage'], $dotpos);
 	echo('
 <div class="span2" id="' . $row[id] . '">
 <a href="?p=' . $row[id] . '" class="ajax">
