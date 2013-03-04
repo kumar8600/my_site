@@ -6,85 +6,57 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- Bootstrap -->
 		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="css/bootstrap-responsive.css" rel="stylesheet">
 		<!-- 自分で書いたやつ -->
 		<link href="css/mystyle.css" rel="stylesheet">
 	</head>
 	<body>
 		<div class="container">
-			<div class="page-header">
-				<h1>超うんこなサイト<small>うんこでも気づいたこと書きます</small></h1>
+			<header class="page-header">
+				<a href="./" class="reset"><h1>超うんこなサイト<small>うんこでも気づいたこと書きます</small></h1></a>
+			</header>
+			<div class="visible-phone" id="menu-button">
+				<button class="btn" id="menu-toggle">
+					メニュー
+				</button>
 			</div>
-			<div class="row-fluid">
-				<div class="span3">
+			<div class="row">
+				<div class="span2" id="menu">
 					<ul class="nav nav-list">
 						<li class="nav-header">
-							カテゴリー
+							タグ
 						</li>
-						<li>
-							<a href="#">うんこ</a>
-						</li>
-						<li>
-							<a href="#">牛乳</a>
-						</li>
-						<li>
-							<a href="#">カレー</a>
-						</li>
+					</ul>
+					<div id="tags-li"></div>
+					<ul class="nav nav-list">
 						<li class="divider"></li>
 						<li>
-							<a href="#">About</a>
+							<a href="?p=About" class="ajax">About</a>
+						</li>
+						<li>
+							<button class="btn btn-primary new" href="./data/edit-article.html">
+								記事の追加
+							</button>
 						</li>
 					</ul>
 				</div>
-				<div class="span9">
-					<div class="raw-fluid">
-						<div class="span6">
-							<a href="#">
-							<div class="thumbnail">
-								<img src="img/Utah_teapot_simple_2.png" alt="">
-								<h3>ユタ・ティーポット</h3>
-								<p>
-									1975年、ユタ大学のマーティン・ニューウェル（Martin Newell）によって制作された。...
-								</p>
-							</div> </a>
-						</div>
-						<div class="span6">
-							<a href="#">
-							<div class="thumbnail">
-								<img src="img/Utah_teapot_simple_2.png" alt="">
-								<h3>ユタ・ティーポット</h3>
-								<p>
-									1975年、ユタ大学のマーティン・ニューウェル（Martin Newell）によって制作された。...
-								</p>
-							</div> </a>
-						</div>
-					</div>
-					<div class="raw-fluid">
-						<div class="span6">
-							<a href="#">
-							<div class="thumbnail">
-								<img src="img/Utah_teapot_simple_2.png" alt="">
-								<h3>ユタ・ティーポット</h3>
-								<p>
-									1975年、ユタ大学のマーティン・ニューウェル（Martin Newell）によって制作された。...
-								</p>
-							</div> </a>
-						</div>
-						<div class="span6">
-							<a href="#">
-							<div class="thumbnail">
-								<img src="img/Utah_teapot_simple_2.png" alt="">
-								<h3>ユタ・ティーポット</h3>
-								<p>
-									1975年、ユタ大学のマーティン・ニューウェル（Martin Newell）によって制作された。...
-								</p>
-							</div> </a>
-						</div>
-					</div>
+				<div class="span9" id="alert-div"></div>
+				<div class="span10 hide" id="anim">
+					<div class="hide" id="article"></div>
 				</div>
+				<div class="span10 hide" id="tag-search"></div>
+				<div id="animthumbs">
+					<div class="row" id="thumbs"></div>
+				</div>
+				<footer>
+					Copyright(c) kumar8600
+				</footer>
 			</div>
-		</div>
-		<script src="js/jquery-1.9.1.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
+
+			<script src="js/jquery-1.9.1.min.js"></script>
+			<script src="js/bootstrap.min.js"></script>
+			<script src="js/index.js"></script>
+			<script type="text/javascript"></script></script>
 	</body>
 
 </html>

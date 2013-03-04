@@ -1,5 +1,6 @@
 <html>
 	<head>
+		<meta charset="UTF-8">
 		<title>テーブル作成</title>
 	</head>
 	<body>

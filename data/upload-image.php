@@ -2,6 +2,7 @@
 $filename = basename($_FILES['userfile']['name']);
 $filepath = 'images/' . $filename;
 if (move_uploaded_file($_FILES['userfile']['tmp_name'], $filepath)) {
+	chmod($filepath, 0644);
 	$data = array('filename' => $filepath);
 } else {
 	$data = array('error' => 'Failed to save');

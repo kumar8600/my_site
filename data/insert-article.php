@@ -6,11 +6,11 @@ try {
 	die('DBとの接続に失敗' . $e -> getTraceAsString());
 }
 
-$input_title = sqlite_escape_string($_POST['title']);
-$input_body = sqlite_escape_string($_POST['body']);
-$input_headimage = sqlite_escape_string($_POST['headimage']);
-$input_rowid = sqlite_escape_string($_POST['rowid']);
-$fts_tag = sqlite_escape_string($_POST['tag']);
+$input_title = $db -> escapeString($_POST['title']);
+$input_body = $db -> escapeString($_POST['body']);
+$input_headimage = $db -> escapeString($_POST['headimage']);
+$input_rowid = $db -> escapeString($_POST['rowid']);
+$fts_tag = $db -> escapeString($_POST['tag']);
 // SQLiteに対する処理
 if (empty($input_rowid)) {
 	$sql = "insert into article (title, body, headimage) values('$input_title', '$input_body', '$input_headimage');";

@@ -5,8 +5,8 @@ try {
 	echo 'DBとの接続に失敗';
 	die($e -> getTraceAsString());
 }
-$offset = $_GET['offset'];
-$limit = $_GET['limit'];
+$offset = $db -> escapeString($_GET['offset']);
+$limit = $db -> escapeString($_GET['limit']);
 if (empty($offset))
 	$offset = 0;
 if(empty($limit))

@@ -7,7 +7,7 @@ try {
 	die($e -> getTraceAsString());
 }
 
-$input_id = sqlite_escape_string($_GET['p']);
+$input_id = $db -> escapeString($_GET['p']);
 // SQLiteに対する処理
 $sql = "select rowid, * from article where rowid = '$input_id' or title = '$input_id';";
 $result = $db -> query($sql);
