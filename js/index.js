@@ -82,6 +82,7 @@ function appendThumbs(its) {
 				if (its)
 					$(its).remove();
 				nowLoading = false;
+				loadIfYouInBottom()
 			});
 		});
 	}
@@ -97,13 +98,17 @@ function prependThumbs() {
 	});
 }
 
-
-$(window).bind("scroll", function() {
+function loadIfYouInBottom() {
 	var contentBottom = $('#thumbs').offset().top + $('#thumbs').height();
 	var scrollPosition = $(window).height() + $(window).scrollTop();
 	if (contentBottom - scrollPosition <= 150) {
 		appendThumbs();
 	}
+}
+
+
+$(window).bind("scroll", function() {
+	loadIfYouInBottom();
 });
 
 $("button#menu-toggle").click(function() {

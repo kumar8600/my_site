@@ -87,7 +87,7 @@ h1, h2, h3 {
 }
 
 div.tag-search {
-	height: auto;
+	height: 300px;
 }
 .tag-search img {
 	height: auto;
