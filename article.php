@@ -1,23 +1,23 @@
 <?php
-require_once 'functions.php';
-$db = sqliteOpen();
+//TODO: sqlite接続関数をfunctions.phpに入れ込み，他のPHPはfunctions.phpをrequireすれば良い風にしたい．
+$db = new SQLite3('article.sqlite3');
 
-$input_id = $db -> escapeString($_GET['p']);
+$input_id = $db->escapeString($_GET['p']);
 // SQLiteに対する処理
-$sql = "select rowid, * from article where rowid = '$input_id' or title = '$input_id';";
-$result = $db -> query($sql);
+$sql = "SELECT * FROM article WHERE id = '$input_id' OR title = '$input_id';";
+$result = $db->query($sql);
 if (!$result) {
-	die('読み込みに失敗: ' . $sqlerror);
+	die('読み込みに失敗:'.$sqlerror);
 }
 $data_article = $result -> fetchArray();
 // FTSテーブルからも情報取ってくる
 $input_id = $data_article['id'];
 $sql = "select * from fts_tag where fts_tag.docid = $input_id;";
-$result = $db -> query($sql);
+$result = $db->query($sql);
 if (!$result) {
 	die('読み込みに失敗: ' . $sqlerror);
 }
-$data_fts = $result -> fetchArray();
+$data_fts = $result->fetchArray();
 if ($data_article['title'] == null) {
 	die("指定された記事がありません");
 }
@@ -59,6 +59,6 @@ echo('
 		</button>
 		</div>
 		</div>');
-$db -> close();
+$db->close();
 ?>
 <!-- Modal -->

@@ -1,15 +1,14 @@
 <?php
-require_once '../functions.php';
-$db = sqliteOpen();
+$db = new SQLite3('../article.sqlite3');
 
-$offset = $db -> escapeString($_GET['offset']);
-$limit = $db -> escapeString($_GET['limit']);
+$offset = $db->escapeString($_GET['offset']);
+$limit = $db->escapeString($_GET['limit']);
 if (empty($offset))
 	$offset = 0;
 if(empty($limit))
 	$limit = 6;
 
-$sql = "select id, timestamp, title, headimage, tag from article, fts_tag where article.rowid = fts_tag.docid order by id desc limit $limit offset $offset;";
+$sql = "SELECT * FROM article, fts_tag_content WHERE article.id = fts_tag_content.docid ORDER BY id desc LIMIT $limit OFFSET $offset;";
 $result = $db -> query($sql);
 $i = 0;
 while ($row = $result -> fetchArray()) {
@@ -30,13 +29,10 @@ while ($row = $result -> fetchArray()) {
 	$i++;
 }
 if ($i == $limit) {
-	//echo '<button class="btn thu-more">更に読み込む</button>';
 	echo '<div class="thumbs-buf" style="display: none"></div>';
 } else {
 	echo '<div class="thumbs-buf end"></div>';
 }
 
-
-
-$db -> close();
+$db->close();
 ?>

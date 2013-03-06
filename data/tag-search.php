@@ -1,6 +1,6 @@
 <?php
-require_once '../functions.php';
-$db = sqliteOpen();
+$db = new SQLite3('../article.sqlite3');
+
 $input_tag = $db -> escapeString($_GET['tag']);
 echo('<div><button class="btn" id="closeTagSearch">「' . $input_tag . '」タグの検索をやめる</button></div>');
 $sql = "select id, timestamp, title, headimage, tag from article, fts_tag where article.rowid = fts_tag.rowid and article.rowid in(select fts_tag.rowid from fts_tag where tag match '$input_tag') order by article.rowid desc;";
