@@ -1,4 +1,6 @@
 <?php
+require_once '../functions.php';
+
 $filename = basename($_FILES['userfile']['name']);
 $filepath = 'images/' . $filename;
 if (move_uploaded_file($_FILES['userfile']['tmp_name'], $filepath)) {
@@ -10,7 +12,6 @@ if (move_uploaded_file($_FILES['userfile']['tmp_name'], $filepath)) {
 echo json_encode($data);
 
 //アップロードした画像をリサイズする
-require_once 'resize-image.php';
 
 $dotpos = strrpos($filepath, '.');
 resize_image(array(

@@ -1,10 +1,7 @@
 <?php
-try {
-	$db = new SQLite3('./article.sqlite3');
-} catch(Exception $e) {
-	echo 'DBとの接続に失敗';
-	die($e -> getTraceAsString());
-}
+require_once '../functions.php';
+$db = sqliteOpen();
+
 $offset = $db -> escapeString($_GET['offset']);
 $limit = $db -> escapeString($_GET['limit']);
 if (empty($offset))
@@ -20,16 +17,16 @@ while ($row = $result -> fetchArray()) {
 	$dotpos = strrpos($row['headimage'], '.');
 	$headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x320' . substr($row['headimage'], $dotpos);
 	echo('
-<div class="span6 thu" id="' . $row['id'] . '">
-<a href="?p=' . $row['id'] . '" class="ajax">
-' . $row['timestamp'] . '
-<div class="thumbnail">
-<img src="./data/' . $headimage_resized . ' " >
-<h3 class="title'. $row['id'] .'"> ' . $row['title'] . ' </h3>
-<div class="tag'. $row['id'] .'">' . $row[tag] . '</div>
-</div> </a>
-</div>
-');
+			<div class="span6 thu" id="' . $row['id'] . '">
+			<a href="?p=' . $row['id'] . '" class="ajax">
+			' . $row['timestamp'] . '
+			<div class="thumbnail">
+			<img src="./data/' . $headimage_resized . ' " >
+			<h3 class="title'. $row['id'] .'"> ' . $row['title'] . ' </h3>
+			<div class="tag'. $row['id'] .'">' . $row[tag] . '</div>
+			</div> </a>
+			</div>
+			');
 	$i++;
 }
 if ($i == $limit) {

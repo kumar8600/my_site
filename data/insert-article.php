@@ -1,10 +1,7 @@
 <?php
 
-try {
-	$db = new SQLite3('article.sqlite3');
-} catch(Exception $e) {
-	die('DBとの接続に失敗' . $e -> getTraceAsString());
-}
+require_once '../functions.php';
+$db = sqliteOpen();
 
 $input_title = $db -> escapeString($_POST['title']);
 $input_body = $db -> escapeString($_POST['body']);
