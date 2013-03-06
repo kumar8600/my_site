@@ -1,6 +1,13 @@
-$(function() {
+$(document).ready(function() {
 	$("#tags-li").load("./data/tags.php");
 	phoneMenuHide();
+	thumbsLoad("./data/thumbnails.php");
+	setTimeout(function() {
+		window.addEventListener('popstate', function(ev) {
+			loadByUrl();
+		}, false);
+	}, 100);
+
 });
 
 function getUrlVars() {
@@ -99,10 +106,6 @@ function showAlert(msg) {
 	$("div#alert-div").prepend('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + msg + '</div>');
 }
 
-window.addEventListener('popstate', function(ev) {
-	loadByUrl();
-}, false);
-
 function articleLoad(url, func) {
 	$("#anim").show();
 	$("#anim").css("height", $("#article").height());
@@ -146,7 +149,7 @@ function thumbsLoad(url, func) {
 		}
 		$(this).load(url, function() {
 			$(this).fadeIn("fast");
-			$("#animthumbs").css("height", $("#thumbs").height());
+			//$("#animthumbs").css("height", $("#thumbs").height());
 			changeSpan();
 			if ($.isFunction(func)) {
 				func();

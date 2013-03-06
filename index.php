@@ -44,10 +44,9 @@
 				<div class="span10 hide" id="anim">
 					<div class="hide" id="article"></div>
 				</div>
-				<div class="span10 hide" id="tag-search"></div>
-				<div id="animthumbs">
-					<div class="row" id="thumbs"></div>
+				<div class="span10 hide" id="tag-search">
 				</div>
+					<div class="row" id="thumbs"></div>
 				<footer>
 					Copyright(c) kumar8600
 				</footer>
