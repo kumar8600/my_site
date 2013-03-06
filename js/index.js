@@ -55,7 +55,7 @@ $(window).resize(function() {
 });
 
 function changeSpan() {
-	$("#1, #2, #3, #4, #5").each(function() {
+	$(".thu").each(function() {
 		if ($(this).position().top < $("#menu").position().top + $("#menu").height() + 15) {
 			$(this).removeClass("span6").addClass("span10");
 		} else {
@@ -300,7 +300,7 @@ function defineSubmit() {
 				$(".title" + $("input[name=rowid]").val()).html($("input[name=title]").val());
 				$(".tag" + $("input[name=rowid]").val()).html($("input[name=tag]").val());
 			}
-			reset();
+			reset('push');
 		}, 'text');
 
 		return false;

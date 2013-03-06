@@ -5,6 +5,9 @@ body {
 	background-color: #f4f4f4;
 	color: #333;
 }
+#menu {
+	overflow: hidden;
+}
 #menu, .thumbnail {
 	padding-top: 10px;
 	padding-bottom: 10px;
