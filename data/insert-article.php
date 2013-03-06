@@ -30,7 +30,7 @@ if (empty($input_rowid)) {
 	$sql = "insert into fts_tag (docid, tag) values($id_inserted, '$fts_tag');";
 } else {
 	$id_inserted = $input_rowid;
-	$sql = "update fts_tag set tag = '$fts_tag' where fts_id = $id_inserted;";
+	$sql = "update fts_tag set tag = '$fts_tag' where fts_tag.docid = $id_inserted;";
 }
 $result = $db -> query($sql);
 

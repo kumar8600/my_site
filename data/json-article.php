@@ -1,12 +1,11 @@
 <?php
-$input_id = sqlite_escape_string($_POST['id']);
-
 try {
 	$db = new SQLite3('./article.sqlite3');
 } catch(Exception $e) {
 	echo 'DBとの接続に失敗';
 	die($e -> getTraceAsString());
 }
+$input_id = $db -> escapeString($_POST['id']);
 // SQLiteに対する処理
 $sql = "select headimage, title, body, tag from article, fts_tag where article.rowid = $input_id and fts_tag.docid = $input_id;";
 $result = $db -> query($sql);

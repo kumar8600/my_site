@@ -55,8 +55,8 @@ $(window).resize(function() {
 });
 
 function changeSpan() {
-	$(".t0, .t1, .t2, .t3, .t4, .t5").each(function() {
-		if ($(this).position().top < $("#menu").position().top + $("#menu").height()) {
+	$("#1, #2, #3, #4, #5").each(function() {
+		if ($(this).position().top < $("#menu").position().top + $("#menu").height() + 15) {
 			$(this).removeClass("span6").addClass("span10");
 		} else {
 			$(this).removeClass("span10").addClass("span6");
@@ -92,18 +92,11 @@ function prependThumbs() {
 	$("div.thumbs-buf").load(url, function() {
 		$(this).prependTo("div#thumbs").fadeIn('normal', function() {
 			$(this).removeClass("thumbs-buf");
-			if (its)
-				$(its).remove();
 			nowLoading = false;
 		});
 	});
 }
 
-
-$("body").on("click", "button.thu-more", function() {
-	var its = this;
-	appendThumbs(its);
-});
 
 $(window).bind("scroll", function() {
 	var contentBottom = $('#thumbs').offset().top + $('#thumbs').height();
@@ -121,6 +114,12 @@ function showAlert(msg) {
 	$("div#alert-div").prepend('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + msg + '</div>');
 }
 
+function removeImgHeight() {
+	$("#article img").each(function() {
+		$(this).css("height", "auto");
+	});
+}
+
 function articleLoad(url, func) {
 	$("#anim").show();
 	$("#anim").css("height", $("#article").height());
@@ -131,6 +130,7 @@ function articleLoad(url, func) {
 		if (url.indexOf('?p=') == 0)
 			url = 'article.php' + url;
 		$(this).load(url, function() {
+			removeImgHeight();
 			if ($.isFunction(func)) {
 				func();
 			}
@@ -292,8 +292,13 @@ function defineSubmit() {
 			'rowid' : $("input[name=rowid]").val(),
 		}, function(res) {
 			showAlert(res);
+			if (newEdit) {
+				prependThumbs();
+			} else {
+				$(".title" + $("input[name=rowid]").val()).html($("input[name=title]").val());
+				$(".tag" + $("input[name=rowid]").val()).html($("input[name=tag]").val());
+			}
 			reset();
-			prependThumbs();
 		}, 'text');
 
 		return false;
@@ -349,12 +354,6 @@ function loadEditor(thishref, func) {
 	}
 }
 
-
-$("body").on("click", "button.new", function() {
-	loadEditor($(this).attr("href"));
-	return false;
-});
-
 function replaceEditor(id) {
 	$.post("./data/json-article.php", {
 		id : id
@@ -363,23 +362,32 @@ function replaceEditor(id) {
 		var img_mini = res['headimage'].substring(0, dotpos) + 'x320' + res['headimage'].substring(dotpos);
 		$('h1#editor-title').html("記事の編集");
 		$('#edit-thumb').attr("src", 'data/' + img_mini);
-		$('#postform [name=headimage]').attr("value", res['headimage']);
-		$("#postform [name=title]").val(res['title']);
-		$("#postform [name=tag]").val(res['tag']);
-		$("#postform [name=rowid]").val(id);
-		if ( typeof CKEDITOR != "undefined") {
-			CKEDITOR.instances['editor'].setData(res['body']);
-		} else {
+		$('#postform input[name=headimage]').attr("value", res['headimage']);
+		$("#postform input[name=title]").val(res['title']);
+		$("#postform input[name=tag]").val(res['tag']);
+		$("#postform input[name=rowid]").val(id);
+		if ( typeof CKEDITOR == undefined) {
 			$("#postform [name=body]").val(res['body']);
+		} else {
+			setTimeout(function() {
+				CKEDITOR.instances.editor.setData(res['body']);
+			}, 1000);
 		}
 	}, 'json');
 }
 
+var newEdit = true;
+$("body").on("click", "button.new", function() {
+	loadEditor($(this).attr("href"));
+	newEdit = true;
+	return false;
+});
 
 $("body").on("click", "button.edit", function() {
 	var rowid = $(this).val();
 	loadEditor($(this).attr("href"), function() {
 		replaceEditor(rowid);
+		newEdit = false;
 	});
 	return false;
 });

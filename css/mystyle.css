@@ -56,7 +56,7 @@ h1, h2, h3 {
 	.thumbnail img {
 		float: left;
 		margin-right: 10px;
-		height: 50px;
+		height: 70px;
 	}
 	.thumbnail {
 		height: 100px;
@@ -64,13 +64,16 @@ h1, h2, h3 {
 }
 @media (min-width: 980px) {
 	.thumbnail {
-		height: 150px;
+		height: 100px;
 	}
 	.thumbnail img {
 		height: 100px;
 	}
 }
 @media (min-width: 1200px) {
+	.thumbnail {
+		height: 150px;
+	}
 	.thumbnail img {
 		height: 150px;
 	}
