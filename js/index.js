@@ -261,6 +261,8 @@ function deleteArticle(delid) {
 		reset();
 		showAlert(res);
 	}, 'text');
+	$("#" + delid).hide().remove();
+	history.pushState(null, null, './');
 }
 
 
