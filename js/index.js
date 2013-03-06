@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$("#tags-li").load("./data/tags.php");
 	phoneMenuHide();
-	thumbsLoad("./data/thumbnails.php");
+	loadByUrl();
 	setTimeout(function() {
 		window.addEventListener('popstate', function(ev) {
 			loadByUrl();
