@@ -3,8 +3,8 @@ $db = new SQLite3('../article.sqlite3');
 
 $input_id = $db->escapeString($_POST['id']);
 // SQLiteに対する処理
-$sql =  "delete from article where id = $input_id;";
-$sql2 = "delete from fts_tag where fts_tag.docid = $input_id;";
+$sql =  "DELETE FROM article WHERE id = $input_id;";
+$sql2 = "DELETE FROM fts_tag WHERE fts_tag.docid = $input_id;";
 $result = $db->query($sql);
 if (!$result) {
 	die('削除に失敗: ' . $sqlerror);

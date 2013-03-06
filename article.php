@@ -12,7 +12,7 @@ if (!$result) {
 $data_article = $result -> fetchArray();
 // FTSテーブルからも情報取ってくる
 $input_id = $data_article['id'];
-$sql = "select * from fts_tag where fts_tag.docid = $input_id;";
+$sql = "SELECT * FROM fts_tag WHERE fts_tag.docid = $input_id;";
 $result = $db->query($sql);
 if (!$result) {
 	die('読み込みに失敗: ' . $sqlerror);

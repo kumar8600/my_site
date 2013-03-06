@@ -3,7 +3,7 @@
 	<?php
 	$db = new SQLite3('../article.sqlite3');
 
-	$sql = "select term from aux_article where col = '*' order by documents desc limit 15;";
+	$sql = "SELECT term FROM aux_article WHERE col = '*' ORDER BY documents desc LIMIT 15;";
 	$result = $db -> query($sql);
 	if (!$result) {
 		die('DBとの接続に失敗。<a type="button" class="btn btn-danger" href="data/create-table.php">DBの初期化をおすすめします。</a>');
