@@ -11,6 +11,7 @@ $input_body = $db -> escapeString($_POST['body']);
 $input_headimage = $db -> escapeString($_POST['headimage']);
 $input_rowid = $db -> escapeString($_POST['rowid']);
 $fts_tag = $db -> escapeString($_POST['tag']);
+
 // SQLiteに対する処理
 if (empty($input_rowid)) {
 	$sql = "insert into article (title, body, headimage) values('$input_title', '$input_body', '$input_headimage');";
@@ -26,10 +27,10 @@ if (!$result) {
 // 分かち書きした文をタグ検索用テーブルへ
 if (empty($input_rowid)) {
 	$id_inserted = $db -> lastInsertRowId();
-	$sql = "insert into fts_tag (rowid, tag) values($id_inserted, '$fts_tag');";
+	$sql = "insert into fts_tag (docid, tag) values($id_inserted, '$fts_tag');";
 } else {
 	$id_inserted = $input_rowid;
-	$sql = "update fts_tag set tag = '$fts_tag' where rowid = $id_inserted;";
+	$sql = "update fts_tag set tag = '$fts_tag' where fts_id = $id_inserted;";
 }
 $result = $db -> query($sql);
 

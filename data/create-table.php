@@ -26,7 +26,7 @@
 		}
 		print('通常テーブルの作成に成功。');
 		// タグ検索用のテーブルを作る
-		$sql = "create virtual table fts_tag using fts4(fts_id integer primary key autoincrement, tag text);";
+		$sql = "create virtual table fts_tag using fts4(tag text);";
 		$result = $db -> query($sql);
 
 		if (!$result) {

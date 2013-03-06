@@ -25,7 +25,9 @@ function loadByUrl(scr) {
 	var vars = getUrlVars();
 	if (vars['p'] !== undefined) {
 		articleLoad('?p=' + vars['p'], scr);
-		thumbsLoad("./data/thumbnails.php");
+		thumbsLoad("./data/thumbnails.php", function() {
+			tagSearchClose();
+		});
 	} else if (vars['tag'] !== undefined) {
 		articleClose();
 		thumbsLoad("./data/thumbnails.php", function() {
@@ -67,6 +69,7 @@ var loadOnce = 6;
 var nowLoading = false;
 function appendThumbs(its) {
 	if ($("div.thumbs-buf").hasClass("end")) {
+		nowLoading = true;
 		return false;
 	}
 	if (nowLoading == false) {
@@ -82,6 +85,18 @@ function appendThumbs(its) {
 			});
 		});
 	}
+}
+
+function prependThumbs() {
+	var url = './data/thumbnails.php?offset=0' + '&limit=1';
+	$("div.thumbs-buf").load(url, function() {
+		$(this).prependTo("div#thumbs").fadeIn('normal', function() {
+			$(this).removeClass("thumbs-buf");
+			if (its)
+				$(its).remove();
+			nowLoading = false;
+		});
+	});
 }
 
 
@@ -278,6 +293,7 @@ function defineSubmit() {
 		}, function(res) {
 			showAlert(res);
 			reset();
+			prependThumbs();
 		}, 'text');
 
 		return false;
@@ -285,8 +301,10 @@ function defineSubmit() {
 
 	$('input[type=file]').change(function() {
 		$(this).upload('./data/upload-image.php', function(res) {
+			var dotpos = res['filename'].indexOf('.');
+			var img_mini = res['filename'].substring(0, dotpos) + 'x320' + res['filename'].substring(dotpos);
 			$('#thumb').html(res['error']);
-			$('#edit-thumb').attr("src", 'data/' + res['filename']);
+			$('#edit-thumb').attr("src", 'data/' + img_mini);
 			$('#postform [name=headimage]').attr("value", res['filename']);
 		}, 'json');
 	});
@@ -341,8 +359,10 @@ function replaceEditor(id) {
 	$.post("./data/json-article.php", {
 		id : id
 	}, function(res) {
+		var dotpos = res['headimage'].indexOf('.');
+		var img_mini = res['headimage'].substring(0, dotpos) + 'x320' + res['headimage'].substring(dotpos);
 		$('h1#editor-title').html("記事の編集");
-		$('#edit-thumb').attr("src", 'data/' + res['headimage']);
+		$('#edit-thumb').attr("src", 'data/' + img_mini);
 		$('#postform [name=headimage]').attr("value", res['headimage']);
 		$("#postform [name=title]").val(res['title']);
 		$("#postform [name=tag]").val(res['tag']);

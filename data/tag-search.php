@@ -10,6 +10,7 @@ echo('<div><button class="btn" id="closeTagSearch">「' . $input_tag . '」タ�
 $sql = "select id, timestamp, title, headimage, tag from article, fts_tag where article.rowid = fts_tag.rowid and article.rowid in(select fts_tag.rowid from fts_tag where tag match '$input_tag') order by article.rowid desc;";
 $result = $db -> query($sql);
 while ($row = $result -> fetchArray()) {
+	$row = array_map("stripslashes", $row);
 	$dotpos = strrpos($row['headimage'], '.');
 	$headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x320' . substr($row['headimage'], $dotpos);
 	echo('

@@ -29,4 +29,11 @@ CKEDITOR.editorConfig = function( config ) {
 	// Remove some buttons, provided by the standard plugins, which we don't
 	// need to have in the Standard(s) toolbar.
 	config.removeButtons = 'Underline,Subscript,Superscript';
+	config.language = 'ja';  
+	config.filebrowserBrowseUrl = 'js/kcfinder/browse.php?type=files';  
+	config.filebrowserImageBrowseUrl = 'js/kcfinder/browse.php?type=images';  
+	config.filebrowserFlashBrowseUrl = 'js/kcfinder/browse.php?type=flash';  
+	config.filebrowserUploadUrl = 'js/kcfinder/upload.php?type=files';  
+	config.filebrowserImageUploadUrl = 'js/kcfinder/upload.php?type=images';  
+	config.filebrowserFlashUploadUrl = 'js/kcfinder/upload.php?type=flash';  
 };
