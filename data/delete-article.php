@@ -7,7 +7,7 @@
 			die($e -> getTraceAsString());
 		}
 
-		$input_id = sqlite_escape_string($_POST['id']);
+		$input_id = $db -> escapeString($_POST['id']);
 		// SQLiteに対する処理
 		$sql = "delete from article where rowid = $input_id;";
 		$sql2 = "delete from fts_tag where fts_tag.docid = $input_id;";
