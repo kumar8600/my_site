@@ -1,5 +1,6 @@
 <?php
-$db = new SQLite3('../article.sqlite3');
+require_once dirname(__FILE__) . '/../config.php';
+$db = new SQLite3($GLOBALS['db_path']);
 
 $offset = $db->escapeString($_GET['offset']);
 $limit = $db->escapeString($_GET['limit']);

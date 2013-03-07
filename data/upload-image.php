@@ -1,5 +1,5 @@
 <?php
-require_once '../functions.php';
+require_once dirname(__FILE__) . '/functions.php';
 
 $filename = basename($_FILES['userfile']['name']);
 $filepath = 'images/' . $filename;

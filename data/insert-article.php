@@ -1,5 +1,6 @@
 <?php
-$db = new SQLite3('../article.sqlite3');
+require_once dirname(__FILE__) . '/../config.php';
+$db = new SQLite3($GLOBALS['db_path']);
 
 //TODO: スーパーグローバル変数がnullになってる場合を考慮していない．isset($_POST['title'])などでセットされているかどうかを確認すること
 $input_title = $db -> escapeString($_POST['title']);

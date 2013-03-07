@@ -1,5 +1,6 @@
 <?php
-$db = new SQLite3('../article.sqlite3');
+require_once dirname(__FILE__) . '/../config.php';
+$db = new SQLite3($GLOBALS['db_path']);
 
 $input_id = $db->escapeString($_POST['id']);
 // SQLiteに対する処理

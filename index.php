@@ -47,9 +47,6 @@
 				<div class="span10 hide" id="tag-search"></div>
 				<div class="row" id="thumbs"></div>
 			</div>
-			<footer>
-				Copyright(c) kumar8600
-			</footer>
 		</div>
 
 		<script src="js/jquery-1.9.1.min.js"></script>

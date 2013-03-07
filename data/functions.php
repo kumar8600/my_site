@@ -1,9 +1,13 @@
 <?php
+$location = dirname(__FILE__);
+require_once ($location . '/../config.php');
+
 function h($str) {
 	return htmlspecialchars($str, ENT_QUOTES, "UTF-8");
 }
 
-// 基本的なことしかできないが、コンストラクタとSQL文だけで答えの配列を得られるクラス。ファイル名は固定。settings.phpでいじれるようにしたい
+// 基本的なことしかできないが、コンストラクタとSQL文だけで答えの配列を得られるクラス。ファイル名は固定。config.phpでいじれるようにしたい
+/*
 class EasySQLite3 {
 	public $handle;
 	function __construct() {
@@ -16,7 +20,7 @@ class EasySQLite3 {
 
 	function open() {
 		try {
-			$handle = new SQLite3('./article.sqlite3');
+			$handle = new SQLite3($GLOBALS['db_path']);
 		} catch(Exception $ex) {
 			die('DBとの接続に失敗' . $e -> getTraceAsString());
 		}
@@ -33,37 +37,13 @@ class EasySQLite3 {
 		
 		return $row;
 	}
-
-}
-
-function sqliteOpen() {
-	$location = dirname(__FILE__);
-	try {
-		$handle = new SQLite3('./article.sqlite3');
-	} catch(Exception $ex) {
-		die('DBとの接続に失敗' . $e -> getTraceAsString());
+	
+	function escapeString($str) {
+		return $handle -> escapeString($str);
 	}
 
-	return $handle;
 }
-
-function sqliteQuery($handle, $query) {
-	$array['dbhandle'] = $handle;
-	$array['query'] = $query;
-	$result = $handle -> query($query);
-	return $result;
-}
-
-function sqliteFetchArray(&$result, $type) {
-	$i = 0;
-	while ($result -> columnName($i)) {
-		$columns[] = $result -> columnName($i);
-		$i++;
-	}
-	$resx = $result -> fetchArray(SQLITE3_ASSOC);
-	return $resx;
-}
-
+*/
 function resize_image(array $options) {
 	// デフォルト値の設定
 	$defaults = array('image_path' => null, // 画像ファイルのパス

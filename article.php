@@ -1,6 +1,6 @@
 <?php
-//TODO: sqlite接続関数をfunctions.phpに入れ込み，他のPHPはfunctions.phpをrequireすれば良い風にしたい．
-$db = new SQLite3('article.sqlite3');
+require_once dirname(__FILE__) . '/config.php';
+$db = new SQLite3($GLOBALS['db_path']);
 
 $input_id = $db->escapeString($_GET['p']);
 // SQLiteに対する処理
