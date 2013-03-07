@@ -6,14 +6,14 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- Bootstrap -->
 		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-		<link href="css/bootstrap-responsive.css" rel="stylesheet">
+		<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 		<!-- 自分で書いたやつ -->
 		<link href="css/mystyle.css" rel="stylesheet">
 	</head>
 	<body>
 		<div class="container">
 			<header class="page-header">
-				<a href="./" class="reset"><h1>超うんこなサイト<small>うんこでも気づいたこと書きます</small></h1></a>
+				<a href="./" class="reset"><h1> 超うんこなサイト<small>うんこでも気づいたこと書きます</small></h1> </a>
 			</header>
 			<div class="visible-phone" id="menu-button">
 				<button class="btn" id="menu-toggle">
@@ -44,15 +44,18 @@
 				<div class="span10 hide" id="anim">
 					<div class="hide" id="article"></div>
 				</div>
-				<div class="span10 hide" id="tag-search">
-				</div>
-					<div class="row" id="thumbs"></div>
+				<div class="span10 hide" id="tag-search"></div>
+				<div class="row" id="thumbs"></div>
 			</div>
+			<footer>
+				Copyright(c) kumar8600
+			</footer>
+		</div>
 
-			<script src="js/jquery-1.9.1.min.js"></script>
-			<script src="js/bootstrap.min.js"></script>
-			<script src="js/index.js"></script>
-			<script type="text/javascript"></script></script>
+		<script src="js/jquery-1.9.1.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/index.js"></script>
+
 	</body>
 
 </html>

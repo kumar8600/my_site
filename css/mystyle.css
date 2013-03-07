@@ -13,14 +13,17 @@ body {
 	padding-bottom: 10px;
 	background-color: #FFFFFF;
 }
+
 #article {
 	padding: 10px;
 	margin-bottom: 20px;
 	background-color: #FFFFFF;
 }
-h1, h2, h3 {
+
+h1,h2,h3 {
 	font-weight: normal;
 }
+
 #ar-body h1 {
 	font-size: 31.5px;
 }
@@ -40,20 +43,25 @@ h1, h2, h3 {
 #ar-body h5 {
 	font-size: 11.9px;
 }
+
 #ar-body h6 {
 	font-size: 10px;
 }
+
 #thumbs a {
 	text-decoration: none;
 }
+
 .thumbnail:hover {
 	border-color: #0088cc;
 }
+
 .thumbnail {
 	overflow: hidden;
 }
-@media (min-width: 768px) {
-	h2, h3 {
+
+@media ( min-width : 768px) {
+	h2,h3 {
 		line-height: 28px;
 	}
 	.thumbnail img {
@@ -65,7 +73,8 @@ h1, h2, h3 {
 		height: 100px;
 	}
 }
-@media (min-width: 980px) {
+
+@media ( min-width : 980px) {
 	.thumbnail {
 		height: 100px;
 	}
@@ -73,7 +82,8 @@ h1, h2, h3 {
 		height: 100px;
 	}
 }
-@media (min-width: 1200px) {
+
+@media ( min-width : 1200px) {
 	.thumbnail {
 		height: 150px;
 	}
@@ -89,10 +99,12 @@ h1, h2, h3 {
 div.tag-search {
 	height: 300px;
 }
+
 .tag-search img {
 	height: auto;
 }
-@media (max-width: 767px) {
+
+@media ( max-width : 767px) {
 	div.thumbnail {
 		height: 120px;
 	}
@@ -105,20 +117,21 @@ div.tag-search {
 		height: auto;
 	}
 }
-@media (max-width: 480px) {
-	h1, h2, h3 {
+
+@media ( max-width : 480px) {
+	h1,h2,h3 {
 		line-height: 28px;
 	}
-	#ar-body h1, h1 {
+	#ar-body h1,h1 {
 		font-size: 1.8em;
 	}
-	#ar-body h1 small, h1 small {
+	#ar-body h1 small,h1 small {
 		font-size: 0.8em;
 	}
-	#ar-body h2, h2 {
+	#ar-body h2,h2 {
 		font-size: 1.5em;
 	}
-	#ar-body h3, h3 {
+	#ar-body h3,h3 {
 		font-size: 1.2em;
 	}
 	.thumbnail img {
@@ -126,10 +139,12 @@ div.tag-search {
 		margin-right: 10px;
 	}
 }
+
 div.viewing {
 	color: #FFFFFF;
 	background-color: #0088cc;
 }
+
 div#menu-button {
 	text-align: center;
 }

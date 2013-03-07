@@ -1,20 +1,42 @@
 <?php
+function h($str){
+	return htmlspecialchars($str,ENT_QUOTES,"UTF-8");
+}
+
+function sqliteOpen(){
+	$location = dirname(__FILE__);
+	$handle = new SQLite3('./article.sqlite3');
+	return $handle;
+}
+
+function sqliteQuery($handle,$query){
+	$array['dbhandle'] = $handle;
+	$array['query'] = $query;
+	$result = $handle->query($query);
+	return $result;
+}
+
+function sqliteFetchArray(&$result,$type){
+	$i = 0;
+	while ($result->columnName($i))
+	{
+		$columns[] = $result->columnName($i);
+		$i++;
+	}
+	$resx = $result->fetchArray(SQLITE3_ASSOC);
+	return $resx;
+}
 
 function resize_image(array $options) {
-
 	// デフォルト値の設定
-
 	$defaults = array('image_path' => null, // 画像ファイルのパス
-	'save_path' => null, // 画像を保存するパス
-	'max_width' => 120, // 最大の幅
-	'max_height' => 120, // 最大の高さ
-	'quality' => 90 // PNG、JPEG時のクオリティー
+			'save_path' => null, // 画像を保存するパス
+			'max_width' => 120, // 最大の幅
+			'max_height' => 120, // 最大の高さ
+			'quality' => 90 // PNG、JPEG時のクオリティー
 	);
-
 	extract($options + $defaults);
-
 	// 画像の情報を取得
-
 	$size = getimagesize($image_path);
 
 	// ファイルから画像の作成。画像のタイプによって関数を使い分ける
@@ -49,11 +71,8 @@ function resize_image(array $options) {
 	}
 
 	// 新規画像の作成
-
 	$new_image = imagecreatetruecolor($width, $height);
-
 	// GIFとPNGの透過情報をあれこれ
-
 	if ($size[2] === IMAGETYPE_GIF || $size[2] === IMAGETYPE_PNG) {
 		$index = imagecolortransparent($image);
 
@@ -65,12 +84,10 @@ function resize_image(array $options) {
 			imagecolortransparent($new_image, $alpha);
 
 		} else if ($size[2] === IMAGETYPE_PNG) {
-
 			imagealphablending($new_image, false);
 			$color = imagecolorallocatealpha($new_image, 0, 0, 0, 127);
 			imagefill($new_image, 0, 0, $color);
 			imagesavealpha($new_image, true);
-
 		}
 	}
 
@@ -106,4 +123,3 @@ function resize_image(array $options) {
 
 	return $result;
 }
-?>

@@ -1,11 +1,7 @@
 <?php
+$db = new SQLite3('../article.sqlite3');
 
-try {
-	$db = new SQLite3('article.sqlite3');
-} catch(Exception $e) {
-	die('DBとの接続に失敗' . $e -> getTraceAsString());
-}
-
+//TODO: スーパーグローバル変数がnullになってる場合を考慮していない．isset($_POST['title'])などでセットされているかどうかを確認すること
 $input_title = $db -> escapeString($_POST['title']);
 $input_body = $db -> escapeString($_POST['body']);
 $input_headimage = $db -> escapeString($_POST['headimage']);
@@ -22,6 +18,7 @@ $result = $db -> query($sql);
 
 if (!$result) {
 	die($input_rowid . '記事のインサートクエリーに失敗: ' . $sqlerror);
+	//TODO:失敗時にSQLエラーを出力しないこと
 }
 
 // 分かち書きした文をタグ検索用テーブルへ

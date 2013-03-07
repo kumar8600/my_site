@@ -1,30 +1,25 @@
 <?php
+//TODO: sqlite接続関数をfunctions.phpに入れ込み，他のPHPはfunctions.phpをrequireすれば良い風にしたい．
+$db = new SQLite3('article.sqlite3');
 
-try {
-	$db = new SQLite3('./data/article.sqlite3');
-} catch(Exception $e) {
-	echo 'DBとの接続に失敗';
-	die($e -> getTraceAsString());
-}
-
-$input_id = $db -> escapeString($_GET['p']);
+$input_id = $db->escapeString($_GET['p']);
 // SQLiteに対する処理
-$sql = "select rowid, * from article where rowid = '$input_id' or title = '$input_id';";
-$result = $db -> query($sql);
+$sql = "SELECT * FROM article WHERE id = '$input_id' OR title = '$input_id';";
+$result = $db->query($sql);
 if (!$result) {
-	die('読み込みに失敗: ' . $sqlerror);
+	die('読み込みに失敗:'.$sqlerror);
 }
 $data_article = $result -> fetchArray();
 // FTSテーブルからも情報取ってくる
 $input_id = $data_article['id'];
-$sql = "select * from fts_tag where fts_tag.docid = $input_id;";
-$result = $db -> query($sql);
+$sql = "SELECT * FROM fts_tag WHERE fts_tag.docid = $input_id;";
+$result = $db->query($sql);
 if (!$result) {
-	die('読み込みに失敗🍣: ' . $sqlerror);
+	die('読み込みに失敗: ' . $sqlerror);
 }
-$data_fts = $result -> fetchArray();
+$data_fts = $result->fetchArray();
 if ($data_article['title'] == null) {
-	die("指定された記事がありません🍣");
+	die("指定された記事がありません");
 }
 $data_article = array_map("stripslashes", $data_article);
 $data_fts = array_map("stripslashes", $data_fts);
@@ -43,27 +38,27 @@ echo '</div>';
 echo '<button class="btn edit" href="./data/edit-article.html" value="' . $input_id . '">編集</button>';
 echo '<a href="#myModal" role="button" class="btn btn-danger" data-toggle="modal">削除</a>';
 echo('
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-header">
+		<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-			×
+		×
 		</button>
 		<h3 id="myModalLabel">確認</h3>
-	</div>
-	<div class="modal-body">
+		</div>
+		<div class="modal-body">
 		<p>
-			本当に記事「' . $data_article['title'] . '」を削除しますか？
+		本当に記事「' . $data_article['title'] . '」を削除しますか？
 		</p>
-	</div>
-	<div class="modal-footer">
+		</div>
+		<div class="modal-footer">
 		<button class="btn" data-dismiss="modal" aria-hidden="true">
-			キャンセル
+		キャンセル
 		</button>
 		<button class="btn btn-danger del" data-dismiss="modal" href="' . $input_id . '">
-			削除
+		削除
 		</button>
-	</div>
-</div>');
-$db -> close();
+		</div>
+		</div>');
+$db->close();
 ?>
 <!-- Modal -->
