@@ -289,8 +289,9 @@ $("body").on("click", "button.edit", function() {
 });
 
 $("body").on("click", "button.del", function() {
+	var rowid = $(this).attr("href");
 	loadAdminJs(function() {
-		deleteArticle($(this).attr("href"));
+		deleteArticle(rowid);
 	});
 
 	return false;
