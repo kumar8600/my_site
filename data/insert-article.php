@@ -2,18 +2,25 @@
 require_once dirname(__FILE__) . '/connect-db.php';
 $db = connectDB();
 
-//TODO: スーパーグローバル変数がnullになってる場合を考慮していない．isset($_POST['title'])などでセットされているかどうかを確認すること
-$input_title = $db -> escapeString($_POST['title']);
-$input_body = $db -> escapeString($_POST['body']);
-$input_headimage = $db -> escapeString($_POST['headimage']);
-$input_rowid = $db -> escapeString($_POST['rowid']);
-$fts_tag = $db -> escapeString($_POST['tag']);
+$input['title'] = $_POST['title'];
+$input['body'] = $_POST['body'];
+$input['headimage'] = $_POST['headimage'];
+$input['tag'] = $_POST['tag'];
+
+function ifUnSetDie($val) {
+	if(!isset($val)) {
+		die("セットされていない値がある");
+	}
+}
+array_map("ifUnSetDie", $input);
+$input['rowid'] = $_POST['rowid'];
+array_map(array($db, 'escapeString'), $input);
 
 // SQLiteに対する処理
-if (empty($input_rowid)) {
-	$sql = "insert into article (title, body, headimage) values('$input_title', '$input_body', '$input_headimage');";
+if (empty($input['rowid'])) {
+	$sql = "INSERT INTO article (title, body, headimage) VALUES('".$input['title']."', '".$input['body']."', '".$input['headimage']."');";
 } else {
-	$sql = "update article set title = '$input_title', body = '$input_body', headimage = '$input_headimage' where rowid = $input_rowid;";
+	$sql = "UPDATE article SET title = '".$input['title']."', body = '".$input['body']."', headimage = '".$input['headimage']."' WHERE rowid = ".$input['rowid'].";";
 }
 $result = $db -> query($sql);
 
@@ -23,12 +30,12 @@ if (!$result) {
 }
 
 // 分かち書きした文をタグ検索用テーブルへ
-if (empty($input_rowid)) {
+if (empty($input['rowid'])) {
 	$id_inserted = $db -> lastInsertRowId();
-	$sql = "insert into fts_tag (docid, tag) values($id_inserted, '$fts_tag');";
+	$sql = "INSERT INTO fts_tag (docid, tag) VALUES($id_inserted, '".$input['tag']."');";
 } else {
-	$id_inserted = $input_rowid;
-	$sql = "update fts_tag set tag = '$fts_tag' where fts_tag.docid = $id_inserted;";
+	$id_inserted = $input['rowid'];
+	$sql = "UPDATE fts_tag SET tag = '".$input['tag']."' WHERE fts_tag.docid = $id_inserted;";
 }
 $result = $db -> query($sql);
 
@@ -38,9 +45,9 @@ if (!$result) {
 
 $db -> close();
 
-if (empty($input_rowid))  {
-	echo('記事「' . $input_title . '」の作成に成功');
+if (empty($input['rowid']))  {
+	echo('記事「' . $input['title'] . '」の作成に成功');
 } else {
-	echo('記事「' . $input_title . '」の編集に成功');
+	echo('記事「' . $input['title'] . '」の編集に成功');
 }
 ?>

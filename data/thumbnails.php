@@ -33,9 +33,7 @@ while ($row = $result -> fetchArray()) {
 if ($i == $limit) {
 	echo '<div class="thumbs-buf" style="display: none"></div>';
 } else {
-	echo '<div class="thumbs-buf end"></div><footer>
-					Copyright(c) kumar8600
-				</footer>';
+	echo '<div class="thumbs-buf end"></div>';
 }
 
 $db -> close();

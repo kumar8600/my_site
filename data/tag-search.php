@@ -4,7 +4,7 @@ $db = connectDB();
 
 $input_tag = $db -> escapeString($_GET['tag']);
 echo('<div><button class="btn" id="closeTagSearch">「' . $input_tag . '」タグの検索をやめる</button></div>');
-$sql = "select id, timestamp, title, headimage, tag from article, fts_tag where article.rowid = fts_tag.rowid and article.rowid in(select fts_tag.rowid from fts_tag where tag match '$input_tag') order by article.rowid desc;";
+$sql = "SELECT id, timestamp, title, headimage, tag FROM article, fts_tag WHERE article.rowid = fts_tag.rowid AND article.rowid IN(SELECT fts_tag.rowid FROM fts_tag WHERE tag MATCH '$input_tag') ORDER BY article.rowid DESC;";
 $result = $db -> query($sql);
 while ($row = $result -> fetchArray()) {
 	$row = array_map("stripslashes", $row);

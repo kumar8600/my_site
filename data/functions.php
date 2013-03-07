@@ -6,44 +6,6 @@ function h($str) {
 	return htmlspecialchars($str, ENT_QUOTES, "UTF-8");
 }
 
-// 基本的なことしかできないが、コンストラクタとSQL文だけで答えの配列を得られるクラス。ファイル名は固定。config.phpでいじれるようにしたい
-/*
-class EasySQLite3 {
-	public $handle;
-	function __construct() {
-		open();
-	}
-
-	function __destruct() {
-		$handle -> close();
-	}
-
-	function open() {
-		try {
-			$handle = new SQLite3($GLOBALS['db_path']);
-		} catch(Exception $ex) {
-			die('DBとの接続に失敗' . $e -> getTraceAsString());
-		}
-	}
-
-	function queryFetchArray($sql) {
-		$result = $handle -> query($sql);
-		$row = array();
-		$i = 0;
-		while ($res = $result -> fetchArray(SQLITE3_ASSOC)) {
-			$row[i] = $res;
-			$i++;
-		}
-		
-		return $row;
-	}
-	
-	function escapeString($str) {
-		return $handle -> escapeString($str);
-	}
-
-}
-*/
 function resize_image(array $options) {
 	// デフォルト値の設定
 	$defaults = array('image_path' => null, // 画像ファイルのパス

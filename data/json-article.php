@@ -4,7 +4,7 @@ $db = connectDB();
 
 $input_id = $db -> escapeString($_POST['id']);
 // SQLiteに対する処理
-$sql = "select headimage, title, body, tag from article, fts_tag where article.rowid = $input_id and fts_tag.docid = $input_id;";
+$sql = "SELECT headimage, title, body, tag FROM article, fts_tag WHERE article.rowid = $input_id AND fts_tag.docid = $input_id;";
 $result = $db -> query($sql);
 if (!$result) {
 	die('読み込みに失敗: ' . $sqlerror);
