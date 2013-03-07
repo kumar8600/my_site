@@ -1,39 +1,76 @@
 <?php
-function h($str){
-	return htmlspecialchars($str,ENT_QUOTES,"UTF-8");
+function h($str) {
+	return htmlspecialchars($str, ENT_QUOTES, "UTF-8");
 }
 
-function sqliteOpen(){
+// 基本的なことしかできないが、コンストラクタとSQL文だけで答えの配列を得られるクラス。ファイル名は固定。settings.phpでいじれるようにしたい
+class EasySQLite3 {
+	public $handle;
+	function __construct() {
+		open();
+	}
+
+	function __destruct() {
+		$handle -> close();
+	}
+
+	function open() {
+		try {
+			$handle = new SQLite3('./article.sqlite3');
+		} catch(Exception $ex) {
+			die('DBとの接続に失敗' . $e -> getTraceAsString());
+		}
+	}
+
+	function queryFetchArray($sql) {
+		$result = $handle -> query($sql);
+		$row = array();
+		$i = 0;
+		while ($res = $result -> fetchArray(SQLITE3_ASSOC)) {
+			$row[i] = $res;
+			$i++;
+		}
+		
+		return $row;
+	}
+
+}
+
+function sqliteOpen() {
 	$location = dirname(__FILE__);
-	$handle = new SQLite3('./article.sqlite3');
+	try {
+		$handle = new SQLite3('./article.sqlite3');
+	} catch(Exception $ex) {
+		die('DBとの接続に失敗' . $e -> getTraceAsString());
+	}
+
 	return $handle;
 }
 
-function sqliteQuery($handle,$query){
+function sqliteQuery($handle, $query) {
 	$array['dbhandle'] = $handle;
 	$array['query'] = $query;
-	$result = $handle->query($query);
+	$result = $handle -> query($query);
 	return $result;
 }
 
-function sqliteFetchArray(&$result,$type){
+function sqliteFetchArray(&$result, $type) {
 	$i = 0;
-	while ($result->columnName($i))
-	{
-		$columns[] = $result->columnName($i);
+	while ($result -> columnName($i)) {
+		$columns[] = $result -> columnName($i);
 		$i++;
 	}
-	$resx = $result->fetchArray(SQLITE3_ASSOC);
+	$resx = $result -> fetchArray(SQLITE3_ASSOC);
 	return $resx;
 }
 
 function resize_image(array $options) {
 	// デフォルト値の設定
 	$defaults = array('image_path' => null, // 画像ファイルのパス
-			'save_path' => null, // 画像を保存するパス
-			'max_width' => 120, // 最大の幅
-			'max_height' => 120, // 最大の高さ
-			'quality' => 90 // PNG、JPEG時のクオリティー
+	'save_path' => null, // 画像を保存するパス
+	'max_width' => 120, // 最大の幅
+	'max_height' => 120, // 最大の高さ
+	'quality' => 90 // PNG、JPEG時のクオリティー
 	);
 	extract($options + $defaults);
 	// 画像の情報を取得

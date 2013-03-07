@@ -1,13 +1,9 @@
 <?php
 $db = new SQLite3('../article.sqlite3');
 
-//TODO : こんな感じで軽くチェックするだけでいいかも
-if(!isset($_GET['offset']) || isset($_GET['limit'])){
-	die('必要なパラメータが指定されていません．');
-}
-
 $offset = $db->escapeString($_GET['offset']);
 $limit = $db->escapeString($_GET['limit']);
+//	パラメータがなくてもデフォルト値を指定する
 if (empty($offset))
 	$offset = 0;
 if (empty($limit))
