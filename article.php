@@ -1,6 +1,6 @@
 <?php
-require_once dirname(__FILE__) . '/config.php';
-$db = new SQLite3($GLOBALS['db_path']);
+require_once dirname(__FILE__) . '/data/connect-db.php';
+$db = connectDB();
 
 $input_id = $db->escapeString($_GET['p']);
 // SQLiteに対する処理

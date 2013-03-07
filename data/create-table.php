@@ -5,8 +5,8 @@
 	</head>
 	<body>
 		<?php
-		require_once dirname(__FILE__) . '/../config.php';
-		$db = new SQLite3($GLOBALS['db_path']);
+		require_once dirname(__FILE__) . '/connect-db.php';
+		$db = connectDB();
 		// SQLiteに対する処理
 		// 通常のテーブルを作る
 		$sql = "create table article (id integer primary key autoincrement, timestamp default(datetime('now', 'localtime')), title, body, thumbbody, headimage);";

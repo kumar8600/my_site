@@ -1,6 +1,6 @@
 <?php
-require_once dirname(__FILE__) . '/../config.php';
-$db = new SQLite3($GLOBALS['db_path']);
+require_once dirname(__FILE__) . '/connect-db.php';
+$db = connectDB();
 
 $input_tag = $db -> escapeString($_GET['tag']);
 echo('<div><button class="btn" id="closeTagSearch">「' . $input_tag . '」タグの検索をやめる</button></div>');

@@ -1,6 +1,6 @@
 <?php
-$location = dirname(__FILE__);
-require_once ($location . '/../config.php');
+require_once dirname(__FILE__) . '/connect-db.php';
+$db = connectDB();
 
 function h($str) {
 	return htmlspecialchars($str, ENT_QUOTES, "UTF-8");

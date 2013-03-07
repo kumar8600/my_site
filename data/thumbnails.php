@@ -1,6 +1,6 @@
 <?php
-require_once dirname(__FILE__) . '/../config.php';
-$db = new SQLite3($GLOBALS['db_path']);
+require_once dirname(__FILE__) . '/connect-db.php';
+$db = connectDB();
 
 $offset = $db->escapeString($_GET['offset']);
 $limit = $db->escapeString($_GET['limit']);
