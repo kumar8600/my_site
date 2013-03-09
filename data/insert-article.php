@@ -7,11 +7,6 @@ $input['body'] = $_POST['body'];
 $input['headimage'] = $_POST['headimage'];
 $input['tag'] = $_POST['tag'];
 
-function ifUnSetDie($val) {
-	if(!isset($val)) {
-		die("セットされていない値がある");
-	}
-}
 array_map("ifUnSetDie", $input);
 $input['rowid'] = $_POST['rowid'];
 array_map(array($db, 'escapeString'), $input);
