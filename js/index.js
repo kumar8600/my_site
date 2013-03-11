@@ -1,13 +1,14 @@
 $(document).ready(function() {
 	$("#tags-li").load("./data/tags.php");
 	phoneMenuHide();
-	loadByUrl();
+	autoLogin(function() {
+		loadByUrl();
+	});
 	setTimeout(function() {
 		window.addEventListener('popstate', function(ev) {
 			loadByUrl();
 		}, false);
 	}, 100);
-
 });
 
 function getUrlVars() {
@@ -136,15 +137,18 @@ function articleLoad(url, func) {
 			url = 'article.php' + url;
 		$(this).load(url, function() {
 			removeImgHeight();
+			if (adminMode) {
+				adminArticle(url);
+			}
 			if ($.isFunction(func)) {
 				func();
 			}
 			$(this).fadeIn("fast");
 			$("#anim").animate({
-				'height' : $("#article").height()
+				'height' : $("#article").outerHeight()
 			}, function() {
 				$("#anim").animate({
-					'height' : $("#article").height()
+					'height' : $("#article").outerHeight()
 				}, function() {
 					$("#anim").css({
 						"height" : ""
@@ -270,6 +274,25 @@ function loadAdminJs(func) {
 	}
 }
 
+var adminMode = false;
+function autoLogin(func) {
+	$.get("./data/admin/auto-login.php", function(res) {
+		if (res) {
+			loadAdminJs(function() {
+				administer();
+			});
+		}
+		func();
+	});
+}
+
+
+$("li.login").click(function() {
+	loadAdminJs(function() {
+		showLoginForm();
+	});
+	return false;
+});
 
 $("body").on("click", "button.new", function() {
 	loadAdminJs(function() {

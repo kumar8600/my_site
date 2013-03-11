@@ -33,8 +33,16 @@
 						<li>
 							<a href="?p=About" class="ajax">About</a>
 						</li>
+						<li class="login">
+							<a href=""> 管理 </a>
+						</li>
+						<li class="logout hide">
+							<a href=""> ログアウト </a>
+						</li>
+
+						<div id="loginform"></div>
 						<li>
-							<button class="btn btn-primary new" href="./data/edit-article.html">
+							<button class="btn btn-primary hide new" href="./data/edit-article.html">
 								記事の追加
 							</button>
 						</li>

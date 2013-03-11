@@ -1,0 +1,22 @@
+<!-- Modal -->
+<div id="loginModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			×
+		</button>
+		<h3 id="myModalLabel">管理モード｜ログイン</h3>
+	</div>
+	<form method="post" action="./data/admin/login.php">
+		<div class="modal-body">
+			ユーザID<br />
+			<input type="text" name="userid" />
+			<br />
+			パスワード<br />
+			<input type="password" name="password" />
+			<br />
+		</div>
+		<div class="modal-footer">
+			<input class="btn btn-primary" type="submit" value="ログイン" />
+		</div>
+	</form>
+</div>

@@ -124,9 +124,66 @@ function openNew() {
 }
 
 function openEdit(rowid) {
-	alert(rowid);
 	loadEditor(function() {
 		replaceEditor(rowid);
 		newEdit = false;
+	});
+}
+
+
+function administer() {
+	adminMode = true;
+	$("li.login").hide();
+	$("li.logout").show();
+	$("button.new").show();
+}
+
+function showLoginForm() {
+	$("div#loginform").load("./data/admin/loginform.html", function() {
+		$("#loginModal").modal('show');
+		$("#loginModal input[type=submit]").click(function() {
+			$.post("./data/admin/login.php", {
+				'userid' : $("input[name=userid]").val(),
+				'password' : $("input[name=password]").val()
+			}, function(res) {
+				if (res == true) {
+					showAlert("ログイン成功");
+					loadByUrl();
+					administer();
+				} else {
+					showAlert("ログイン失敗");
+				}
+				$("#loginModal").modal('hide');
+			});
+			return false;
+		});
+	});
+}
+
+function outAdminister() {
+	adminMode = false;
+	$("li.login").show();
+	$("li.logout").hide();
+	$("button.new").hide();
+	reset('push');
+}
+
+function logout() {
+	$.get("./data/admin/logout.php", function() {
+		outAdminister();
+	})
+}
+
+
+$("li.logout").click(function() {
+	logout();
+	return false;
+});
+
+function adminArticle(url) {
+	$("div.admin-article").load("./data/admin/admin-article.html", function() {
+		var id = url.substring(url.lastIndexOf('?p=') + 3);
+		$("button.edit").val(id);
+		$("button.del").val(id);
 	});
 }
