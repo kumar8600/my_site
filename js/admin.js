@@ -184,6 +184,6 @@ function adminArticle(url) {
 	$("div.admin-article").load("./data/admin/admin-article.html", function() {
 		var id = url.substring(url.lastIndexOf('?p=') + 3);
 		$("button.edit").val(id);
-		$("button.del").val(id);
+		$("button.del").attr("href", id);
 	});
 }

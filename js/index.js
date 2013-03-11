@@ -147,6 +147,7 @@ function articleLoad(url, func) {
 			$("#anim").animate({
 				'height' : $("#article").outerHeight()
 			}, function() {
+				changeSpan();
 				$("#anim").animate({
 					'height' : $("#article").outerHeight()
 				}, function() {

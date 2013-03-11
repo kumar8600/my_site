@@ -2,6 +2,7 @@
 require_once dirname(__FILE__) . '/connect-db.php';
 $db = connectDB();
 
+ifUnSetDie($_POST['id']);
 $input_id = $db->escapeString($_POST['id']);
 // SQLiteに対する処理
 $sql =  "DELETE FROM article WHERE id = $input_id;";
