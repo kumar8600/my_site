@@ -40,4 +40,9 @@ function ifUnSetDie($val) {
 		die("セットされていない値がある");
 	}
 }
+
+function myCrypt($word) {
+	return crypt($word, $GLOBALS['salt']);
+}
+
 ?>

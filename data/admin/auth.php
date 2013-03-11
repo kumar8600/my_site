@@ -15,8 +15,7 @@ function authorize($userid, $password) {
 		throw new Exception("IDに間違いがあります。");
 	}
 	
-
-	if ($row['password'] === $password) {
+	if (crypt($password, $row['password']) == $row['password']) {
 		return true;
 	}
 	throw new Exception("パスワードに間違いがあります。");

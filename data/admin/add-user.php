@@ -10,6 +10,8 @@ $input['email'] = $_POST['email'];
 array_map("ifUnSetDie", $input);
 $input['website'] = $_POST['website'];
 
+$input['password'] = myCrypt($input['password']);
+
 $db = connectAuthDB();
 
 $sql = "INSERT INTO user (userid, password, name, email, website) VALUES('". 
