@@ -15,22 +15,23 @@ function queryDB($db, $sql) {
 	$result = $db -> query($sql);
 
 	if (!$result) {
-		die($input_rowid . '記事のインサートクエリーに失敗: ' . $sqlerror);
+		die($input_rowid . 'DBクエリの実行に失敗: ' . $sqlerror);
 	}
 	return $result;
 }
 
 function fetchArrayDB($result) {
 	$row = $result -> fetchArray();
-	if (count($row) == 0) {
-		die("データの配列の取得に失敗。");
-	}
 	return $row;
 }
 
+//注意: 取り出す要素が一列の場合のみ利用可能
 function queryFetchArrayDB($db, $sql) {
 	$result = queryDB($db);
 	$row = fetchArrayDB($result);
+	if (!$row) {
+		die("DBクエリの結果の配列への変換に失敗");
+	}
 	return $row;
 }
 

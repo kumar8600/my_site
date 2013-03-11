@@ -1,8 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../connect-db.php';
 
-$db = connectAuthDB();
-
 $input['olduserid'] = $_POST['olduserid'];
 $input['oldpassword'] = $_POST['oldpassword'];
 $input['userid'] = $_POST['userid'];
@@ -13,6 +11,8 @@ $input['email'] = $_POST['email'];
 //フォームには予め値を入力済みな予定なので、ウェブサイト以外の項目をチェックする
 array_map("ifUnSetDie", $input);
 $input['website'] = $_POST['website'];
+
+$db = connectAuthDB();
 
 $sql = "UPDATE user SET userid = '". 
 $input['userid'] .

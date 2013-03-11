@@ -1,8 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../connect-db.php';
 
-$db = connectAuthDB();
-
 $input['userid'] = $_POST['userid'];
 $input['password'] = $_POST['password'];
 $input['name'] = $_POST['name'];
@@ -10,6 +8,8 @@ $input['email'] = $_POST['email'];
 
 array_map("ifUnSetDie", $input);
 $input['website'] = $_POST['website'];
+
+$db = connectAuthDB();
 
 $sql = "INSERT INTO user (userid, password, name, email, website) VALUES('". 
 $input['userid'] .
