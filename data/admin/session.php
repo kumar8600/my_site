@@ -1,17 +1,26 @@
 <?php
 require_once dirname(__FILE__) . '/../connect-db.php';
 
-function sessionLogin() {
+function setSession($key, $val) {
+	session_start();
+	$_SESSION[$key] = $val;
+	session_write_close();
+}
+
+function getSessionUser() {
 	session_start();
 
 	if ($_SESSION['userid'] == "") {
 		session_destroy();
-		die('SEX');
+		return false;
 	}
 	session_regenerate_id(TRUE);
+	session_write_close();
+	return $_SESSION['userid'];
 }
 
 function sessionLogout() {
+	session_start();
 	$_SESSION = array();
 
 	if (ini_get("session.use_cookies")) {

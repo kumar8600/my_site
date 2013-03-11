@@ -1,3 +1,4 @@
+<meta charset="UTF-8" />
 <?php
 require_once dirname(__FILE__) . '/../connect-db.php';
 
@@ -27,12 +28,3 @@ queryDB($db, $sql);
 $db -> close();
 echo("ユーザーの追加に成功。");
 ?>
-<meta charset="UTF-8" />
-<form method="post" action="">
-	ID<input type="text" name="userid" />
-	パス<input type="password" name="password" />
-	名前<input type="text" name="name" />
-	メール<input type="text" name="email" />
-	自分のサイト<input type="text" name="website" />
-	<input type="text">送信</button>
-</form>

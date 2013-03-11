@@ -8,11 +8,18 @@ function authorize($userid, $password) {
 	$db = connectAuthDB();	
 	
 	$sql = "SELECT password FROM user WHERE userid = '" . $userid . "';";
-	$row = queryFetchArray($db, $sql);
+	try {
+		$row = queryFetchArrayDB($db, $sql);
+	} catch (Exception $ex) {
+		//echo $ex;
+		throw new Exception("IDに間違いがあります。");
+	}
+	
 
 	if ($row['password'] === $password) {
 		return true;
 	}
+	throw new Exception("パスワードに間違いがあります。");
 	return false;
 }
 ?>

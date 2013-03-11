@@ -21,17 +21,17 @@ function queryDB($db, $sql) {
 }
 
 function fetchArrayDB($result) {
-	$row = $result -> fetchArray();
+	$row = $result -> fetchArray(SQLITE3_ASSOC);
+	if (!$row) {
+		throw new Exception("クエリのフェッチ(配列への変換)に失敗");
+	}
 	return $row;
 }
 
 //注意: 取り出す要素が一列の場合のみ利用可能
 function queryFetchArrayDB($db, $sql) {
-	$result = queryDB($db);
+	$result = queryDB($db, $sql);
 	$row = fetchArrayDB($result);
-	if (!$row) {
-		die("DBクエリの結果の配列への変換に失敗");
-	}
 	return $row;
 }
 

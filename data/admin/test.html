@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>管理用機能のテストページ</title>
+	</head>
+	<body>
+		<h1>管理用機能のテストページ</h1>
+		<a href="./create-auth-table.php">テーブル作成</a><br />
+		<a href="./auto-login.php">セッションによるオートログイン</a>
+		<h2>セッションログイン</h2>
+		<form method="post" action="./login.php">
+			ID
+			<input type="text" name="userid" />
+			<br />
+			パス
+			<input type="password" name="password" />
+			<br />
+			<input type="submit" value="ログイン" />
+		</form>
+		<h2>ユーザー追加</h2>
+		<form method="post" action="./add-user.php">
+			ID
+			<input type="text" name="userid" />
+			<br />
+			パス
+			<input type="password" name="password" />
+			<br />
+			名前
+			<input type="text" name="name" />
+			<br />
+			メール
+			<input type="text" name="email" />
+			<br />
+			自分のサイト
+			<input type="text" name="website" />
+			<br />
+			<input type="submit" value="送信" />
+		</form>
+		<h2>ユーザー削除</h2>
+		<form method="post" action="./delete-user.php">
+			ID
+			<input type="text" name="userid" />
+			<br />
+			パス
+			<input type="password" name="password" />
+			<br />
+			<input type="submit" value="削除" />
+		</form>
+		<h2>ユーザー情報表示(JSON)</h2>
+		<form method="post" action="./json-user.php">
+			ID
+			<input type="text" name="userid" />
+			<br />
+			<input type="submit" value="表示" />
+		</form>
+	</body>
+</html>

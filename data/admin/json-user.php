@@ -1,7 +1,9 @@
+<meta charset="UTF-8" />
 <?php
 require_once dirname(__FILE__) . '/../connect-db.php';
 
 $input['userid'] = $_POST['userid'];
+echo $input['userid'];
 ifUnSetDie($input['userid']);
 
 $db = connectAuthDB();
