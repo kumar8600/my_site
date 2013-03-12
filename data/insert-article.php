@@ -2,14 +2,16 @@
 require_once dirname(__FILE__) . '/connect-db.php';
 $db = connectDB();
 
-$input['title'] = $_POST['title'];
+$input['title'] = htmlspecialchars($_POST['title']);
+$title = htmlspecialchars($_POST['title']);
 $input['body'] = $_POST['body'];
 $input['headimage'] = $_POST['headimage'];
-$input['tag'] = $_POST['tag'];
+$input['tag'] = htmlspecialchars($_POST['tag']);
 
 array_map("ifUnSetDie", $input);
 $input['rowid'] = $_POST['rowid'];
-array_map(array($db, 'escapeString'), $input);
+
+$input = array_map(array($db, 'escapeString'), $input);
 
 // SQLiteに対する処理
 if (empty($input['rowid'])) {
@@ -41,8 +43,8 @@ if (!$result) {
 $db -> close();
 
 if (empty($input['rowid']))  {
-	echo('記事「' . $input['title'] . '」の作成に成功');
+	echo('記事「' . $title . '」の作成に成功');
 } else {
-	echo('記事「' . $input['title'] . '」の編集に成功');
+	echo('記事「' . $title . '」の編集に成功');
 }
 ?>

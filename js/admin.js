@@ -188,10 +188,24 @@ function adminArticle(url) {
 	});
 }
 
+function reloadAdminMenu() {
+	$.get("./data/admin/auto-login.php", function(res) {
+		if(res) {
+			administer();
+		} else {
+			outAdminister();
+		}
+	});
+}
+
 $("body").on("click", ".ajaxform input[type=submit]", function() {
 	var arr = $('.ajaxform :input');
 	var path = $(this).closest(".ajaxform").attr("action");
 	$.post(path, arr.serializeArray(), function(res) {
+		if(res.indexOf("OK") == 0) {
+			reset();
+			reloadAdminMenu();
+		}
 		showAlert(res);
 	});
 	return false;

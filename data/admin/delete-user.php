@@ -11,6 +11,8 @@ $db = connectAuthDB();
 
 $input['password'] = myCrypt($input['password']);
 
+array_map(array($db, 'escapeString'), $input);
+
 $sql = "DELETE FROM user WHERE userid = '" . $input['userid'] . "' AND password = '" . $input['password'] . "';";
 
 queryDB($db, $sql);
@@ -18,7 +20,7 @@ queryDB($db, $sql);
 if (getSessionUser() == $input['userid'])
 	sessionLogout();
 
-echo('<meta charset="UTF-8" />ユーザーの削除に成功しました');
+echo('OK: <meta charset="UTF-8" />ユーザーの削除に成功しました');
 
 $db -> close();
 ?>

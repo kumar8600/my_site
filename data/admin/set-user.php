@@ -2,6 +2,7 @@
 <?php
 require_once dirname(__FILE__) . '/../connect-db.php';
 require_once dirname(__FILE__) . '/auth.php';
+require_once dirname(__FILE__) . '/is-string-safe.php';
 
 $input['olduserid'] = $_POST['olduserid'];
 $input['oldpassword'] = $_POST['oldpassword'];
@@ -14,6 +15,8 @@ $input['email'] = $_POST['email'];
 array_map("ifUnSetDie", $input);
 $input['website'] = $_POST['website'];
 
+isPostSafe($input);
+
 try{
 	authorize($input['olduserid'], $input['oldpassword']);
 }catch(Exception $ex) {
@@ -25,6 +28,8 @@ $input['oldpassword'] = myCrypt($input['oldpassword']);
 $input['password'] = myCrypt($input['password']);
 
 $db = connectAuthDB();
+
+array_map(array($db, 'escapeString'), $input);
 
 $sql = "UPDATE user SET userid = '". 
 $input['userid'] .
@@ -40,5 +45,5 @@ $input['website'] ."' WHERE userid = '". $input['olduserid'] ."' AND password = 
 queryDB($db, $sql);
 
 $db -> close();
-echo("ユーザーの設定変更に成功。");
+echo(" OK: ユーザーの設定変更に成功。");
 ?>

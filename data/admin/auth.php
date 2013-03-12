@@ -7,6 +7,9 @@ function authorize($userid, $password) {
 	
 	$db = connectAuthDB();	
 	
+	$userid = $db -> escapeString($userid);
+	$password = $db -> escapeString($password);
+	
 	$sql = "SELECT password FROM user WHERE userid = '" . $userid . "';";
 	try {
 		$row = queryFetchArrayDB($db, $sql);

@@ -25,6 +25,7 @@ function fetchArrayDB($result) {
 	if (!$row) {
 		throw new Exception("クエリのフェッチ(配列への変換)に失敗");
 	}
+	$row = array_map("stripslashes", $row);
 	return $row;
 }
 

@@ -10,7 +10,10 @@ if (!$result) {
 	die('読み込みに失敗: ' . $sqlerror);
 }
 $row = $result -> fetchArray();
+
 $row = array_map("stripslashes", $row);
+$row = htmlspecialchars_decode($row['title']);
+$row = htmlspecialchars_decode($row['tag']);
 
 echo json_encode($row);
 ?>
