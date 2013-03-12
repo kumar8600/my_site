@@ -12,8 +12,8 @@ if (!$result) {
 $row = $result -> fetchArray();
 
 $row = array_map("stripslashes", $row);
-$row = htmlspecialchars_decode($row['title']);
-$row = htmlspecialchars_decode($row['tag']);
+$row['title'] = htmlspecialchars_decode($row['title']);
+$row['tag'] = htmlspecialchars_decode($row['tag']);
 
 echo json_encode($row);
 ?>
