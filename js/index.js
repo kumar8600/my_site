@@ -122,7 +122,13 @@ $("button#menu-toggle").click(function() {
 });
 
 function showAlert(msg) {
-	$("div#alert-div").prepend('<div class="alert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + msg + '</div>');
+	$("div#alert-div").prepend('<div class="alert showalert"><button type="button" class="close" data-dismiss="alert">&times;</button>' + msg + '</div>');
+	$(".alert").queue(function() {
+		setTimeout(function() {
+			$(".alert").dequeue();
+		}, 5000)
+	});
+	$(".alert").hide("slow");
 }
 
 function removeImgHeight() {
@@ -283,6 +289,7 @@ function loadAdminJs(func) {
 	if (adminLoaded == false) {
 		$.getScript('./js/admin.js', function() {
 			func();
+			adminLoaded = true;
 		});
 	} else {
 		func();

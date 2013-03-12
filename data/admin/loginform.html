@@ -4,19 +4,27 @@
 		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 			×
 		</button>
-		<h3 id="myModalLabel">管理モード｜ログイン</h3>
+		<h3 id="myModalLabel">ログイン</h3>
 	</div>
-	<form method="post" action="./data/admin/login.php">
-		<div class="modal-body">
-			ユーザID<br />
-			<input type="text" name="userid" />
-			<br />
-			パスワード<br />
-			<input type="password" name="password" />
-			<br />
+	<form method="post" action="./data/admin/login.php" class="form-horizontal">
+		<div class="control-group">
+			<label class="control-label" for="inputUserId">ユーザID</label>
+			<div class="controls">
+				<input type="text" name="userid" id="inputUserId" />
+			</div>
 		</div>
-		<div class="modal-footer">
-			<input class="btn btn-primary" type="submit" value="ログイン" />
+		<div class="control-group">
+			<label class="control-label" for="inputPassword">パスワード</label>
+			<div class="controls">
+				<input type="password" name="password" id="inputPassword"/>
+			</div>
+		</div>
+		<hr />
+		<div class="control-group">
+			<div class="controls">
+				<input class="btn" type="submit" value="ログイン" />
+			</div>		
 		</div>
 	</form>
+	<a href="?admin=add-user" class="ajax" data-dismiss="modal">新規登録</a>
 </div>

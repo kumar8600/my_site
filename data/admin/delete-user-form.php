@@ -16,7 +16,7 @@ $row = queryFetchArrayDB($db, $sql);
 ?>
 <meta charset="UTF-8" />
 <h3>本当にアカウントを削除しますか？</h3>
-<form method="post" action="<?php echo dirname(__FILE__) ?>/delete-user.php">
+<form method="post" action="./data/admin/delete-user.php" class="ajaxform">
 	<input type="hidden" name="userid" value="<?php echo($row['userid']) ?>" />
 	パスワード<br />
 	<input type="password" name="password" />

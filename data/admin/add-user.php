@@ -1,6 +1,7 @@
 <meta charset="UTF-8" />
 <?php
 require_once dirname(__FILE__) . '/../connect-db.php';
+require_once dirname(__FILE__) . '/session.php';
 
 $input['userid'] = $_POST['userid'];
 $input['password'] = $_POST['password'];
@@ -28,5 +29,6 @@ $input['website'] ."');";
 queryDB($db, $sql);
 
 $db -> close();
+setSession('userid', $input['userid']);
 echo("ユーザーの追加に成功。");
 ?>

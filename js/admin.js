@@ -130,7 +130,6 @@ function openEdit(rowid) {
 	});
 }
 
-
 function administer() {
 	adminMode = true;
 	$("li.login").hide();
@@ -188,3 +187,13 @@ function adminArticle(url) {
 		$("button.del").attr("href", id);
 	});
 }
+
+$("body").on("click", ".ajaxform input[type=submit]", function() {
+	var arr = $('.ajaxform :input');
+	var path = $(this).closest(".ajaxform").attr("action");
+	$.post(path, arr.serializeArray(), function(res) {
+		showAlert(res);
+	});
+	return false;
+});
+
