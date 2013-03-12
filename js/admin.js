@@ -134,8 +134,10 @@ function openEdit(rowid) {
 function administer() {
 	adminMode = true;
 	$("li.login").hide();
-	$("li.logout").show();
-	$("button.new").show();
+	$("div.admin-menu").show();
+	$.get("./data/admin/auto-login.php", function(res) {
+		$("a.userid").html(res);
+	});
 }
 
 function showLoginForm() {
@@ -163,8 +165,7 @@ function showLoginForm() {
 function outAdminister() {
 	adminMode = false;
 	$("li.login").show();
-	$("li.logout").hide();
-	$("button.new").hide();
+	$("div.admin-menu").hide();
 	reset('push');
 }
 
@@ -175,7 +176,7 @@ function logout() {
 }
 
 
-$("li.logout").click(function() {
+$("a.logout").click(function() {
 	logout();
 	return false;
 });

@@ -11,14 +11,14 @@ $db = connectAuthDB();
 
 $input['password'] = myCrypt($input['password']);
 
-$sql = "DELETE FROM user WHERE userid = '". $input['userid'] ."' AND password = '". $input['password'] ."';";
+$sql = "DELETE FROM user WHERE userid = '" . $input['userid'] . "' AND password = '" . $input['password'] . "';";
 
 queryDB($db, $sql);
 
-sessionLogout();
+if (getSessionUser() == $input['userid'])
+	sessionLogout();
 
 echo('<meta charset="UTF-8" />ユーザーの削除に成功しました');
-
 
 $db -> close();
 ?>

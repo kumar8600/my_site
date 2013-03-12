@@ -25,7 +25,7 @@ function getUrlVars() {
 function loadByUrl(scr) {
 	var vars = getUrlVars();
 	if (vars['p'] !== undefined) {
-		articleLoad('?p=' + vars['p'], scr);
+		articleLoad('?p=' + vars['p'], 'noscroll');
 		thumbsLoad("./data/thumbnails.php", function() {
 			tagSearchClose();
 		});
@@ -35,6 +35,11 @@ function loadByUrl(scr) {
 			$("#thumbs").hide();
 		});
 		tagSearchLoad('?tag=' + vars['tag']);
+	} else if (vars['admin'] !== undefined) {
+		articleLoad('?admin=' + vars['admin'], scr);
+		thumbsLoad("./data/thumbnails.php", function() {
+			tagSearchClose();
+		});
 	} else {
 		reset();
 		thumbsLoad("./data/thumbnails.php");
@@ -130,12 +135,15 @@ function articleLoad(url, func) {
 	$("#anim").show();
 	$("#anim").css("height", $("#article").height());
 	$("#article").fadeOut("fast", function() {
-		if (func == 'push') {
-			history.pushState(null, null, url);
-		}
+		var realUrl = url;
 		if (url.indexOf('?p=') == 0)
-			url = 'article.php' + url;
-		$(this).load(url, function() {
+			realUrl = 'article.php' + url;
+		if (url.indexOf('?admin=') == 0)
+			realUrl = 'admin.php' + url;
+		$(this).load(realUrl, function() {
+			if (func == 'push') {
+				history.pushState(null, null, url);
+			}
 			removeImgHeight();
 			if (adminMode) {
 				adminArticle(url);
@@ -158,8 +166,14 @@ function articleLoad(url, func) {
 				});
 			});
 			if (func != 'noscroll') {
+				var scrollTo;
+				if (adminMode) {
+					scrollTo = $("div.admin-menu").offset().top - 10;
+				} else {
+					scrollTo = $("#article").offset().top - 10;
+				}
 				$("html, body").animate({
-					scrollTop : $("#article").offset().top - 10
+					scrollTop : scrollTo
 				});
 			}
 		});

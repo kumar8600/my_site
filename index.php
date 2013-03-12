@@ -12,9 +12,35 @@
 	</head>
 	<body>
 		<div class="container">
+
 			<header class="page-header">
 				<a href="./" class="reset"><h1> 超うんこなサイト<small>うんこでも気づいたこと書きます</small></h1> </a>
 			</header>
+
+			<div class="navbar navbar-inverse admin-menu hide">
+				<div class="navbar-inner">
+					<a class="brand userid"></a>
+					<ul class="nav pull-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="icon-wrench icon-white"></i> <b class="caret"></b> </a>
+							<ul class="dropdown-menu">
+								<li>
+									<a class="ajax" href="?admin=set-user">プロフィール</a>
+								</li>
+								<li>
+									<a class="logout" href=""> ログアウト </a>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<button class="btn btn-primary new" href="./data/edit-article.html">
+								<i class="icon-pencil icon-white"></i>記事の追加
+							</button>
+						</li>
+					</ul>
+
+				</div>
+			</div>
 			<div class="visible-phone" id="menu-button">
 				<button class="btn" id="menu-toggle">
 					メニュー
@@ -36,16 +62,8 @@
 						<li class="login">
 							<a href=""> 管理 </a>
 						</li>
-						<li class="logout hide">
-							<a href=""> ログアウト </a>
-						</li>
-
 						<div id="loginform"></div>
-						<li>
-							<button class="btn btn-primary hide new" href="./data/edit-article.html">
-								記事の追加
-							</button>
-						</li>
+
 					</ul>
 				</div>
 				<div class="span9" id="alert-div"></div>

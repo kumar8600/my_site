@@ -1,5 +1,7 @@
+<meta charset="UTF-8" />
 <?php
 require_once dirname(__FILE__) . '/../connect-db.php';
+require_once dirname(__FILE__) . '/auth.php';
 
 $input['olduserid'] = $_POST['olduserid'];
 $input['oldpassword'] = $_POST['oldpassword'];
@@ -11,6 +13,16 @@ $input['email'] = $_POST['email'];
 //フォームには予め値を入力済みな予定なので、ウェブサイト以外の項目をチェックする
 array_map("ifUnSetDie", $input);
 $input['website'] = $_POST['website'];
+
+try{
+	authorize($input['olduserid'], $input['oldpassword']);
+}catch(Exception $ex) {
+	die ("パスワードに間違いがあります。");
+}
+
+
+$input['oldpassword'] = myCrypt($input['oldpassword']);
+$input['password'] = myCrypt($input['password']);
 
 $db = connectAuthDB();
 
