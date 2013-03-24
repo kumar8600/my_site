@@ -8,7 +8,11 @@ array_map("ifUnSetDie", $input);
 
 try {
 	if (authorize($input['userid'], $input['password'])) {
+		$sysid = getSysIdByDB($input['userid']);
+		//ユーザIDとシステムIDをセッション変数へ代入
 		setSession('userid', $input['userid']);
+		setSession('sysid', $sysid);
+		
 		echo true;
 	} else {
 		echo false;

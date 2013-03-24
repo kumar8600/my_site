@@ -71,7 +71,7 @@
 					<div class="hide" id="article"></div>
 				</div>
 				<div class="span10 hide" id="tag-search"></div>
-				<div class="row" id="thumbs"></div>
+				<div id="thumbs"></div>
 			</div>
 		</div>
 

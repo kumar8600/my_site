@@ -23,7 +23,7 @@ echo '<h1 id="ar-title">', $row['title'], '</h1>';
 echo '<div id="ar-headimage"><img src="./data/' . $headimage_resized . '" /></div>';
 echo '<div id="ar-body">' . $row['body'] . '</div>';
 echo '<br />タグ: <div id="ar-tag">';
-$tags = explode(" ", $row['tag']);
+$tags = preg_split("/\s+/", $row['tag'], -1, PREG_SPLIT_NO_EMPTY);
 for ($i = 0; $i < count($tags); $i++) {
 	echo('<a href="?tag=' . $tags[$i] . '" class="ajaxtags">' . $tags[$i] . ' </a>');
 }

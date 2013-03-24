@@ -19,6 +19,27 @@ function getSessionUser() {
 	return $_SESSION['userid'];
 }
 
+function getSessionSysId() {
+	session_start();
+
+	if ($_SESSION['sysid'] == "") {
+		session_destroy();
+		return false;
+	}
+	session_regenerate_id(TRUE);
+	session_write_close();
+	return $_SESSION['sysid'];
+}
+
+function getSysIdByDB($userid) {
+	$db = connectAuthDB();
+	$sql = "SELECT sysid FROM user WHERE userid = '$userid'";
+	$row = queryFetchArrayDB($db, $sql);
+	$db -> close();
+	
+	return $row['sysid'];
+}
+
 function sessionLogout() {
 	session_start();
 	$_SESSION = array();

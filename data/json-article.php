@@ -13,7 +13,9 @@ $row = $result -> fetchArray();
 
 $row = array_map("stripslashes", $row);
 $row['title'] = htmlspecialchars_decode($row['title']);
-$row['tag'] = htmlspecialchars_decode($row['tag']);
+
+$row['tag'] = preg_replace("/\s+/", " ", $row['tag']);
+$row['tag'] = preg_replace("/(^ +| +$)/", "", $row['tag']);
 
 echo json_encode($row);
 ?>

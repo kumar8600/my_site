@@ -12,7 +12,7 @@
 	while ($row = $result -> fetchArray()) {
 		echo('
 				<li>
-				<a href="?tag=' . $row['name'] . '" class="ajaxtags">' . $row['name'] . '</a>
+				<a href="?tag=' . $row['name'] . '" class="ajaxtags">' . $row['name'] .'<small>('. $row['frequency'] . ')</small></a>
 				</li>');
 	}
 	$db -> close();

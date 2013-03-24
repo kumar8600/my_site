@@ -1,7 +1,7 @@
-<meta charset="UTF-8" />
 <?php
 require_once dirname(__FILE__) . '/../connect-db.php';
 require_once dirname(__FILE__) . '/auth.php';
+require_once dirname(__FILE__) . '/session.php';
 require_once dirname(__FILE__) . '/is-string-safe.php';
 
 $input['olduserid'] = $_POST['olduserid'];
@@ -27,10 +27,11 @@ try{
 $input['oldpassword'] = myCrypt($input['oldpassword']);
 $input['password'] = myCrypt($input['password']);
 
+
 $db = connectAuthDB();
 
 // 同じIDを持つアカウントがないかチェックする
-$sql = "SELECT userid FROM user WHERE userid = '" . $input['userid'] . "';";
+$sql = "SELECT userid FROM user WHERE userid = '" . $input['userid'] . "' AND userid != '" . $input['olduserid'] . "';";
 if (isExistDB($db, $sql))
 	die("既に同じユーザーIDを持つアカウントがあります。違うIDに変更してください");
 
@@ -50,5 +51,7 @@ $input['website'] ."' WHERE userid = '". $input['olduserid'] ."' AND password = 
 queryDB($db, $sql);
 
 $db -> close();
-echo(" OK: ユーザーの設定変更に成功。");
+//セッション情報を更新する
+setSession("userid", $input['userid']);
+echo("OK: ユーザーの設定変更に成功。");
 ?>

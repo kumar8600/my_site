@@ -157,7 +157,7 @@ function administer() {
 	$("li.login").hide();
 	$("div.admin-menu").show();
 	$("a.userid").html(getSessionUser());
-	//$("a.userid").href("?author=" + getSessionUser());
+	$("a.userid").attr("href", "?author=" + getSessionUser());
 }
 
 function showLoginForm() {
@@ -258,6 +258,8 @@ $("body").on("click", ".ajaxform input[type=submit]", function() {
 	$.post(path, arr.serializeArray(), function(res) {
 		if (res.indexOf("OK") == 0) {
 			reset();
+			removeSessionUser();
+			getSessionUser();
 			reloadAdminMenu();
 		}
 		showAlert(res);
