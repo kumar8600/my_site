@@ -4,7 +4,7 @@
 	require_once dirname(__FILE__) . '/connect-db.php';
 	$db = connectDB();
 
-	$sql = "SELECT term FROM aux_article WHERE col = '*' ORDER BY documents desc LIMIT 15;";
+	$sql = "SELECT * FROM aux_tag ORDER BY frequency desc LIMIT 15;";
 	$result = $db -> query($sql);
 	if (!$result) {
 		die('DBとの接続に失敗。<a type="button" class="btn btn-danger" href="data/create-table.php">DBの初期化をおすすめします。</a>');
@@ -12,7 +12,7 @@
 	while ($row = $result -> fetchArray()) {
 		echo('
 				<li>
-				<a href="?tag=' . $row['term'] . '" class="ajaxtags">' . $row['term'] . '</a>
+				<a href="?tag=' . $row['name'] . '" class="ajaxtags">' . $row['name'] . '</a>
 				</li>');
 	}
 	$db -> close();

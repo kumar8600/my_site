@@ -29,6 +29,11 @@ $input['password'] = myCrypt($input['password']);
 
 $db = connectAuthDB();
 
+// 同じIDを持つアカウントがないかチェックする
+$sql = "SELECT userid FROM user WHERE userid = '" . $input['userid'] . "';";
+if (isExistDB($db, $sql))
+	die("既に同じユーザーIDを持つアカウントがあります。違うIDに変更してください");
+
 array_map(array($db, 'escapeString'), $input);
 
 $sql = "UPDATE user SET userid = '". 

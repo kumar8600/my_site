@@ -36,6 +36,14 @@ function queryFetchArrayDB($db, $sql) {
 	return $row;
 }
 
+function isExistDB($db, $sql) {
+	$row = $db -> querySingle($sql);
+	if (!$row) {
+		return false;
+	}
+	return true;
+}
+
 function ifUnSetDie($val) {
 	if ($val == "") {
 		die("セットされていない値がある");
@@ -45,5 +53,4 @@ function ifUnSetDie($val) {
 function myCrypt($word) {
 	return crypt($word, $GLOBALS['salt']);
 }
-
 ?>

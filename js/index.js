@@ -1,4 +1,24 @@
+var adminMode = false;
+function autoLogin(func) {
+	$.get("./data/admin/auto-login.php", function(res) {
+		if (res) {
+			loadAdminJs(function() {
+				administer();
+			});
+		}
+		func();
+	});
+}
+
+
 $(document).ready(function() {
+	$("li.login").click(function() {
+		loadAdminJs(function() {
+			showLoginForm();
+		});
+		return false;
+	});
+
 	$("#tags-li").load("./data/tags.php");
 	phoneMenuHide();
 	autoLogin(function() {
@@ -35,6 +55,12 @@ function loadByUrl(scr) {
 			$("#thumbs").hide();
 		});
 		tagSearchLoad('?tag=' + vars['tag']);
+	} else if (vars['author'] !== undefined) {
+		articleClose();
+		thumbsLoad("./data/thumbnails.php", function() {
+			$("#thumbs").hide();
+		});
+		tagSearchLoad('?author=' + vars['author']);
 	} else if (vars['admin'] !== undefined) {
 		articleLoad('?admin=' + vars['admin'], scr);
 		thumbsLoad("./data/thumbnails.php", function() {
@@ -128,7 +154,9 @@ function showAlert(msg) {
 			$(".alert").dequeue();
 		}, 5000)
 	});
-	$(".alert").hide("slow");
+	$(".alert").hide("slow", function() {
+		changeSpan();
+	});
 }
 
 function removeImgHeight() {
@@ -204,10 +232,12 @@ function thumbsLoad(url, func) {
 }
 
 function articleClose() {
-	$("#anim").hide('slow', function() {
+
+	$("#article").hide('slow', function() {
 		$("#article").html('');
 		changeSpan();
 	});
+	$("#anim").slideUp();
 }
 
 function tagSearchClose() {
@@ -247,7 +277,12 @@ $("body").on("click", "a.ajaxthumbs", function() {
 });
 
 function tagSearchLoad(url) {
-	url = 'data/tag-search.php' + url;
+	if (url.indexOf("?tag") == 0) {
+		url = 'data/tag-search.php' + url;
+	} else if (url.indexOf("?author") == 0) {
+		url = 'data/author-search.php' + url;
+	}
+
 	$("div#tag-search").slideUp(function() {
 		$("div#tag-search").load(url, function() {
 			$(this).slideDown("fast");
@@ -296,48 +331,3 @@ function loadAdminJs(func) {
 	}
 }
 
-var adminMode = false;
-function autoLogin(func) {
-	$.get("./data/admin/auto-login.php", function(res) {
-		if (res) {
-			loadAdminJs(function() {
-				administer();
-			});
-		}
-		func();
-	});
-}
-
-
-$("li.login").click(function() {
-	loadAdminJs(function() {
-		showLoginForm();
-	});
-	return false;
-});
-
-$("body").on("click", "button.new", function() {
-	loadAdminJs(function() {
-		openNew();
-	});
-
-	return false;
-});
-
-$("body").on("click", "button.edit", function() {
-	var rowid = $(this).val();
-	loadAdminJs(function() {
-		openEdit(rowid);
-	});
-
-	return false;
-});
-
-$("body").on("click", "button.del", function() {
-	var rowid = $(this).attr("href");
-	loadAdminJs(function() {
-		deleteArticle(rowid);
-	});
-
-	return false;
-});

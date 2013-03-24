@@ -9,35 +9,26 @@ $result = $db -> query($sql);
 if (!$result) {
 	die('読み込みに失敗:' . $sqlerror);
 }
-$data_article = $result -> fetchArray();
-if ($data_article['title'] == null) {
+$row = $result -> fetchArray();
+if ($row['title'] == null) {
 	die("指定された記事がありません🍣");
 }
-// FTSテーブルからも情報取ってくる
-$input_id = $data_article['id'];
-$sql = "SELECT * FROM fts_tag WHERE fts_tag.docid = $input_id;";
-$result = $db -> query($sql);
-if (!$result) {
-	die('読み込みに失敗: ' . $sqlerror);
-}
-$data_fts = $result -> fetchArray();
 
-$data_article = array_map("stripslashes", $data_article);
-$data_fts = array_map("stripslashes", $data_fts);
-$dotpos = strrpos($data_article['headimage'], '.');
-$headimage_resized = substr($data_article['headimage'], 0, $dotpos) . 'x640' . substr($data_article['headimage'], $dotpos);
+$row = array_map("stripslashes", $row);
+$dotpos = strrpos($row['headimage'], '.');
+$headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x640' . substr($row['headimage'], $dotpos);
 echo '<div class="admin-article"></div>';
-echo $data_article['timestamp'];
-echo '<h1 id="ar-title">', $data_article['title'], '</h1>';
+echo $row['timestamp'];
+echo '<h1 id="ar-title">', $row['title'], '</h1>';
 echo '<div id="ar-headimage"><img src="./data/' . $headimage_resized . '" /></div>';
-echo '<div id="ar-body">' . $data_article['body'] . '</div>';
+echo '<div id="ar-body">' . $row['body'] . '</div>';
 echo '<br />タグ: <div id="ar-tag">';
-$tags = explode(" ", $data_fts['tag']);
+$tags = explode(" ", $row['tag']);
 for ($i = 0; $i < count($tags); $i++) {
 	echo('<a href="?tag=' . $tags[$i] . '" class="ajaxtags">' . $tags[$i] . ' </a>');
 }
 echo '</div>';
+echo '著者: <a href="?author='. $row['author'] .'" id="ar-author">'. $row['author'] .'</div>';
 
 $db -> close();
 ?>
-<!-- Modal -->

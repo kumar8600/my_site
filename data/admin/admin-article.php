@@ -1,3 +1,21 @@
+<?php
+	require_once dirname(__FILE__) . '/session.php';
+	require_once dirname(__FILE__) . '/../connect-db.php';
+	
+	$input_id = $_POST['id'];
+	if($input_id == "") {
+		die("idがセットされていない");
+	}
+	$db = connectDB();
+	$input_id = $db -> escapeString($input_id);
+	$sql = "SELECT author FROM article WHERE id = '$input_id' OR title = '$input_id';";
+	$row = queryFetchArrayDB($db, $sql);
+
+	$session_user = $_POST['user'];
+	if($row['author'] != $session_user) {
+		die("この記事を編集する権限を持っていません。" + $session_user);
+	}
+?>
 <button class="btn edit" href="./data/edit-article.html" value="">
 	<i class="icon-edit"></i>編集
 </button>

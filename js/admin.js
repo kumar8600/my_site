@@ -1,3 +1,22 @@
+var session_user;
+function getSessionUser() {
+	if (session_user == null) {
+		$.ajax({
+			url : "./data/admin/auto-login.php",
+			async : false,
+			success : function(res) {
+				session_user = res;
+			}
+		})
+		return session_user;
+	}
+	return session_user;
+}
+
+function removeSessionUser() {
+	session_user = null;
+}
+
 function deleteArticle(delid) {
 	$.post("./data/delete-article.php", {
 		'id' : delid,
@@ -32,6 +51,9 @@ function defineSubmit() {
 			'rowid' : $("input[name=rowid]").val(),
 		}, function(res) {
 			showAlert(res);
+			if(res.indexOf("OK") != 0) {
+				return false;
+			}
 			if (newEdit) {
 				prependThumbs();
 			} else {
@@ -134,9 +156,8 @@ function administer() {
 	adminMode = true;
 	$("li.login").hide();
 	$("div.admin-menu").show();
-	$.get("./data/admin/auto-login.php", function(res) {
-		$("a.userid").html(res);
-	});
+	$("a.userid").html(getSessionUser());
+	//$("a.userid").href("?author=" + getSessionUser());
 }
 
 function showLoginForm() {
@@ -169,8 +190,12 @@ function outAdminister() {
 }
 
 function logout() {
-	$.get("./data/admin/logout.php", function() {
-		outAdminister();
+	$.get("./data/admin/logout.php", function(res) {
+		if (res) {
+			showAlert("ログアウトしました。");
+			outAdminister();
+			removeSessionUser();
+		}
 	})
 }
 
@@ -181,28 +206,57 @@ $("a.logout").click(function() {
 });
 
 function adminArticle(url) {
-	$("div.admin-article").load("./data/admin/admin-article.html", function() {
-		var id = url.substring(url.lastIndexOf('?p=') + 3);
+	var id = url.substring(url.lastIndexOf('?p=') + 3);
+	$("div.admin-article").load("./data/admin/admin-article.php", {
+		id : id,
+		user : getSessionUser()
+	}, function() {
 		$("button.edit").val(id);
 		$("button.del").attr("href", id);
 	});
 }
 
 function reloadAdminMenu() {
-	$.get("./data/admin/auto-login.php", function(res) {
-		if(res) {
-			administer();
-		} else {
-			outAdminister();
-		}
-	});
+	var res = getSessionUser();
+	if (res) {
+		administer();
+	} else {
+		outAdminister();
+	}
 }
+
+
+$("body").on("click", "button.new", function() {
+	loadAdminJs(function() {
+		openNew();
+	});
+
+	return false;
+});
+
+$("body").on("click", "button.edit", function() {
+	var rowid = $(this).val();
+	loadAdminJs(function() {
+		openEdit(rowid);
+	});
+
+	return false;
+});
+
+$("body").on("click", "button.del", function() {
+	var rowid = $(this).attr("href");
+	loadAdminJs(function() {
+		deleteArticle(rowid);
+	});
+
+	return false;
+});
 
 $("body").on("click", ".ajaxform input[type=submit]", function() {
 	var arr = $('.ajaxform :input');
 	var path = $(this).closest(".ajaxform").attr("action");
 	$.post(path, arr.serializeArray(), function(res) {
-		if(res.indexOf("OK") == 0) {
+		if (res.indexOf("OK") == 0) {
 			reset();
 			reloadAdminMenu();
 		}

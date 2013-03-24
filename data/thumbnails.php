@@ -10,7 +10,7 @@ if (empty($offset))
 if (empty($limit))
 	$limit = 6;
 
-$sql = "SELECT * FROM article, fts_tag_content WHERE article.id = fts_tag_content.docid ORDER BY id desc LIMIT $limit OFFSET $offset;";
+$sql = "SELECT * FROM article ORDER BY id desc LIMIT $limit OFFSET $offset;";
 $result = $db -> query($sql);
 $i = 0;
 while ($row = $result -> fetchArray()) {
@@ -24,7 +24,7 @@ while ($row = $result -> fetchArray()) {
 			<div class="thumbnail">
 			<img src="./data/' . $headimage_resized . ' " >
 			<h3 class="title'. $row['id'] .'"> ' . $row['title'] . ' </h3>
-			<div class="tag'. $row['id'] .'">' . $row[tag] . '</div>
+			<div class="tag'. $row['id'] .'">' . $row['tag'] . '</div>
 			</div> </a>
 			</div>
 			');
