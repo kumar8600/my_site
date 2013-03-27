@@ -36,8 +36,13 @@ function getSysIdByDB($userid) {
 	$sql = "SELECT sysid FROM user WHERE userid = '$userid'";
 	$row = queryFetchArrayDB($db, $sql);
 	$db -> close();
-	
+
 	return $row['sysid'];
+}
+
+function setSessionUser($userid) {
+	setSession('userid', $userid);
+	setSession('sysid', getSysIdByDB($userid));
 }
 
 function sessionLogout() {
@@ -48,7 +53,7 @@ function sessionLogout() {
 		$params = session_get_cookie_params();
 		setcookie(session_name(), '', time() - 42000, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
 	}
-	
+
 	session_destroy();
 }
 ?>

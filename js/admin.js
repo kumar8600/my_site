@@ -1,20 +1,31 @@
-var session_user;
+var session_user_id;
+var session_user_name;
 function getSessionUser() {
-	if (session_user == null) {
+	if (session_user_id == null) {
 		$.ajax({
-			url : "./data/admin/auto-login.php",
+			url : "./data/admin/json-user-session.php",
+			dataType : "json",
 			async : false,
 			success : function(res) {
-				session_user = res;
+				session_user_id = res['userid'];
+				session_user_name = res['name'];
 			}
 		})
-		return session_user;
+		return session_user_id;
 	}
-	return session_user;
+	return session_user_id;
 }
 
 function removeSessionUser() {
-	session_user = null;
+	session_user_id = null;
+	session_user_name = null;
+}
+
+function getSessionUserName() {
+	if (session_user_name == null) {
+		getSessionUser();
+	}
+	return session_user_name;
 }
 
 function deleteArticle(delid) {
@@ -51,7 +62,7 @@ function defineSubmit() {
 			'rowid' : $("input[name=rowid]").val(),
 		}, function(res) {
 			showAlert(res);
-			if(res.indexOf("OK") != 0) {
+			if (res.indexOf("OK") != 0) {
 				return false;
 			}
 			if (newEdit) {
@@ -156,7 +167,7 @@ function administer() {
 	adminMode = true;
 	$("li.login").hide();
 	$("div.admin-menu").show();
-	$("a.userid").html(getSessionUser());
+	$("a.userid").html(getSessionUserName() + "(" + getSessionUser() + ")");
 	$("a.userid").attr("href", "?author=" + getSessionUser());
 }
 
@@ -261,6 +272,9 @@ $("body").on("click", ".ajaxform input[type=submit]", function() {
 			removeSessionUser();
 			getSessionUser();
 			reloadAdminMenu();
+			thumbsLoad("./data/thumbnails.php", function() {
+				tagSearchClose();
+			});
 		}
 		showAlert(res);
 	});

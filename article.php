@@ -13,8 +13,18 @@ $row = $result -> fetchArray();
 if ($row['title'] == null) {
 	die("指定された記事がありません🍣");
 }
-
+$db -> close();
 $row = array_map("stripslashes", $row);
+
+$db2 = connectAuthDB();
+$sql = "SELECT userid, name FROM user WHERE sysid = '". $row['author']. "';";
+try {
+		$author = queryFetchArrayDB($db2, $sql);
+	} catch(Exception $ex) {
+		$author = null;
+	}
+$db2 -> close();
+
 $dotpos = strrpos($row['headimage'], '.');
 $headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x640' . substr($row['headimage'], $dotpos);
 echo '<div class="admin-article"></div>';
@@ -28,7 +38,11 @@ for ($i = 0; $i < count($tags); $i++) {
 	echo('<a href="?tag=' . $tags[$i] . '" class="ajaxtags">' . $tags[$i] . ' </a>');
 }
 echo '</div>';
-echo '著者: <a href="?author='. $row['author'] .'" id="ar-author">'. $row['author'] .'</div>';
+if($author == null) {
+	echo '著者: 不明';
+} else {
+	echo '著者: <a href="?author='. $author['userid'] .'" id="ar-author">'. $author['name'] .'</div>';
+}
 
-$db -> close();
+
 ?>

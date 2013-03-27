@@ -9,9 +9,14 @@
 	$db = connectDB();
 	$input_id = $db -> escapeString($input_id);
 	$sql = "SELECT author FROM article WHERE id = '$input_id' OR title = '$input_id';";
-	$row = queryFetchArrayDB($db, $sql);
+	try {
+		$row = queryFetchArrayDB($db, $sql);
+	} catch(Exception $ex) {
+		die();
+	}
+	
 
-	$session_user = $_POST['user'];
+	$session_user = getSessionSysId();
 	if($row['author'] != $session_user) {
 		die("この記事を編集する権限を持っていません。" + $session_user);
 	}

@@ -10,7 +10,7 @@ $title = htmlspecialchars($_POST['title']);
 $input['body'] = $_POST['body'];
 $input['headimage'] = $_POST['headimage'];
 $input['tag'] = htmlspecialchars($_POST['tag']);
-$input['author'] = getSessionUser();
+$input['author'] = getSessionSysId();
 if (!$input['author']) {
 	die("ログインしてください。");
 }

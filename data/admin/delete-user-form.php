@@ -1,23 +1,20 @@
 <?php
 require_once dirname(__FILE__) . '/session.php';
 
-$sesuserid = $GLOBALS['sesuserid'];
-if ($sesuserid == "") {
-	$sesuserid = getSessionUser();
+$sesuserid = $GLOBALS['ses_sysid'];
+if ($ses_sysid == "") {
+	$ses_sysid = getSessionSysId();
 }
-if ($sesuserid == "") {
+if ($ses_sysid == "") {
 	die('ログインしてください');
 }
 
-$db = connectAuthDB();
-
-$sql = "SELECT sysid, userid, name, email, website FROM user WHERE userid = '" . $sesuserid . "';";
-$row = queryFetchArrayDB($db, $sql);
 ?>
 <meta charset="UTF-8" />
 <h3>本当にアカウントを削除しますか？</h3>
+<div class="alert alert-error"><strong>注意!</strong> あなたのプロフィール、記事がすべて削除されます。</div>
 <form method="post" action="./data/admin/delete-user.php" class="ajaxform">
-	<input type="hidden" name="userid" value="<?php echo($row['userid']) ?>" />
+	<input type="hidden" name="sysid" value="<?php echo($ses_sysid) ?>" />
 	パスワード<br />
 	<input type="password" name="password" />
 	<br />

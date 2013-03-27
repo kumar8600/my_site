@@ -29,6 +29,8 @@ $sql = "INSERT INTO user (userid, password, name, email, website) VALUES('" . $i
 queryDB($db, $sql);
 
 $db -> close();
-setSession('userid', $input['userid']);
+
+setSessionUser($input['userid']);
+
 echo("OK: ユーザーの追加に成功。");
 ?>

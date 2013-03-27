@@ -1,10 +1,21 @@
 <?php
 require_once dirname(__FILE__) . '/connect-db.php';
+
+if($_GET['author'] == "") {
+	die("アドレスに間違いがあります。");
+}
+
 $db = connectDB();
 
 $input_author = $db -> escapeString($_GET['author']);
-echo('<div><button class="btn" id="closeTagSearch">「' . $input_author . '」が書いた記事の検索をやめる</button></div>');
-$sql = "SELECT id, timestamp, title, headimage, tag FROM article WHERE author = '$input_author' ORDER BY article.rowid DESC;";
+$dba = connectAuthDB();
+$sql = "SELECT sysid, name FROM user WHERE userid = '$input_author';";
+$author = queryFetchArrayDB($dba, $sql);
+$dba -> close();
+
+
+echo('<div><button class="btn" id="closeTagSearch">「' . $author['name'] . '」が書いた記事の検索をやめる</button></div>');
+$sql = "SELECT id, timestamp, title, headimage, tag FROM article WHERE author = '". $author['sysid'] ."' ORDER BY article.rowid DESC;";
 $result = $db -> query($sql);
 while ($row = $result -> fetchArray()) {
 	$row = array_map("stripslashes", $row);

@@ -154,9 +154,9 @@ function showAlert(msg) {
 			$(".alert").dequeue();
 		}, 5000)
 	});
-	$(".alert").hide("slow", function() {
-		changeSpan();
-	});
+	//$(".alert").hide("slow", function() {
+		//changeSpan();
+	//});
 }
 
 function removeImgHeight() {
