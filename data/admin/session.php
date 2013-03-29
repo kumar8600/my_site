@@ -45,6 +45,23 @@ function setSessionUser($userid) {
 	setSession('sysid', getSysIdByDB($userid));
 }
 
+function isSysIdOrRoot($str) {
+	// $strがセッションユーザー名であるか、セッションユーザー名が"root"であれば$strにかかわらずtrueを返す関数
+	$ses_sysid = $GLOBALS['ses_sysid'];
+	if ($ses_sysid == "") {
+		$ses_sysid = getSessionSysId();
+	}
+	$sesuserid = $GLOBALS['sesuserid'];
+	if ($sesuserid == "") {
+		$sesuserid = getSessionUser();
+	}
+	if($ses_sysid == $str || $sesuserid == "root") {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 function sessionLogout() {
 	session_start();
 	$_SESSION = array();

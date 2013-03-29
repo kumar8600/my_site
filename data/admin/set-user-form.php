@@ -13,6 +13,15 @@ $db = connectAuthDB();
 
 $sql = "SELECT sysid, userid, name, email, website FROM user WHERE userid = '" . $sesuserid . "';";
 $row = queryFetchArrayDB($db, $sql);
+$db -> close();
+
+$ifrootid;
+$ifroothelp;
+if($row['userid'] == "root") {
+	$ifrootid = 'readonly="readonly"';
+	$ifroothelp = 'rootユーザーのidは変更できません。';
+}
+
 ?>
 <meta charset="UTF-8" />
 <h3>プロフィール</h3>
@@ -22,8 +31,8 @@ $row = queryFetchArrayDB($db, $sql);
 	<div class="control-group">
 		<label class="control-label" for="inputUserId">新しいユーザID</label>
 		<div class="controls">
-			<input type="text" name="userid" id="inputUserId" value="<?php echo($row['userid']) ?>" />
-			<span class="help-block">使用可能な文字列「0-9a-zA-Z_-」で、3文字以上20文字以内</span>
+			<input type="text" name="userid" id="inputUserId" value="<?php echo($row['userid']) ?>" <?php echo $ifrootid ?> />
+			<span class="help-block">使用可能な文字列「0-9a-zA-Z_-」で、3文字以上20文字以内 <?php echo $ifroothelp ?> </span>
 		</div>
 	</div>
 	<div class="control-group">
@@ -37,6 +46,13 @@ $row = queryFetchArrayDB($db, $sql);
 		<div class="controls">
 			<input type="password" name="password" id="inputPassword"/>
 			<span class="help-block">使用可能な文字列「0-9a-zA-Z_-」で、8文字以上40文字以内</span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="inputPasswordRe">新しいパスワード（確認）</label>
+		<div class="controls">
+			<input type="password" name="password_re" id="inputPasswordRe"/>
+			<span class="help-block">確認のためもう一度入力してください。</span>
 		</div>
 	</div>
 	<hr />

@@ -62,7 +62,10 @@ function loadByUrl(scr) {
 		});
 		tagSearchLoad('?author=' + vars['author']);
 	} else if (vars['admin'] !== undefined) {
-		articleLoad('?admin=' + vars['admin'], scr);
+		loadAdminJs(function() {
+			articleLoad('?admin=' + vars['admin'], scr);
+		});
+		
 		thumbsLoad("./data/thumbnails.php", function() {
 			tagSearchClose();
 		});

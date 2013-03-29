@@ -11,6 +11,11 @@ function connectAuthDB() {
 	return $db;
 }
 
+function connectSettingsDB() {
+	$db = new SQLite3($GLOBALS['set_db_path']);
+	return $db;
+}
+
 function queryDB($db, $sql) {
 	$result = $db -> query($sql);
 
@@ -42,6 +47,34 @@ function isExistDB($db, $sql) {
 		return false;
 	}
 	return true;
+}
+
+function isTableExists($db, $name) {
+	// $nameが名前のテーブルが存在するか調べる関数。
+	$sql = "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = :name";
+	$stmt = $db -> prepare($sql);
+	$stmt -> bindValue(':name', $name, SQLITE3_TEXT);
+	$result = $stmt -> execute();
+	$row = $result -> fetchArray(SQLITE3_NUM);
+	if($row[0] == 0) {
+		return false;
+	}
+	return true;
+}
+
+function isRootExists() {
+	//rootユーザーが存在するか調べる関数。
+	$db = connectAuthDB();
+	$sql = "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = 'user';";
+	$row = $db -> querySingle($sql);
+	if ($row != 0) {
+		$sql = "SELECT COUNT(userid) FROM user WHERE userid = 'root';";
+		$row = $db -> querySingle($sql);
+		if ($row == 1) {
+			return true;
+		}
+	}
+	return false;
 }
 
 function ifUnSetDie($val) {

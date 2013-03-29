@@ -12,9 +12,15 @@
 	</head>
 	<body>
 		<div class="container">
-
+			<?php
+			require_once dirname(__FILE__) . '/data/connect-db.php';
+			$db = connectSettingsDB();
+			$sql = "SELECT name, description FROM site WHERE id = 1;";
+			$result = $db -> query($sql);
+			$row = $result -> fetchArray();
+			?>
 			<header class="page-header">
-				<a href="./" class="reset"><h1> 超うんこなサイト<small>うんこでも気づいたこと書きます</small></h1> </a>
+				<a href="./" class="reset"><h1><?php echo($row['name']) ?><small><?php echo($row['description']) ?></small></h1> </a>
 			</header>
 
 			<div class="navbar navbar-inverse admin-menu hide">

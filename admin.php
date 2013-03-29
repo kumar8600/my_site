@@ -4,7 +4,7 @@ $sesuserid = getSessionUser();
 $ses_sysid = getSessionSysId();
 $get = $_GET['admin'];
 if($get == "") {
-	die("ログインしてください。");
+	die('<meta charset="UTF-8" />URLがおかしいです');
 }
 
 if ($get == 'list-users') {
@@ -15,6 +15,8 @@ if ($get == 'list-users') {
 	require dirname(__FILE__) . '/data/admin/delete-user-form.php';
 } else if ($get == 'add-user') {
 	require dirname(__FILE__) . '/data/admin/add-user-form.php';
+} else if ($get == 'set-site') {
+	require dirname(__FILE__) . '/data/admin/set-site-form.php';
 }
 	
 ?>

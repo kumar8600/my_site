@@ -268,7 +268,7 @@ $("body").on("click", ".ajaxform input[type=submit]", function() {
 	var path = $(this).closest(".ajaxform").attr("action");
 	$.post(path, arr.serializeArray(), function(res) {
 		if (res.indexOf("OK") == 0) {
-			reset();
+			reset("push");
 			removeSessionUser();
 			getSessionUser();
 			reloadAdminMenu();

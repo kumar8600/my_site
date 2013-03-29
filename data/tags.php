@@ -7,7 +7,7 @@
 	$sql = "SELECT * FROM aux_tag ORDER BY frequency desc LIMIT 15;";
 	$result = $db -> query($sql);
 	if (!$result) {
-		die('DBとの接続に失敗。<a type="button" class="btn btn-danger" href="data/create-table.php">DBの初期化をおすすめします。</a>');
+		die('DBとの接続に失敗。<a type="button" class="btn btn-danger" href="?admin=start-up">サイトのスタートアップをおすすめします。</a>');
 	}
 	while ($row = $result -> fetchArray()) {
 		echo('

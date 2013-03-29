@@ -8,6 +8,7 @@ $input['olduserid'] = $_POST['olduserid'];
 $input['oldpassword'] = $_POST['oldpassword'];
 $input['userid'] = $_POST['userid'];
 $input['password'] = $_POST['password'];
+$input['password_re'] = $_POST['password_re'];
 $input['name'] = $_POST['name'];
 $input['email'] = $_POST['email'];
 
@@ -17,6 +18,10 @@ $input['website'] = $_POST['website'];
 
 isPostSafe($input);
 
+//パスワードが２回同じ物が入力されてるか確認
+if($input['password'] != $input['password_re']) {
+	die("パスワードは２回同じ物を入力してください。");
+}
 try{
 	authorize($input['olduserid'], $input['oldpassword']);
 }catch(Exception $ex) {

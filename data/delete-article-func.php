@@ -2,12 +2,12 @@
 require_once dirname(__FILE__) . '/connect-db.php';
 require_once dirname(__FILE__) . '/aux-tag.php';
 
-function deleteArticle($id, $author) {
+function deleteArticle($id) {
 	$db = connectDB();
 
 	$sql = "SELECT author, tag FROM article WHERE id = " . $id . ";";
 	$row = queryFetchArrayDB($db, $sql);
-	if ($row['author'] != $author) {
+	if (isSysIdOrRoot($row['author']) == false) {
 		die("この記事を削除する権限を持っていません。");
 	}
 
