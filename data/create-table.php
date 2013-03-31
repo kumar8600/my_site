@@ -21,4 +21,9 @@ if (createTableAuth()) {
 } else {
 	die("ユーザー情報用テーブルの作成に失敗。");
 }
+if (createTableComment()) {
+	//echo("コメント用テーブルの作成に成功。");
+} else {
+	die("コメント用テーブルの作成に失敗。");
+}
 ?>

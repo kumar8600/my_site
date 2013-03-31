@@ -63,6 +63,12 @@
 					メニュー
 				</button>
 			</div>
+			<div class="row" id="header-thumbs" style="margin-top: 0; margin-bottom: 10px;">
+				<?php
+				$_GET['limit'] = 2;
+				require_once dirname(__FILE__) . '/data/thumbnails.php';
+				?>
+			</div>
 			<div class="row">
 				<div class="span2" id="menu">
 					<ul class="nav nav-list">

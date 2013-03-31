@@ -109,15 +109,19 @@ h1, h2, h3 {
 
 @media (min-width: 1200px) {
 	.thumbnail {
-		height: 150px;
+		height: 110px;
 	}
 	.thumbnail img {
-		height: 150px;
+		height: 110px;
 	}
 	#ar-headimage {
 		background-color: #f9f9f9;
 		margin-bottom: 20px;
 	}
+}
+
+#header-thumbs .thumbnail {
+	box-shadow: 1px 1px 10px #BFBFBF;
 }
 
 div.tag-search {
@@ -171,4 +175,71 @@ div.viewing {
 
 div#menu-button {
 	text-align: center;
+}
+
+ul.comment {
+	margin: 0px;
+	padding: 0px;
+}
+
+li.comment {
+	list-style-type: none;
+	overflow: hidden;
+	padding: 8px;
+	border-bottom: solid 1px #e5e5e5;
+}
+
+div.meta {
+	background-color: #EEEEEE;
+	padding: 0 10px;
+	width: 180px;
+	display: block;
+	float: left;
+	overflow: hidden;
+	margin-right: 10px;
+}
+
+.meta-subid {
+	font-size: 16px;
+	color: #052465;
+	padding-top: 3px;
+	margin-right: 6px;
+	float: left;
+	font-weight: bold;
+}
+
+.meta-name {
+	padding-top: 6px;
+}
+
+.meta-time {
+	display: block;
+	font-size: 0.9em;
+}
+
+table.comment {
+	margin-top: 20px;
+	width: 98%;
+}
+
+table.comment th {
+	width: 210px;
+}
+
+table.comment textarea {
+	height: 148px;
+	width: 100%;
+	resize: vertical;
+}
+
+@media (max-width: 767px) {
+	div.meta {
+		width: 100px;
+	}
+	.meta-time {
+		font-size: 0.6em;
+	}
+	table.comment th {
+		width: 110px;
+	}
 }

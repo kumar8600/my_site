@@ -30,19 +30,19 @@ $headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x640' . substr($ro
 echo '<div class="admin-article"></div>';
 echo $row['timestamp'];
 echo '<h1 id="ar-title" class="p-title">', $row['title'], '</h1>';
-echo '<div id="ar-headimage"><img src="./data/' . $headimage_resized . '" /></div>';
-echo '<div id="ar-body">' . $row['body'] . '</div>';
-echo '<br />タグ: <div id="ar-tag">';
 $tags = preg_split("/\s+/", $row['tag'], -1, PREG_SPLIT_NO_EMPTY);
 for ($i = 0; $i < count($tags); $i++) {
-	echo('<a href="?tag=' . $tags[$i] . '" class="ajaxtags">' . $tags[$i] . ' </a>');
+	echo('<a href="?tag=' . $tags[$i] . '" class="ajaxtags"><span class="badge">' . $tags[$i] . '</span></a>');
 }
-echo '</div>';
 if($author == null) {
-	echo '著者: 不明';
+	echo '不明';
 } else {
-	echo '著者: <a href="?author='. $author['userid'] .'" id="ar-author">'. $author['name'] .'</div>';
+	echo '<a href="?author='. $author['userid'] .'" id="ar-author" class="ajaxtags"><span class="badge badge-warning">'. $author['name'] .'</span></a>';
 }
-require dirname(__FILE__) . '/data/article-footer.php';
+echo '<div id="ar-headimage"><img src="./data/' . $headimage_resized . '" /></div>';
+echo '<div id="ar-body">' . $row['body'] . '</div>';
 
+echo '<div class="ar-footer">';
+require dirname(__FILE__) . '/data/article-footer.php';
+echo '</div>';
 ?>

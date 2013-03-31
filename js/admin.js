@@ -130,9 +130,8 @@ function ajaxForm(arr, path) {
 			removeSessionUser();
 			getSessionUser();
 			reloadAdminMenu();
-			thumbsLoad("./data/thumbnails.php", function() {
-				tagSearchClose();
-			});
+			thumbsReset();
+			tagSearchClose();
 		}
 		showAlert(res);
 		reloadHeader();

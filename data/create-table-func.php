@@ -59,4 +59,16 @@ function createTableSettings() {
 	$ret = createTableAbs($db, $sql);
 	return $ret;
 }
+
+function createTableComment() {
+	// コメント用テーブルを作る
+	$db = connectCommentsDB();
+	if(isTableExists($db, "comment")) {
+		return true;
+	}
+	$sql = "CREATE TABLE comment (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp DEFAULT(datetime('now', 'localtime')), subid INTEGER, articleid INTEGER, name TEXT, email TEXT, ip TEXT, body TEXT);";
+	
+	$ret = createTableAbs($db, $sql);
+	return $ret;
+}
 ?>

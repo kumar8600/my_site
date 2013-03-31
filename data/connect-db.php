@@ -16,6 +16,11 @@ function connectSettingsDB() {
 	return $db;
 }
 
+function connectCommentsDB() {
+	$db = new SQLite3($GLOBALS['set_comments_path']);
+	return $db;
+}
+
 function queryDB($db, $sql) {
 	$result = $db -> query($sql);
 
