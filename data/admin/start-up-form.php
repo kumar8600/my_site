@@ -1,4 +1,7 @@
 <meta charset="UTF-8" />
+<head>
+	<title>CMSのスタートアップ</title>
+</head>
 <?php
 require_once dirname(__FILE__) . '/../connect-db.php';
 
@@ -80,6 +83,18 @@ if(isRootExists()) {
 		<div class="controls">
 			<input type="text" name="site_desc" id="inputSiteDesc" />
 			<span class="help-block"> タイトルの横に表示されます。 </span>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">誰でも新規登録</label>
+		<div class="controls">
+			<label class="radio">
+				<input type="radio" name="site_regist" id="optionsRadios1" value="true" >
+				許可する</label>
+			<label class="radio">
+				<input type="radio" name="site_regist" id="optionsRadios2" value="false" checked>
+				許可しない</label>
+			<span class="help-block"> 許可しない場合、rootユーザーの「ユーザー管理」からのみ新規登録が可能です。 </span>
 		</div>
 	</div>
 	<hr />

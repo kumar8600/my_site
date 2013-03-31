@@ -5,7 +5,19 @@ body {
 }
 
 #loginform {
-	z-index: 1;
+}
+
+#alert-container {
+	position: fixed;
+	top: 10px;
+	width: 100%;
+}
+
+#alert-div {
+	max-width: 800px;
+	margin: 0 auto;
+	box-shadow: 1px 1px 5px #aaa;
+	z-index: 1000000;
 }
 
 #menu {
@@ -20,10 +32,12 @@ body {
 #article {
 	padding: 10px;
 	background-color: #FFFFFF;
+	overflow: hidden;
 }
 
 #anim {
 	margin-bottom: 20px;
+	overflow: hidden;
 }
 
 div.admin-article {

@@ -55,7 +55,7 @@ function setSessionUser($userid) {
 }
 
 function isSysIdOrRoot($str) {
-	// $strがセッションユーザー名であるか、セッションユーザー名が"root"であれば$strにかかわらずtrueを返す関数
+	// $strがセッションユーザーのSysIdであるか、rootユーザーとしてログイン中であれば$strにかかわらずtrueを返す関数
 	$ses_sysid = $GLOBALS['ses_sysid'];
 	if ($ses_sysid == "") {
 		$ses_sysid = getSessionSysId();
@@ -65,6 +65,19 @@ function isSysIdOrRoot($str) {
 		$sesuserid = getSessionUser();
 	}
 	if($ses_sysid == $str || $sesuserid == "root") {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function isRootUser() {
+	// rootユーザーとしてログイン中であればtrueを返す関数
+	$sesuserid = $GLOBALS['sesuserid'];
+	if ($sesuserid == "") {
+		$sesuserid = getSessionUser();
+	}
+	if($sesuserid == "root") {
 		return true;
 	} else {
 		return false;

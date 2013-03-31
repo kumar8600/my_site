@@ -19,6 +19,7 @@ if ($ses_sysid == $root_sysid) {
 }
 ?>
 <meta charset="UTF-8" />
+<legend class="p-title">アカウントの削除</legend>
 <h3>本当にアカウント「<?php echo(getUserIdByDB($del_sysid)); ?>」
 を削除しますか？</h3>
 <div class="alert alert-error">

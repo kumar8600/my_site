@@ -3,6 +3,14 @@ require_once dirname(__FILE__) . '/../connect-db.php';
 require_once dirname(__FILE__) . '/session.php';
 require_once dirname(__FILE__) . '/is-string-safe.php';
 
+if (isRootExists()) {
+	if (!isRootUser()) {
+		if (!canRegister()) {
+			die("管理者が新規登録を禁止しています。");
+		}
+	}
+}
+
 $input['userid'] = $_POST['userid'];
 $input['password'] = $_POST['password'];
 $input['password_re'] = $_POST['password_re'];
@@ -15,7 +23,7 @@ $input['website'] = $_POST['website'];
 
 isPostSafe($input);
 //パスワードが２回同じ物が入力されてるか確認
-if($input['password'] != $input['password_re']) {
+if ($input['password'] != $input['password_re']) {
 	die("パスワードは２回同じ物を入力してください。");
 }
 

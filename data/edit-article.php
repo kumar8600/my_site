@@ -31,7 +31,7 @@ if ($_GET['p'] != "") {
 	$title = "記事の追加";
 }
 ?>
-<legend><?php echo $title; ?></legend>
+<legend class="p-title"><?php echo $title; ?></legend>
 <div class="control-group">
 	<label class="control-label" for="fileHeadImage">サムネイル</label>
 	<div class="controls">

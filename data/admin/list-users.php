@@ -16,7 +16,7 @@ $db = connectAuthDB();
 $sql = "SELECT sysid, userid, name, email, website FROM user;";
 $result = queryDB($db, $sql);
 
-echo '<h3>ユーザー管理</h3>';
+echo '<legend class="p-title">ユーザー管理</legend>';
 echo '<table class="table table-hover"><thead><tr><td>#</td><td>ユーザID</td><td>ユーザ名</td><td>email</td><td>サイト</td><td>操作</td></tr></thead><tbody>';
 while ($row = $result -> fetchArray(SQLITE3_ASSOC)) {
 	echo '<tr>';

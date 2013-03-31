@@ -43,7 +43,7 @@ function administer() {
 }
 
 function showLoginForm() {
-	$("div#loginform").load("./data/admin/loginform.html", function() {
+	$("div#loginform").load("./data/admin/loginform.php", function() {
 		$("#loginModal").modal('show');
 		$("#loginModal input[type=submit]").click(function() {
 			$.post("./data/admin/login.php", {
@@ -119,6 +119,10 @@ function reloadAdminMenu() {
 	}
 }
 
+function reloadHeader() {
+	$("header.page-header").load("./data/header.php");
+}
+
 function ajaxForm(arr, path) {
 	$.post(path, arr.serializeArray(), function(res) {
 		if (res.indexOf("OK") == 0) {
@@ -131,9 +135,9 @@ function ajaxForm(arr, path) {
 			});
 		}
 		showAlert(res);
+		reloadHeader();
 	});
 }
-
 
 $("body").on("click", ".ajaxform input[type=submit]", function() {
 	var arr = $('.ajaxform :input');

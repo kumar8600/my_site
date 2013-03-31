@@ -24,7 +24,7 @@ if($row['userid'] == "root") {
 
 ?>
 <meta charset="UTF-8" />
-<h3>プロフィール</h3>
+<legend class="p-title">プロフィールの編集</legend>
 <form method="post" action="./data/admin/set-user.php" class="form-horizontal ajaxform">
 	<hr />
 	<input type="hidden" name="olduserid" value="<?php echo($row['userid']) ?>" />

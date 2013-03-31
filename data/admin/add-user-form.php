@@ -1,5 +1,14 @@
+<?php
+require_once dirname(__FILE__) . '/../connect-db.php';
+require_once dirname(__FILE__) . '/session.php';
+if (!isRootUser()) {
+	if (!isRootExists() || !canRegister()) {
+		die("新規登録は許可されていません。");
+	}
+}
+?>
 <meta charset="UTF-8" />
-<h3>新規登録</h3>
+<legend class="p-title">新規登録</legend>
 <form method="post" action="./data/admin/add-user.php" class="form-horizontal ajaxform">
 	<hr />
 	<div class="control-group">

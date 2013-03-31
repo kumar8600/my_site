@@ -2,7 +2,15 @@
 <html lang="ja">
 	<head>
 		<meta charset="UTF-8">
-		<title>UNKO</title>
+		<title><?php
+		require_once dirname(__FILE__) . '/data/connect-db.php';
+		$db = connectSettingsDB();
+		$sql = "SELECT name, description FROM site WHERE id = 1;";
+		$result = $db -> query($sql);
+		$row = $result -> fetchArray();
+		echo $row['name'];
+			?></title>
+		<meta name="description" content="<?php echo $row['description']; ?>">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- Bootstrap -->
 		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -12,18 +20,10 @@
 	</head>
 	<body>
 		<div class="container">
-			<?php
-			require_once dirname(__FILE__) . '/data/connect-db.php';
-			$db = connectSettingsDB();
-			$sql = "SELECT name, description FROM site WHERE id = 1;";
-			$result = $db -> query($sql);
-			$row = $result -> fetchArray();
-			?>
 			<header class="page-header">
-				<a href="./" class="reset"><h1><?php echo($row['name'])
+				<?php
+				require_once dirname(__FILE__) . '/data/header.php';
 				?>
-				<small><?php echo($row['description'])
-					?></small></h1> </a>
 			</header>
 
 			<div class="navbar navbar-inverse admin-menu hide">
@@ -46,13 +46,13 @@
 								<li class="root-only">
 									<a class="ajax" href="?admin=list-users">ユーザー管理</a>
 								</li>
+								<li class="root-only">
+									<a class="ajax" href="?admin=set-site">サイト設定</a>
+								</li>
 							</ul>
 						</li>
-						<li><span>
-							<a class="btn btn-primary ajax" href="?admin=edit-article">
-								<i class="icon-pencil icon-white"></i>記事の追加
-							</a>
-							</span>
+						<li>
+							<span> <a class="btn btn-primary ajax" href="?admin=edit-article"> <i class="icon-pencil icon-white"></i>記事の追加 </a> </span>
 						</li>
 					</ul>
 
@@ -83,13 +83,15 @@
 
 					</ul>
 				</div>
-				<div class="span9" id="alert-div"></div>
-				<div class="span10 hide" id="anim">
-					<div class="hide" id="article"></div>
+				<div class="span10" id="anim">
+					<div id="article"></div>
 				</div>
 				<div class="span10 hide" id="tag-search"></div>
 				<div id="thumbs"></div>
 			</div>
+		</div>
+		<div id="alert-container">
+			<div class="alert hide" id="alert-div"></div>
 		</div>
 
 		<script src="js/jquery-1.9.1.min.js"></script>

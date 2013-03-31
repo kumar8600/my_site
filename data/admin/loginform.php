@@ -23,8 +23,13 @@
 		<div class="control-group">
 			<div class="controls">
 				<input class="btn" type="submit" value="ログイン" />
-			</div>		
+			</div>
 		</div>
 	</form>
-	<a href="?admin=add-user" class="ajax" data-dismiss="modal">新規登録</a>
+	<?php
+	require_once dirname(__FILE__) . '/../connect-db.php';
+	if(isRootExists() && canRegister()) {
+		echo '<a href="?admin=add-user" class="ajax" data-dismiss="modal">新規登録</a>';
+	}
+	?>
 </div>

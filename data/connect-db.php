@@ -77,6 +77,16 @@ function isRootExists() {
 	return false;
 }
 
+function canRegister() {
+	$db = connectSettingsDB();
+	$sql = "SELECT allowregist FROM site WHERE id = 1;";
+	$row = $db -> querySingle($sql);
+	if($row == 1) {
+		return true;
+	}
+	return false;
+}
+
 function ifUnSetDie($val) {
 	if ($val == "") {
 		die("セットされていない値がある");

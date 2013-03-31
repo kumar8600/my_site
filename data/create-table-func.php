@@ -54,7 +54,7 @@ function createTableSettings() {
 	if(isTableExists($db, "site")) {
 		return true;
 	}
-	$sql = "CREATE TABLE site (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT);";
+	$sql = "CREATE TABLE site (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, allowregist INTEGER DEFAULT 0);";
 	
 	$ret = createTableAbs($db, $sql);
 	return $ret;

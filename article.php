@@ -29,7 +29,7 @@ $dotpos = strrpos($row['headimage'], '.');
 $headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x640' . substr($row['headimage'], $dotpos);
 echo '<div class="admin-article"></div>';
 echo $row['timestamp'];
-echo '<h1 id="ar-title">', $row['title'], '</h1>';
+echo '<h1 id="ar-title" class="p-title">', $row['title'], '</h1>';
 echo '<div id="ar-headimage"><img src="./data/' . $headimage_resized . '" /></div>';
 echo '<div id="ar-body">' . $row['body'] . '</div>';
 echo '<br />タグ: <div id="ar-tag">';
@@ -43,6 +43,6 @@ if($author == null) {
 } else {
 	echo '著者: <a href="?author='. $author['userid'] .'" id="ar-author">'. $author['name'] .'</div>';
 }
-
+require dirname(__FILE__) . '/data/article-footer.php';
 
 ?>

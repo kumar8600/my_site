@@ -13,8 +13,8 @@ $sql = "SELECT sysid, name FROM user WHERE userid = '$input_author';";
 $author = queryFetchArrayDB($dba, $sql);
 $dba -> close();
 
-
-echo('<div><button class="btn" id="closeTagSearch">「' . $author['name'] . '」が書いた記事の検索をやめる</button></div>');
+echo('<legend class="p-title">「'.$author['name'].'」による記事</legend>');
+echo('<div><button class="btn" id="closeTagSearch">&times;</button></div>');
 $sql = "SELECT id, timestamp, title, headimage, tag FROM article WHERE author = '". $author['sysid'] ."' ORDER BY article.rowid DESC;";
 $result = $db -> query($sql);
 while ($row = $result -> fetchArray()) {
