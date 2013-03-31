@@ -8,7 +8,7 @@ die("idがセットされていない");
 }
 $db = connectDB();
 $input_id = $db -> escapeString($input_id);
-$sql = "SELECT author FROM article WHERE id = '$input_id' OR title = '$input_id';";
+$sql = "SELECT author, title FROM article WHERE id = '$input_id' OR title = '$input_id';";
 try {
 $row = queryFetchArrayDB($db, $sql);
 } catch(Exception $ex) {
@@ -19,9 +19,9 @@ if(isSysIdOrRoot($row['author']) == false) {
 	die("この記事を編集する権限を持っていません。" + $session_user);
 }
 ?>
-<button class="btn edit" href="./data/edit-article.html" value="">
+<a class="btn ajax" href="?admin=edit-article&p=<?php echo $input_id; ?>">
 	<i class="icon-edit"></i>編集
-</button>
+</a>
 <a href="#delModal" role="button" class="btn btn-danger" data-toggle="modal"><i class="icon-trash icon-white"></i>削除</a>
 <div id="delModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-header">
@@ -32,15 +32,15 @@ if(isSysIdOrRoot($row['author']) == false) {
 	</div>
 	<div class="modal-body">
 		<p>
-			本当にこの記事を削除しますか？
+			本当に記事「<?php echo $row['title']; ?>」を削除しますか？
 		</p>
 	</div>
 	<div class="modal-footer">
 		<button class="btn" data-dismiss="modal" aria-hidden="true">
 			キャンセル
 		</button>
-		<button class="btn btn-danger del" data-dismiss="modal" value="">
+		<a class="btn btn-danger del" data-dismiss="modal" href="./data/delete-article.php?id=<?php echo $input_id; ?>">
 			削除
-		</button>
+		</a>
 	</div>
 </div>

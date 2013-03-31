@@ -15,6 +15,8 @@ if ($get == 'list-users') {
 	require dirname(__FILE__) . '/data/admin/delete-user-form.php';
 } else if ($get == 'add-user') {
 	require dirname(__FILE__) . '/data/admin/add-user-form.php';
+} else if ($get == 'edit-article') {
+	require dirname(__FILE__) . '/data/edit-article.php';
 } else if ($get == 'set-site') {
 	require dirname(__FILE__) . '/data/admin/set-site-form.php';
 }

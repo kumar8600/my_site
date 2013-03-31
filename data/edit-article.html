@@ -1,27 +1,43 @@
-<h1 id="editor-title">記事の追加</h1>
-メインイメージ(必須:サムネイルとしても使います):
-<br />
-<input type="file" name="userfile" />
+<legend id="editor-title">記事の追加</legend>
+<div class="control-group">
+	<label class="control-label" for="fileHeadImage">サムネイル</label>
+	<div class="controls">
+		<input type="file" name="userfile" id="fileHeadImage" />
+	</div>
+</div>
 <br />
 <form action="./data/insert-article.php" method="post" id="postform">
 	<div id="thumb"></div>
 	<img src="" id="edit-thumb" />
 	<input type="hidden" name="headimage"
 	value="" />
-	<br />
-	タイトル:
-	<input type="text" name="title" />
-	<br />
-	本文:
-	<textarea id="editor" name="body"></textarea>
-	<br />
-	タグ:
-	<input type="text" name="tag" />
+	<div class="control-group">
+		<label class="control-label" for="inputTitle">タイトル</label>
+		<div class="controls">
+			<input type="text" name="title" id="inputTitle" style="font-size: 24px; height: 28px; width: 98%;" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="editor">本文</label>
+		<div class="controls">
+			<textarea name="body" id="editor" />
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="inputTag">タグ</label>
+		<div class="controls">
+			<input type="text" name="tag" id="inputTag" />
+		</div>
+	</div>
 	<input type="hidden"
 	name="rowid" />
 	<input type="hidden"
 	name="author" />
-	<br />
-	<input type="submit" class="btn btn-primary"
-	name="submit1" value="送信" />
+	<hr />
+	<div class="control-group">
+		<div class="controls">
+			<input type="submit" class="btn btn-primary"
+			name="submit1" value="送信" />
+		</div>
+	</div>
 </form>

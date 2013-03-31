@@ -7,12 +7,23 @@ require_once dirname(__FILE__) . '/../delete-article-func.php';
 $input['sysid'] = $_POST['sysid'];
 $input['password'] = $_POST['password'];
 
-array_map("ifUnSetDie", $input);
+ifUnSetDie($input['sysid']);
+if($input['sysid'] == getSysIdByDB("root")) {
+	die("rootユーザーを削除することはできません。");
+}
 
-try {
-	authorizeSysId($input['sysid'], $input['password']);
-} catch(Exception $ex) {
-	die("パスワードが間違っています。");
+$sesuserid = $GLOBALS['sesuserid'];
+if ($sesuserid == "") {
+	$sesuserid = getSessionUser();
+}
+// rootユーザーは特権でパスワード認証なし
+if ($sesuserid != "root") {
+	ifUnSetDie($input['password']);
+	try {
+		authorizeSysId($input['sysid'], $input['password']);
+	} catch(Exception $ex) {
+		die("パスワードが間違っています。");
+	}
 }
 
 // 削除するユーザーの書いたすべての記事を削除する。タグも削除するので少し周りくどい
@@ -33,15 +44,13 @@ if (count($ids) > 0) {
 // ユーザー情報を削除する。
 $db = connectAuthDB();
 
-$input['password'] = myCrypt($input['password']);
-array_map(array($db, 'escapeString'), $input);
-$sql = "DELETE FROM user WHERE sysid = '" . $input['sysid'] . "' AND password = '" . $input['password'] . "';";
-
-$result = queryDB($db, $sql);
+$stmt = $db -> prepare("DELETE FROM user WHERE sysid = :sysid");
+$stmt -> bindValue(':sysid', $input['sysid'], SQLITE3_INTEGER);
+$result = $stmt -> execute();
 $db -> close();
 
 if (getSessionSysId() == $input['sysid'])
 	sessionLogout();
 
-	echo('OK: <meta charset="UTF-8" />ユーザーの削除に成功しました');
+echo('OK: <meta charset="UTF-8" />ユーザーの削除に成功しました');
 ?>

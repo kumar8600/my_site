@@ -1,4 +1,5 @@
 var adminMode = false;
+var adminLoaded = false;
 function autoLogin(func) {
 	$.get("./data/admin/auto-login.php", function(res) {
 		if (res) {
@@ -44,26 +45,26 @@ function getUrlVars() {
 
 function loadByUrl(scr) {
 	var vars = getUrlVars();
-	if (vars['p'] !== undefined) {
+	if (vars[0] == "p") {
 		articleLoad('?p=' + vars['p'], 'noscroll');
 		thumbsLoad("./data/thumbnails.php", function() {
 			tagSearchClose();
 		});
-	} else if (vars['tag'] !== undefined) {
+	} else if (vars[0] == "tag") {
 		articleClose();
 		thumbsLoad("./data/thumbnails.php", function() {
 			$("#thumbs").hide();
 		});
 		tagSearchLoad('?tag=' + vars['tag']);
-	} else if (vars['author'] !== undefined) {
+	} else if (vars[0] == "author") {
 		articleClose();
 		thumbsLoad("./data/thumbnails.php", function() {
 			$("#thumbs").hide();
 		});
 		tagSearchLoad('?author=' + vars['author']);
-	} else if (vars['admin'] !== undefined) {
+	} else if (vars[0] == "admin") {
 		loadAdminJs(function() {
-			articleLoad('?admin=' + vars['admin'], scr);
+			articleLoad(window.location.search, scr);
 		});
 		
 		thumbsLoad("./data/thumbnails.php", function() {
@@ -322,12 +323,11 @@ $("body").on("click", "button#closeTagSearch", function() {
 	return false;
 });
 
-var adminLoaded = false;
 function loadAdminJs(func) {
 	if (adminLoaded == false) {
+		adminLoaded = true;
 		$.getScript('./js/admin.js', function() {
 			func();
-			adminLoaded = true;
 		});
 	} else {
 		func();

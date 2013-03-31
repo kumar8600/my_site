@@ -20,7 +20,10 @@
 			$row = $result -> fetchArray();
 			?>
 			<header class="page-header">
-				<a href="./" class="reset"><h1><?php echo($row['name']) ?><small><?php echo($row['description']) ?></small></h1> </a>
+				<a href="./" class="reset"><h1><?php echo($row['name'])
+				?>
+				<small><?php echo($row['description'])
+					?></small></h1> </a>
 			</header>
 
 			<div class="navbar navbar-inverse admin-menu hide">
@@ -36,12 +39,20 @@
 								<li>
 									<a class="logout" href=""> ログアウト </a>
 								</li>
+								<li class="divider root-only"></li>
+								<li class="nav-header root-only">
+									rootユーザー
+								</li>
+								<li class="root-only">
+									<a class="ajax" href="?admin=list-users">ユーザー管理</a>
+								</li>
 							</ul>
 						</li>
-						<li>
-							<button class="btn btn-primary new" href="./data/edit-article.html">
+						<li><span>
+							<a class="btn btn-primary ajax" href="?admin=edit-article">
 								<i class="icon-pencil icon-white"></i>記事の追加
-							</button>
+							</a>
+							</span>
 						</li>
 					</ul>
 

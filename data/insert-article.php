@@ -10,6 +10,10 @@ $title = htmlspecialchars($_POST['title']);
 $input['body'] = $_POST['body'];
 $input['headimage'] = $_POST['headimage'];
 $input['tag'] = htmlspecialchars($_POST['tag']);
+$input['author'] = getSessionSysId();
+if ($input['author'] == "") {
+	die("ログインしてください。");
+}
 
 array_map("ifUnSetDie", $input);
 $input['rowid'] = $_POST['rowid'];
@@ -38,10 +42,9 @@ if (empty($input['rowid'])) {
 } else {
 	$sql = "SELECT author, tag FROM article WHERE rowid = " . $input['rowid'] . ";";
 	$row = queryFetchArrayDB($db, $sql);
-	if (isSysIdOrRoot($row['author']) == false) {
+	if ($row['author'] != $input['author']) {
 		die("この記事を編集する権限を持っていません。");
 	}
-	$input['author'] = $row['author'];
 	$old_tags = $row['tag'];
 	$sql = "UPDATE article SET title = '" . $input['title'] . "', body = '" . $input['body'] . "', headimage = '" . $input['headimage'] . "', tag = '" . $input_tags . "' WHERE rowid = " . $input['rowid'] . ";";
 }

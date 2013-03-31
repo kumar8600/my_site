@@ -40,6 +40,15 @@ function getSysIdByDB($userid) {
 	return $row['sysid'];
 }
 
+function getUserIdByDB($sysid) {
+	$db = connectAuthDB();
+	$sql = "SELECT userid FROM user WHERE sysid = '$sysid'";
+	$row = queryFetchArrayDB($db, $sql);
+	$db -> close();
+
+	return $row['userid'];
+}
+
 function setSessionUser($userid) {
 	setSession('userid', $userid);
 	setSession('sysid', getSysIdByDB($userid));
