@@ -43,6 +43,6 @@ echo '<div id="ar-headimage"><img src="./data/' . $headimage_resized . '" /></di
 echo '<div id="ar-body">' . $row['body'] . '</div>';
 
 echo '<div class="ar-footer">';
-require dirname(__FILE__) . '/data/article-footer.php';
 echo '</div>';
+require dirname(__FILE__) . '/data/article-footer.php';
 ?>

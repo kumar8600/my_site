@@ -26,7 +26,7 @@
 				?>
 			</header>
 
-			<div class="navbar navbar-inverse admin-menu hide">
+			<div class="navbar navbar-fixed-top navbar-inverse admin-menu hide">
 				<div class="navbar-inner">
 					<a class="brand userid"></a>
 					<ul class="nav pull-right">

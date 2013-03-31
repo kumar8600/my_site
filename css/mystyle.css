@@ -11,13 +11,13 @@ body {
 	position: fixed;
 	top: 10px;
 	width: 100%;
+	z-index: 10000;
 }
 
 #alert-div {
 	max-width: 800px;
 	margin: 0 auto;
-	box-shadow: 1px 1px 5px #aaa;
-	z-index: 1000000;
+	box-shadow: 1px 1px 5px #aaa;	
 }
 
 #menu {
@@ -33,11 +33,15 @@ body {
 	padding: 10px;
 	background-color: #FFFFFF;
 	overflow: hidden;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
 }
 
 #anim {
 	margin-bottom: 20px;
 	overflow: hidden;
+	border-radius: 4px;
+	box-shadow: 1px 1px 2px #000;
 }
 
 div.admin-article {

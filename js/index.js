@@ -182,6 +182,7 @@ function changeTitleTop() {
 
 function socialButtonReload() {
 	if ("twttr" in window) {
+		showAlert("unko");
 		twttr.widgets.load();
 	}
 	if ("FB" in window) {
@@ -246,7 +247,7 @@ function articleLoad(url, func) {
 			if (func != 'noscroll') {
 				var scrollTo;
 				if (adminMode) {
-					scrollTo = $("div.admin-menu").offset().top - 10;
+					scrollTo = $("#article").offset().top - 40;
 				} else {
 					scrollTo = $("#article").offset().top - 10;
 				}
