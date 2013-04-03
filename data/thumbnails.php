@@ -20,7 +20,7 @@ while ($row = $result -> fetchArray()) {
 	$dotpos = strrpos($row['headimage'], '.');
 	$headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x320' . substr($row['headimage'], $dotpos);
 	echo('
-			<div class="span6 thu'. $i .'" id="' . $row['id'] . '">
+			<div class="thu'. $i .'" id="' . $row['id'] . '">
 			<a href="?p=' . $row['id'] . '" class="ajax">
 			' . $row['timestamp'] . '
 			<div class="thumbnail">

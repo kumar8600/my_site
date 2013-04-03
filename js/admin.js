@@ -31,7 +31,8 @@ function getSessionUserName() {
 function administer() {
 
 	adminMode = true;
-	$("li.login").hide();
+	$(".login").hide();
+	$("#loginform").hide();
 	$("div.admin-menu").show();
 	$("a.userid").html(getSessionUserName() + "(" + getSessionUser() + ")");
 	$("a.userid").attr("href", "?author=" + getSessionUser());
@@ -42,31 +43,35 @@ function administer() {
 	}
 }
 
+var loginFormLoaded = false;
 function showLoginForm() {
-	$("div#loginform").load("./data/admin/loginform.php", function() {
-		$("#loginModal").modal('show');
-		$("#loginModal input[type=submit]").click(function() {
-			$.post("./data/admin/login.php", {
-				'userid' : $("input[name=userid]").val(),
-				'password' : $("input[name=password]").val()
-			}, function(res) {
-				if (res == true) {
-					showAlert("ログイン成功");
-					loadByUrl();
-					administer();
-				} else {
-					showAlert("ログイン失敗");
-				}
-				$("#loginModal").modal('hide');
+	$("div#loginform").toggle();
+	if (loginFormLoaded == false) {
+		$("div#loginform").load("./data/admin/loginform.php", function() {
+			$("#loginform input[type=submit]").click(function() {
+				$.post("./data/admin/login.php", {
+					'userid' : $("input[name=userid]").val(),
+					'password' : $("input[name=password]").val()
+				}, function(res) {
+					if (res == true) {
+						showAlert("ログイン成功");
+						loadByUrl();
+						administer();
+					} else {
+						showAlert("ログイン失敗");
+					}
+					$("#loginModal").modal('hide');
+				});
+				return false;
 			});
-			return false;
 		});
-	});
+	}
 }
 
 function outAdminister() {
 	adminMode = false;
-	$("li.login").show();
+	$(".login").show();
+	$("#loginform").show();
 	$("div.admin-menu").hide();
 	reset('push');
 }
@@ -123,20 +128,29 @@ function reloadHeader() {
 	$("header.page-header").load("./data/header.php");
 }
 
+function envReset() {
+	removeSessionUser();
+	getSessionUser();
+	reloadAdminMenu();
+	thumbsReset();
+	tagSearchClose();
+	loadNav();
+}
+
 function ajaxForm(arr, path) {
 	$.post(path, arr.serializeArray(), function(res) {
 		if (res.indexOf("OK") == 0) {
 			reset("push");
-			removeSessionUser();
-			getSessionUser();
-			reloadAdminMenu();
-			thumbsReset();
-			tagSearchClose();
+			envReset();
+		}
+		if (res.indexOf("SUCCESS") == 0) {
+			history.back();
 		}
 		showAlert(res);
 		reloadHeader();
 	});
 }
+
 
 $("body").on("click", ".ajaxform input[type=submit]", function() {
 	var arr = $('.ajaxform :input');
@@ -152,4 +166,4 @@ $("body").on("click", ".editorform input[type=submit]", function() {
 	var path = $(this).closest(".editorform").attr("action");
 	ajaxForm(arr, path);
 	return false;
-}); 
+});

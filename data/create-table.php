@@ -16,6 +16,11 @@ if (createTableSettings()) {
 } else {
 	die("サイト設定用テーブルの作成に失敗。");
 }
+if (createTableNav()) {
+	//echo("ナビゲーションカラム用テーブルの作成に成功。");
+} else {
+	die("ナビゲーションカラム用テーブルの作成に失敗。");
+}
 if (createTableAuth()) {
 	//echo("ユーザー情報用テーブルの作成に成功。");
 } else {

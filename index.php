@@ -26,7 +26,7 @@
 				?>
 			</header>
 
-			<div class="navbar navbar-fixed-top navbar-inverse admin-menu hide">
+			<div class="navbar navbar-inverse admin-menu hide">
 				<div class="navbar-inner">
 					<a class="brand userid"></a>
 					<ul class="nav pull-right">
@@ -49,6 +49,9 @@
 								<li class="root-only">
 									<a class="ajax" href="?admin=set-site">サイト設定</a>
 								</li>
+								<li class="root-only">
+									<a class="ajax" href="?admin=set-nav">ナビゲーションカラム設定</a>
+								</li>
 							</ul>
 						</li>
 						<li>
@@ -58,43 +61,33 @@
 
 				</div>
 			</div>
-			<div class="visible-phone" id="menu-button">
-				<button class="btn" id="menu-toggle">
-					メニュー
-				</button>
-			</div>
-			<div class="row" id="header-thumbs" style="margin-top: 0; margin-bottom: 10px;">
-				<?php
-				$_GET['limit'] = 2;
-				require_once dirname(__FILE__) . '/data/thumbnails.php';
-				?>
-			</div>
 			<div class="row">
-				<div class="span2" id="menu">
-					<ul class="nav nav-list">
-						<li class="nav-header">
-							タグ
-						</li>
-					</ul>
-					<div id="tags-li"></div>
-					<ul class="nav nav-list">
-						<li class="divider"></li>
-						<li>
-							<a href="?p=About" class="ajax">About</a>
-						</li>
-						<li class="login">
-							<a href=""> 管理 </a>
-						</li>
-						<div id="loginform"></div>
-
-					</ul>
+				<div id="contents" class="span9">
+					<div id="anim">
+						<div id="article"></div>
+					</div>
+					<div class="hide" id="tag-search"></div>
+					<div id="thumbs"><div class="thumbs-buf" style="display: none"></div></div>
 				</div>
-				<div class="span10" id="anim">
-					<div id="article"></div>
+				<div id="nav" class="span3">
+					<?php
+					include dirname(__FILE__) . '/data/nav/show.php';
+					?>
 				</div>
-				<div class="span10 hide" id="tag-search"></div>
-				<div id="thumbs"></div>
 			</div>
+		</div>
+		
+		<div class="span6" id="fixed-menu">
+		<div id="menu-toggle">
+			<i class="icon-tags icon-white"></i>
+		</div>
+		<div class="hide" id="menu">
+			<div id="tags-li"></div>
+			<a href="?p=About" class="ajax"><span class="label label-info"><i class="icon-info-sign icon-white"></i>About(このサイトについて)</span></a>
+			<a href=""><span class="label label-warning login"><i class="icon-user icon-white"></i>ログイン</span></a>
+			
+			<div id="loginform" class="dark hide"></div>
+		</div>
 		</div>
 		<div id="alert-container">
 			<div class="alert hide" id="alert-div"></div>
@@ -103,7 +96,7 @@
 		<script src="js/jquery-1.9.1.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/index.js"></script>
-
+		
 	</body>
 
 </html>

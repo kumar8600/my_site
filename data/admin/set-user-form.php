@@ -11,7 +11,7 @@ if ($sesuserid == "") {
 
 $db = connectAuthDB();
 
-$sql = "SELECT sysid, userid, name, email, website FROM user WHERE userid = '" . $sesuserid . "';";
+$sql = "SELECT sysid, userid, name, email, website, introduction FROM user WHERE userid = '" . $sesuserid . "';";
 $row = queryFetchArrayDB($db, $sql);
 $db -> close();
 
@@ -72,6 +72,13 @@ if($row['userid'] == "root") {
 		<label class="control-label" for="inputWebsite">自分のサイト</label>
 		<div class="controls">
 			<input type="text" name="website" id="inputWebsite" value="<?php echo($row['website']) ?>" />
+		</div>
+	</div>
+	<hr />
+	<div class="control-group">
+		<label class="control-label" for="inputIntro">自己紹介文</label>
+		<div class="controls">
+			<textarea name="introduction" id="inputIntro" style="width: 90%; height: 60px;"><?php echo($row['introduction']) ?></textarea>
 		</div>
 	</div>
 	<hr />

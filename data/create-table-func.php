@@ -18,7 +18,7 @@ function createTableArticle() {
 	if(isTableExists($db, "article")) {
 		return true;
 	}
-	$sql = "CREATE TABLE article (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp DEFAULT(datetime('now', 'localtime')), title, body, thumbbody, headimage, tag, author);";
+	$sql = "CREATE TABLE article (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp DEFAULT(datetime('now', 'localtime')), title TEXT, body TEXT, preface TEXT, headimage TEXT, tag TEXT, author TEXT);";
 
 	$ret = createTableAbs($db, $sql);
 	return $ret;
@@ -42,7 +42,7 @@ function createTableAuth() {
 	if(isTableExists($db, "user")) {
 		return true;
 	}
-	$sql = "CREATE TABLE user (sysid INTEGER PRIMARY KEY AUTOINCREMENT, userid TEXT, password TEXT, name TEXT, email TEXT, website TEXT);";
+	$sql = "CREATE TABLE user (sysid INTEGER PRIMARY KEY AUTOINCREMENT, userid TEXT, password TEXT, name TEXT, email TEXT, website TEXT, introduction TEXT);";
 
 	$ret = createTableAbs($db, $sql);
 	return $ret;
@@ -55,6 +55,18 @@ function createTableSettings() {
 		return true;
 	}
 	$sql = "CREATE TABLE site (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, allowregist INTEGER DEFAULT 0);";
+	
+	$ret = createTableAbs($db, $sql);
+	return $ret;
+}
+
+function createTableNav() {
+	// ナビゲーションカラム用テーブルを作る
+	$db = connectSettingsDB();
+	if(isTableExists($db, "nav")) {
+		return true;
+	}
+	$sql = "CREATE TABLE nav (id INTEGER PRIMARY KEY, folder TEXT, page TEXT, configid INTEGER);";
 	
 	$ret = createTableAbs($db, $sql);
 	return $ret;

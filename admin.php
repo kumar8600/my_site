@@ -19,6 +19,8 @@ if ($get == 'list-users') {
 	require dirname(__FILE__) . '/data/edit-article.php';
 } else if ($get == 'set-site') {
 	require dirname(__FILE__) . '/data/admin/set-site-form.php';
+} else if ($get == 'set-nav') {
+	require dirname(__FILE__) . '/data/nav/update-form.php';
 }
 	
 ?>
