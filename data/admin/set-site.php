@@ -3,8 +3,9 @@ require_once dirname(__FILE__) . '/../connect-db.php';
 require_once dirname(__FILE__) . '/session.php';
 
 // rootユーザーとしてログインしてるかチェック
-$sesuserid = $GLOBALS['sesuserid'];
-if ($sesuserid == "") {
+if (isset($GLOBALS['sesuserid'])) {
+	$sesuserid = $GLOBALS['sesuserid'];
+} else {
 	$sesuserid = getSessionUser();
 }
 if ($sesuserid != "root") {

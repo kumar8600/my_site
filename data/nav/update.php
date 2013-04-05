@@ -8,6 +8,10 @@ if(!isRootUser()) {
 }
 
 $folder_arr = $_POST['id'];
+if($folder_arr[0] == "") {
+	updateNavOrder();
+	die("OK: 設定の変更に成功。");
+}
 foreach ($folder_arr as $folder) {
 	$sharppos = strrpos($folder, '#');
 	$configid = substr($folder, $sharppos + 1);

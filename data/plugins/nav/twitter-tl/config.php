@@ -1,9 +1,15 @@
 <?php
 require_once dirname(__FILE__) . '/../functions.php';
-if ($_GET['configid'] != "") {
+if (isset($_GET['configid'])) {
 	$body = file_get_contents(getNavConfigDir() . basename(getcwd()) . '/' . $_GET['configid'] . '.html');
+	$name = getConfigNameById(basename(getcwd()), $_GET['configid']);
+	$configid = $_GET['configid'];
+} else {
+	$body = "";
+	$name = "";
+	$configid = "";
 }
-$name = getConfigNameById(basename(getcwd()), $_GET['configid']);
+
 ?>
 <legend class="p-title">
 	Twitterタイムライン <?php
@@ -35,7 +41,7 @@ $name = getConfigNameById(basename(getcwd()), $_GET['configid']);
 			</p></span>
 	</div>
 	<input type="hidden"
-	name="configid" value="<?php echo $_GET['configid']; ?>" />
+	name="configid" value="<?php echo $configid; ?>" />
 	<hr />
 	<div class="control-group">
 		<div class="controls">

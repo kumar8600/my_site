@@ -26,19 +26,24 @@
 		$row = $result -> fetchArray();
 		return $row;
 	}
+	
+	if(!isset($_GET['p']) && !isset($_GET['author'])) {
+		die();
+	}
 
-	$ar = $_GET['p'];
-	if (ar == "") {
-		$ar = 'about';
-	} 
-	$author = $_GET['author'];
-	if($author == "") {
+	if(isset($_GET['p'])) {
+		$ar = $_GET['p'];
+	} else {
+		$ar = 'About';
+	}
+	if(isset($_GET['author'])) {
+		$author = $_GET['author'];
+		$row = getProfileByUserId($author);
+	} else {
 		$author = getAuthor($ar);
 		$row = getProfile($author);
-	} else {
-		$row = getProfileByUserId($author);
 	}
-	
+		
 
 	echo '<h4>' . $row['name'] . '</h4>';
 	echo '<p><a href="' . $row['website'] . '">' . $row['website'] . '</a></p>';

@@ -2,10 +2,11 @@
 require_once dirname(__FILE__) . '/data/connect-db.php';
 $db = connectDB();
 
-$input_id = $db -> escapeString($_GET['p']);
 // SQLiteに対する処理
-$sql = "SELECT * FROM article WHERE id = '$input_id' OR title = '$input_id';";
-$result = $db -> query($sql);
+$sql = "SELECT * FROM article WHERE id = :id OR title = :id";
+$stmt = $db -> prepare($sql);
+$stmt -> bindValue(":id", $_GET['p']);
+$result = $stmt -> execute();
 if (!$result) {
 	die('読み込みに失敗:' . $sqlerror);
 }
@@ -27,9 +28,10 @@ $db2 -> close();
 
 $dotpos = strrpos($row['headimage'], '.');
 $headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x640' . substr($row['headimage'], $dotpos);
-echo '<div class="admin-article"></div>';
-echo '<h1 id="ar-title" class="p-title">', $row['title'], '</h1>';
-echo '<span class="label label-info">'.$row['timestamp'].'</span>';
+echo '<div class="ar-main">';
+echo '<div class="ar-head">';
+echo '<h1 class="p-title ar-title"><a class="ajax" href=?p='. $row['id'] .'>'. $row['title']. '</a></h1>';
+echo '<div style="ar-meta"><span class="label label-info">'.$row['timestamp'].'</span>';
 $tags = preg_split("/\s+/", $row['tag'], -1, PREG_SPLIT_NO_EMPTY);
 echo '<span>';
 for ($i = 0; $i < count($tags); $i++) {
@@ -40,12 +42,13 @@ echo '<span>';
 if($author == null) {
 	echo '不明';
 } else {
-	echo '<a href="?author='. $author['userid'] .'" id="ar-author" class="ajaxtags"><span class="badge badge-warning"><i class="icon-user icon-white"></i>'. $author['name'] .'</span></a>';
+	echo '<a href="?author='. $author['userid'] .'" class="ajaxtags ar-author"><span class="badge badge-warning"><i class="icon-user icon-white"></i>'. $author['name'] .'</span></a>';
 }
 echo '</span>';
-echo '<div id="ar-headimage"><img src="./data/' . $headimage_resized . '" /></div>';
-echo '<div id="ar-body">' . $row['body'] . '</div>';
-
+echo '<div class="admin-article"></div></div></div>';
+echo '<div class="ar-headimage"><img src="./data/' . $headimage_resized . '" /></div>';
+echo '<div class="ar-body">' . $row['body'] . '</div>';
+echo '</div>';
 echo '<div class="ar-footer">';
 echo '</div>';
 require dirname(__FILE__) . '/data/article-footer.php';

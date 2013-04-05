@@ -11,5 +11,5 @@ $plugins_nav_path = $root_location . "/" . "data/plugins/nav/";
 $plugins_config_path = $root_location . "/" . "data/plugins/config/";
 $plugin_ini_name = "plugin.ini";
 $config_folder_name = "config";
-$salt = "$5$rounds=5000$ultimateUNKO$";
+$salt = '$5$rounds=5000$ultimateUNKO$';
 ?>

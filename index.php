@@ -62,32 +62,40 @@
 				</div>
 			</div>
 			<div class="row">
-				<div id="contents" class="span9">
-					<div id="anim">
-						<div id="article"></div>
+				
+			
+				<div class="span9 hide" id="contents">
+					<div class="spacer">
+							<div class="hide" id="tag-search"></div>
+							<div id="thumbs"></div>
 					</div>
-					<div class="hide" id="tag-search"></div>
-					<div id="thumbs"><div class="thumbs-buf" style="display: none"></div></div>
 				</div>
-				<div id="nav" class="span3">
-					<?php
-					include dirname(__FILE__) . '/data/nav/show.php';
-					?>
+				<div class="span9" id="article"></div>
+					<div class="span3" id="nav-fixed">
+						<div id="nav">
+							<?php
+							include dirname(__FILE__) . '/data/nav/show.php';
+							?>
+						</div>
+						<div id="nav-toggle">
+							<i class="icon-th-list icon-white"></i>
+						</div>
+					</div>
 				</div>
-			</div>
+			
 		</div>
 		
 		<div class="span6" id="fixed-menu">
-		<div id="menu-toggle">
-			<i class="icon-tags icon-white"></i>
-		</div>
-		<div class="hide" id="menu">
-			<div id="tags-li"></div>
-			<a href="?p=About" class="ajax"><span class="label label-info"><i class="icon-info-sign icon-white"></i>About(このサイトについて)</span></a>
-			<a href=""><span class="label label-warning login"><i class="icon-user icon-white"></i>ログイン</span></a>
-			
-			<div id="loginform" class="dark hide"></div>
-		</div>
+			<div id="menu-toggle">
+				<i class="icon-tags icon-white"></i>
+			</div>
+			<div class="hide" id="menu">
+				<div id="tags-li"></div>
+				<a href="?p=About" class="ajax"><span class="label label-info"><i class="icon-info-sign icon-white"></i>About(このサイトについて)</span></a>
+				<a href=""><span class="label label-warning login"><i class="icon-user icon-white"></i>ログイン</span></a>
+				
+				<div id="loginform" class="dark hide"></div>
+			</div>
 		</div>
 		<div id="alert-container">
 			<div class="alert hide" id="alert-div"></div>
@@ -96,6 +104,11 @@
 		<script src="js/jquery-1.9.1.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/index.js"></script>
+		<footer>
+			<?php
+			include dirname(__FILE__) . '/data/footer.php';
+			?>
+		</footer>
 		
 	</body>
 

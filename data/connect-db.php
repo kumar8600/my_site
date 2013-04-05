@@ -98,6 +98,14 @@ function ifUnSetDie($val) {
 	}
 }
 
+function getSiteName() {
+	$db = connectSettingsDB();
+	$sql = "SELECT name FROM site WHERE id = 1;";
+	$result = $db -> query($sql);
+	$row = $result -> fetchArray();
+	return $row['name'];
+}
+
 function myCrypt($word) {
 	return crypt($word, $GLOBALS['salt']);
 }

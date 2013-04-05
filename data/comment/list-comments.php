@@ -2,16 +2,21 @@
 <?php
 require_once dirname(__FILE__) . '/comment-func.php';
 
-$input_p = $_GET['p'];
-if($input_p == "") {
+if(isset($_GET['p'])) {
+	$input_p = $_GET['p'];
+} else {
 	die("アドレスに間違いが");
 }
-$input_start = $_GET['offset'];
-$input_count = $_GET['limit'];
-if($input_start == "") {
+
+if(isset($_GET['offset'])) {
+	$input_start = $_GET['offset'];
+} else {
 	$input_start = 0;
 }
-if($input_count == "") {
+	
+if(isset($_GET['limit'])) {
+	$input_count = $_GET['limit'];
+} else {
 	$input_count = 1000;
 }
 

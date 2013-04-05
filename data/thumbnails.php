@@ -1,43 +1,89 @@
 <?php
 require_once dirname(__FILE__) . '/connect-db.php';
-$db = connectDB();
+require_once dirname(__FILE__) . '/thum-social-buttons.php';
+//JSONをつかぅょ、だからechoをすべてバッファリングするょ
+ob_start();
 
-$offset = $db -> escapeString($_GET['offset']);
-$limit = $db -> escapeString($_GET['limit']);
-//	パラメータがなくてもデフォルト値を指定する
-if (empty($offset))
+if (isset($_GET['offset'])) {
+	$offset = $_GET['offset'];
+} else {
 	$offset = 0;
-if (empty($limit))
+}
+if (isset($_GET['limit'])) {
+	$limit = $_GET['limit'];
+} else {
 	$limit = 6;
+}
 
-$sql = "SELECT * FROM article ORDER BY id desc LIMIT $limit OFFSET $offset;";
-$result = $db -> query($sql);
+$db = connectDB();
+$sql = "SELECT * FROM article ORDER BY id desc LIMIT :limit OFFSET :offset;";
+$stmt = $db -> prepare($sql);
+$stmt -> bindValue(":limit", $limit);
+$stmt -> bindValue(":offset", $offset);
+$result = $stmt -> execute();
+$name = getSiteName();
 
 $i = $offset;
 $c = 0;
 while ($row = $result -> fetchArray()) {
+	$db2 = connectAuthDB();
+	$sql = "SELECT userid, name FROM user WHERE sysid = '" . $row['author'] . "';";
+	try {
+		$author = queryFetchArrayDB($db2, $sql);
+	} catch(Exception $ex) {
+		$author = null;
+	}
+	$db2 -> close();
 	$row = array_map("stripslashes", $row);
 	$dotpos = strrpos($row['headimage'], '.');
 	$headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x320' . substr($row['headimage'], $dotpos);
-	echo('
-			<div class="thu'. $i .'" id="' . $row['id'] . '">
-			<a href="?p=' . $row['id'] . '" class="ajax">
-			' . $row['timestamp'] . '
-			<div class="thumbnail">
-			<img src="./data/' . $headimage_resized . ' " >
-			<h3 class="title' . $row['id'] . '"> ' . $row['title'] . ' </h3>
-			<div class="tag' . $row['id'] . '">' . $row['tag'] . '</div>
-			</div> </a>
-			</div>
-			');
+	$dotpos = strrpos($row['headimage'], '.');
+	$headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x640' . substr($row['headimage'], $dotpos);
+	echo '<div class="ar-thu-container">';
+	echo '<div class="ar-main-thu">';
+	echo '<div class="ar-head-thu">';
+	echo '<span class="ar-headimage-thu"><a class="ajax" href="?p=' . $row['id'] . '"><img src="./data/' . $headimage_resized . '" /></a></span>';
+	echo '<div class="ar-meta ajax" href="?p=' . $row['id'] . '">';
+	echo '<h1 class="ar-title-thu"><a class="ajax" href="?p='.$row['id'].'">'. $row['title']. '</a></h1>';
+	
+	echo '<span class="label label-info">' . $row['timestamp'] . '</span>';
+	$tags = preg_split("/\s+/", $row['tag'], -1, PREG_SPLIT_NO_EMPTY);
+	echo '<span>';
+	for ($i = 0; $i < count($tags); $i++) {
+		echo('<a href="?tag=' . $tags[$i] . '" class="ajaxtags"><span class="badge"><i class="icon-tag icon-white"></i>' . $tags[$i] . '</span></a>');
+	}
+	echo '</span>';
+	echo '<span>';
+	if ($author == null) {
+		echo '不明';
+	} else {
+		echo '<a href="?author=' . $author['userid'] . '" class="ajaxtags ar-author"><span class="badge badge-warning"><i class="icon-user icon-white"></i>' . $author['name'] . '</span></a>';
+	}
+	echo '</span></div></div>';
+	echo '<div class="ar-preface">うんこっこっこっここ。うわぁ凄いいいですねぇ。';
+	echo '</div>';
+	echo '<a class="ajax" href="?p=' . $row['id'] . '"><span>続きを読む</span></a>';
+	echo '</div>';
+	echo '<div class="ar-social-thu">';
+	showSocialButtons($row['id'], $row['title'], $name);
+	echo '</div>';
 	$i++;
 	$c++;
+	echo '</div>';
 }
 $db -> close();
 
+
+
 if ($c == $limit) {
-	echo '<div class="thumbs-buf" style="display: none"></div>';
+	$ret['end'] = false;
 } else {
-	echo '<div class="thumbs-buf end"></div>';
+	$ret['end'] = true;
+	echo '<div class="end-of-world"><p>すべての記事を読み込みました。thx!!!🍣</p></div>';
 }
+
+$ret['echo'] = ob_get_contents();
+ob_end_clean();
+
+echo json_encode($ret);
 ?>

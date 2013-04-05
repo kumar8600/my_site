@@ -92,9 +92,9 @@ if ($result) {
 $db -> close();
 
 function showPluginInfo($value) {
-	if ($value['config']) {
+	if (isset($value['config'])) {
 		echo '<a class="pull-right ajax" href="?ajax=./data/plugins/nav/' . $value['folder'] . '/' . $value['config'];
-		if ($value['configid'] != "") {
+		if (isset($value['configid'])) {
 			echo '?configid=' . $value['configid'];
 			echo '"><i class="icon-wrench"></i>設定</a>';
 			echo '<a href="?ajax=./data/nav/delete-conf-form.php?folder=' . $value['folder'] . '&configid=' . $value['configid'] . '" class="pull-right ajax"><i class="icon-trash"></i></a>';
@@ -103,17 +103,16 @@ function showPluginInfo($value) {
 		}
 	}
 
-	if ($value['configid'] == "") {
+	if (!isset($value['configid']) || $value['configid'] == "") {
 		echo '<span style="display:block;">' . $value['name'];
-	}
-	if ($value['configid'] != "") {
+	} else {
 		echo '<span style="display:block;">' . $value['c_name'];
 	}
 
 	echo '</span>';
-	if ($value['configid'] == "")
+	if (!isset($value['configid']) || $value['configid'] == "") {
 		echo '<small>' . $value['desc'] . '</small>';
-	if ($value['configid'] != "") {
+	} else {
 		echo '<small>' . $value['c_desc'] . '</small>';
 	}
 }

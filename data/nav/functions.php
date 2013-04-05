@@ -3,22 +3,21 @@ require_once dirname(__FILE__) . '/../connect-db.php';
 require_once dirname(__FILE__) . '/../../config.php';
 
 function showNav() {
-	$db = connectSettingsDB();
+	$db1 = connectSettingsDB();
 
 	$sql = "SELECT * FROM nav ORDER BY id;";
-	$result = $db -> query($sql);
+	$result1 = $db1 -> query($sql);
 
-	while ($row = $result -> fetchArray()) {
+	$i = 0;
+	while ($row1 = $result1 -> fetchArray()) {
 		echo "<div>";
 
-		if ($row['configid'] != "") {
-			$_GET['configid'] = $row['configid'];
+		if (isset($row1['configid'])) {
+			$_GET['configid'] = $row1['configid'];
 		}
-		include $GLOBALS['plugins_nav_path'] . $row['folder'] . '/' . $row['page'];
-
+		require ($GLOBALS['plugins_nav_path'] . $row1['folder'] . '/' . $row1['page']);
 		echo "</div>";
 	}
-
 	$db -> close();
 }
 
@@ -104,7 +103,7 @@ function getNavPluginsList() {
 						$ini['folder'] = $file;
 						$ret[] = $ini;
 						// config値があるならconfigフォルダを調べる。
-						if ($ini['config'] != "") {
+						if (isset($ini['config'])) {
 							$confs = getConfigList(getNavConfigDir() . $file);
 							if (is_array($confs)) {
 								foreach ($confs as $conf) {

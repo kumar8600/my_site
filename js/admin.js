@@ -71,7 +71,6 @@ function showLoginForm() {
 function outAdminister() {
 	adminMode = false;
 	$(".login").show();
-	$("#loginform").show();
 	$("div.admin-menu").hide();
 	reset('push');
 }

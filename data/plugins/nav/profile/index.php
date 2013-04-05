@@ -2,7 +2,7 @@
 	<legend>
 		プロフィール
 	</legend>
-	<div id="profile<?php echo $_GET['p']; ?>"></div>
+	<div class="plugin-profile"></div>
 <script type="text/javascript">
 	function getSplit(url) {
 		var vars = [], hash;
@@ -28,7 +28,7 @@
 	function reloadProfile() {
 		var vars = getUrlVars();
 		$.get("./data/plugins/nav/<?php echo basename(dirname(__FILE__)); ?>/profile.php" + window.location.search , function(res) {
-			$("#profile<?php echo $_GET['p']; ?>").fadeOut(function() {
+			$(".plugin-profile").fadeOut(function() {
 				$(this).html(res);
 				$(this).fadeIn();
 			});

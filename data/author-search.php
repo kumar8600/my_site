@@ -22,13 +22,13 @@ while ($row = $result -> fetchArray()) {
 	$dotpos = strrpos($row['headimage'], '.');
 	$headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x320' . substr($row['headimage'], $dotpos);
 	echo('
-			<div class="span2" id="' . $row[id] . '">
-			<a href="?p=' . $row[id] . '" class="ajax">
+			<div class="span2" id="' . $row['id'] . '">
+			<a href="?p=' . $row['id'] . '" class="ajax">
 			' . $row['timestamp'] . '
 			<div class="thumbnail tag-search">
 			<img src="./data/' . $headimage_resized . ' " alt="">
 			<h3> ' . $row['title'] . ' </h3>
-			' . $row[tag] . '
+			' . $row['tag'] . '
 			</div> </a>
 			</div>
 			');

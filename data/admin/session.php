@@ -10,7 +10,7 @@ function setSession($key, $val) {
 function getSessionUser() {
 	session_start();
 
-	if ($_SESSION['userid'] == "") {
+	if (!isset($_SESSION['userid'])) {
 		session_destroy();
 		return false;
 	}
@@ -22,7 +22,7 @@ function getSessionUser() {
 function getSessionSysId() {
 	session_start();
 
-	if ($_SESSION['sysid'] == "") {
+	if (!isset($_SESSION['sysid'])) {
 		session_destroy();
 		return false;
 	}
@@ -56,12 +56,14 @@ function setSessionUser($userid) {
 
 function isSysIdOrRoot($str) {
 	// $strがセッションユーザーのSysIdであるか、rootユーザーとしてログイン中であれば$strにかかわらずtrueを返す関数
-	$ses_sysid = $GLOBALS['ses_sysid'];
-	if ($ses_sysid == "") {
+	if(isset($GLOBALS['ses_sysid'])) {
+		$ses_sysid = $GLOBALS['ses_sysid'];
+	} else {
 		$ses_sysid = getSessionSysId();
 	}
-	$sesuserid = $GLOBALS['sesuserid'];
-	if ($sesuserid == "") {
+	if(isset($GLOBALS['sesuserid'])) {
+		$sesuserid = $GLOBALS['sesuserid'];
+	} else {
 		$sesuserid = getSessionUser();
 	}
 	if($ses_sysid == $str || $sesuserid == "root") {
@@ -73,8 +75,9 @@ function isSysIdOrRoot($str) {
 
 function isRootUser() {
 	// rootユーザーとしてログイン中であればtrueを返す関数
-	$sesuserid = $GLOBALS['sesuserid'];
-	if ($sesuserid == "") {
+	if(isset($GLOBALS['sesuserid'])) {
+		$sesuserid = $GLOBALS['sesuserid'];
+	} else {
 		$sesuserid = getSessionUser();
 	}
 	if($sesuserid == "root") {
