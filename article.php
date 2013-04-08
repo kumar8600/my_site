@@ -1,9 +1,10 @@
 <?php
 require_once dirname(__FILE__) . '/data/connect-db.php';
+require_once dirname(__FILE__) . '/data/small-social-buttons.php';
 $db = connectDB();
 
 // SQLiteに対する処理
-$sql = "SELECT * FROM article WHERE id = :id OR title = :id";
+$sql = "SELECT id, timestamp, author, tag, title, body, headimage FROM article WHERE id = :id OR title = :id";
 $stmt = $db -> prepare($sql);
 $stmt -> bindValue(":id", $_GET['p']);
 $result = $stmt -> execute();
@@ -15,20 +16,11 @@ if ($row['title'] == null) {
 	die("指定された記事がありません🍣");
 }
 $db -> close();
-$row = array_map("stripslashes", $row);
 
-$db2 = connectAuthDB();
-$sql = "SELECT userid, name FROM user WHERE sysid = '". $row['author']. "';";
-try {
-		$author = queryFetchArrayDB($db2, $sql);
-	} catch(Exception $ex) {
-		$author = null;
-	}
-$db2 -> close();
+$author = getAuthorById($row['author']);
 
 $dotpos = strrpos($row['headimage'], '.');
 $headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x640' . substr($row['headimage'], $dotpos);
-echo '<div class="ar-main">';
 echo '<div class="ar-head">';
 echo '<h1 class="p-title ar-title"><a class="ajax" href=?p='. $row['id'] .'>'. $row['title']. '</a></h1>';
 echo '<div style="ar-meta"><span class="label label-info">'.$row['timestamp'].'</span>';
@@ -45,11 +37,14 @@ if($author == null) {
 	echo '<a href="?author='. $author['userid'] .'" class="ajaxtags ar-author"><span class="badge badge-warning"><i class="icon-user icon-white"></i>'. $author['name'] .'</span></a>';
 }
 echo '</span>';
-echo '<div class="admin-article"></div></div></div>';
+echo '<div class="admin-article"></div>';
+showSmallSocialButtons($row['title']);
+echo '</div></div>';
+echo '<div class="ar-main">';
 echo '<div class="ar-headimage"><img src="./data/' . $headimage_resized . '" /></div>';
 echo '<div class="ar-body">' . $row['body'] . '</div>';
 echo '</div>';
 echo '<div class="ar-footer">';
-echo '</div>';
 require dirname(__FILE__) . '/data/article-footer.php';
+echo '</div>';
 ?>

@@ -17,7 +17,7 @@ die();
 }
 
 if(isSysIdOrRoot($row['author']) == false) {
-die("この記事を編集する権限を持っていません。" + $session_user);
+die('<span class="label label-warning">編集権限なし</span>');
 }
 ?>
 <a class="label label-info ajax" href="?admin=edit-article&p=<?php echo $input_id; ?>"> <i class="icon-edit icon-white"></i>編集 </a>

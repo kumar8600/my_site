@@ -15,8 +15,8 @@ $sql = "SELECT sysid, userid, name, email, website, introduction FROM user WHERE
 $row = queryFetchArrayDB($db, $sql);
 $db -> close();
 
-$ifrootid;
-$ifroothelp;
+$ifrootid = '';
+$ifroothelp = '';
 if($row['userid'] == "root") {
 	$ifrootid = 'readonly="readonly"';
 	$ifroothelp = 'rootユーザーのidは変更できません。';

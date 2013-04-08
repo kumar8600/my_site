@@ -1,8 +1,9 @@
 header {
 	overflow: hidden;
 }
-header img {
-	zoom: 0.5;
+.social img {
+	width: 20px;
+	height: 20px;
 }
 body {
 	background-color: #F2F2F2;
@@ -15,7 +16,6 @@ body {
 }
 #article {
 	float: right;
-	margin-left: 0;
 }
 
 #nav {
@@ -37,24 +37,31 @@ body {
 #fixed-menu {
 	position: fixed;
 	margin-left: 0;
-	left: 0px;
-	bottom: 0px;
+	left: 0;
+	bottom: 0;
 }
 
 #menu {
-	background-color: #363636;
+	background-color: rgba(0, 0, 0 ,0.5);
 	float: left;
 	overflow: hidden;
 }
 
 #menu-toggle {
-	float: left;
-	margin-left: 5px;
+	position: relative;
+	left: 5px;
+	bottom: 5px;
 	overflow: hidden;
-	background-color: #363636;
-	padding: 5px 25px;
+	width: 40px;
+	height: 40px;
+	background-color: rgba(0, 0, 0 ,0.5);
 	cursor: pointer;
-	border-radius: 30px 30px 0 0;
+	border-radius: 50%;
+	text-align: center;
+}
+#menu-toggle i {
+	position: relative;
+	top: 10px;
 }
 
 div.admin-article {
@@ -64,14 +71,14 @@ div.admin-article {
 h1.ar-title {
 	border-bottom: solid 1px #e5e5e5;
 	margin-top: 0px;
+	font-size: 42px;
+	line-height: 1.2;
+	letter-spacing: -1px;
 }
 h1.ar-title-thu {
 	border-bottom: solid 1px #e5e5e5;
-	font-size: 28px;
-	line-height: 29px;
 	margin-top: 0px;
 	margin-bottom: 5px;
-	text-shadow: 1px 1px 1px #FFFFFF;
 }
 
 h1, h2, h3 {
@@ -102,24 +109,25 @@ h1, h2, h3 {
 	font-size: 10px;
 }
 .ar-head {
+	float: left;
+	width: 100%;
 	margin-bottom: 10px;
 }
 .ar-head-thu {
 	position: relative;
 }
 .ar-meta {
-	box-sizing: border-box;
-	overflow: hidden;
-	position: absolute;
-	bottom: 5px;
-	left: 0;
-	padding: 5px;
-	background: rgba(255, 255, 255, 0.7);
-	width: 100%;
-	border-radius: 10px 10px 10px 10px;
 }
 .ar-meta:hover {
-	background-color: rgba(255, 255, 255, 0.8);
+}
+h1.ar-title a {
+	color: #040404;
+}
+h1.ar-title a:hover {
+	color: #000000;
+}
+h1.ar-title-thu a {
+	color: #000000;
 }
 
 .ar-headimage img {
@@ -162,6 +170,25 @@ h1, h2, h3 {
 
 .ar-preface {
 	padding: 20px 10px;
+}
+.ar-social {
+	padding: 15px;
+	margin: 0 auto;
+	overflow: hidden;
+	max-width: 600px;
+}
+
+.ar-social ul {
+	margin: 0;
+}
+
+.ar-social li {
+	float: left;
+	margin-right: 5px;
+	list-style-type: none;
+}
+.ar-social iframe {
+	margin: 0 !important;
 }
 
 .ar-social-thu {
@@ -216,22 +243,28 @@ ul.social {
 	h2, h3 {
 		line-height: 28px;
 	}
+	.dark legend {
+		width: 166px;
+	}
 }
 
 @media (min-width: 980px) {
+	.dark legend {
+		width: 220px;
+	}
 }
 
 @media (min-width: 1200px) {
 	.ar-main-thu {
-		float: right;
+		float: left;
 	}
 	.ar-headimage {
 		background-color: #f9f9f9;
 		margin-bottom: 20px;
 	}
 	.ar-social-thu {
-		border-radius: 10px 0 0 10px;
-		margin-left: 30px;
+		border-radius: 0 10px 10px 0;
+		padding-left: 60px;
 	}
 	.ar-social-thu li {
 		float: none;
@@ -240,29 +273,38 @@ ul.social {
 	.spacer {
 		margin-left: 10px;
 	}
+	.dark legend {
+		width: 270px;
+	}
+}
+#tag-search {
+	overflow: hidden;
+	margin-bottom: 20px;
+}
+.search {
+	padding: 10px 10px;
+	overflow: hidden;
+	border-bottom: solid 1px #BFBFBF;
+}
+.search img {
+	float: left;
+	width: 30%;
+	max-width: 100px;
+	margin-right: 10px;
 }
 
-div.tag-search {
-	height: 300px;
+.search a h2 {
+	color: #252525;
 }
 
-.tag-search img {
-	height: auto;
-}
-
-h1.ar-title a {
-	color: #05a;
-}
-h1.ar-title a:hover {
-	color: #D59392;
-}
-h1.ar-title-thu a {
-	color: #040404;
+.search-func {
+	text-align: center;
+	padding: 10px 10px;
 }
 
 @media (max-width: 767px) {
-	div.tag-search {
-		height: auto;
+	.dark legend {
+		width: 200px;
 	}
 }
 
@@ -355,14 +397,30 @@ table.comment textarea {
 	padding: 5px;
 	margin-bottom: 10px;
 	border-radius: 5px;
-	border: 1px solid #e8e8e8;
 }
 .dark legend {
-	color: #cfcfcf;
+	color: #FFFFFF;
+	font-size: 18px;
+	line-height: 20px;
 	margin-bottom: 5px;
+	border: none;
+	background: #8fb93d;
+	margin-top: -5px;
+	margin-left: -5px;
+	border-radius: 5px 5px 0 0;
+	padding: 3px 0 3px 0;
 }
 .dark a {
 	color: #cfcfcf;
+}
+
+.color-red {
+	background-color: #DD514C;
+	color: #FFFFFF;
+}
+.color-blue {
+	background-color: #139FF7;
+	color: #FFFFFF;
 }
 
 .end-of-world {
@@ -370,6 +428,26 @@ table.comment textarea {
 	text-align: center;
 	width: 100%;
 	background-color: #FED22F;
+}
+
+#home-button {
+	position: fixed;
+	left: 5px;
+	bottom: 45px;
+	background-color: rgba(0, 0, 0 ,0.5);
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	cursor: pointer;
+	border-radius: 50%;
+}
+#home-button i {
+	position: relative;
+	top: 10px;
+}
+
+#nav-toggle {
+	display: none;
 }
 @media (max-width: 767px) {
 	div.meta {
@@ -381,22 +459,20 @@ table.comment textarea {
 	table.comment th {
 		width: 110px;
 	}
-	#nav-fixed {
-		position: absolute;
-		width: 245px;
-		left: 0px;
-		padding-top: 60px;
-		top: 0;
-	}
 	#nav {
+		position: absolute;
 		float: left;
+		top: 0;
+		left: 0px;
 		background-color: #444;
 		width: 200px;
 		margin-left: -200px;
 	}
 	#nav-toggle {
-		float: left;
-		margin-top: 10px;
+		display: block;
+		float: right;
+		margin-right: -20px;
+		margin-top: 200px;
 		background-color: #363636;
 		cursor: pointer;
 		padding: 25px 5px;

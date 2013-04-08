@@ -132,7 +132,7 @@ function envReset() {
 	getSessionUser();
 	reloadAdminMenu();
 	thumbsReset();
-	tagSearchClose();
+	closeTagSearch();
 	loadNav();
 }
 

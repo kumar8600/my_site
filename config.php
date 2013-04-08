@@ -12,4 +12,5 @@ $plugins_config_path = $root_location . "/" . "data/plugins/config/";
 $plugin_ini_name = "plugin.ini";
 $config_folder_name = "config";
 $salt = '$5$rounds=5000$ultimateUNKO$';
+$preface_length = 100;
 ?>

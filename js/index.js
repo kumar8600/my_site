@@ -24,11 +24,12 @@ $(document).ready(function() {
 	autoLogin(function() {
 		loadByUrl();
 	});
-	setTimeout(function() {
-		window.addEventListener('popstate', function(ev) {
-			loadByUrl();
-		}, false);
-	}, 10);
+	History.Adapter.bind(window, 'statechange', function() {
+		loadByUrl();
+		//var State = History.getState();
+		// Note: We are using History.getState() instead of event.state
+		//History.log(State.data, State.title, State.url);
+	});
 });
 
 function getSplit(url) {
@@ -49,23 +50,17 @@ function getUrlVars() {
 function loadByUrl(scr) {
 	var vars = getUrlVars();
 	if (vars[0] == "p") {
-		articleLoadNoEffect('?p=' + vars['p']);
-		tagSearchClose();
+		articleLoad(window.location.search);
 	} else if (vars[0] == "tag") {
-		articleClose();
-		tagSearchLoad('?tag=' + vars['tag']);
+		tagSearchLoad(window.location.search);
 	} else if (vars[0] == "author") {
-		articleClose();
-		$("#thumbs").hide();
-		tagSearchLoad('?author=' + vars['author']);
+		tagSearchLoad(window.location.search);
 	} else if (vars[0] == "admin") {
 		loadAdminJs(function() {
-			articleLoad(window.location.search, scr);
+			articleLoad(window.location.search);
 		});
-		tagSearchClose();
 	} else if (vars[0] == "ajax") {
-		articleLoadNoEffect(window.location.search);
-		tagSearchClose();
+		articleLoad(window.location.search);
 	} else {
 		startThumbsLoad();
 		reset();
@@ -83,26 +78,26 @@ function changeSpan() {
 }
 
 function startThumbsLoad() {
-	$("#contents").show();
-
+	$("#contents").fadeIn();
+	$("#thumbs").show();
 	allowToLoad = true;
 	loadIfYouInBottom();
 }
 
 function resetThumbsLoad() {
-	$("#contents").hide()
 	$("#thumbs").empty();
 	thumbsLoaded = 0;
 	nowLoading = false;
 	allowToLoad = false;
+	allLoaded = false;
 }
 
 var thumbsLoaded = 0;
 var loadOnce = 1;
 var nowLoading = false;
 var allowToLoad = false;
-function appendThumbs(its) {
-	if (nowLoading == false && allowToLoad == true) {
+function appendThumbs(force) {
+	if ((nowLoading == false && allowToLoad == true) || (nowLoading == false && force === true)) {
 		nowLoading = true;
 		var url = './data/thumbnails.php';
 		$.get(url, {
@@ -113,8 +108,6 @@ function appendThumbs(its) {
 			$("div#t" + thumbsLoaded).fadeIn(function() {
 				socialButtonLoad();
 				$(this).removeClass("thumbs-buf");
-				if (its)
-					$(its).remove();
 				thumbsLoaded += loadOnce;
 				allowToLoad = !res.end;
 				nowLoading = false;
@@ -152,14 +145,15 @@ $("#menu-toggle").click(function() {
 });
 
 $(window).resize(function() {
-	if (navShow == false) {
+	if ($(window).width() >= 768) {
 		$("#nav").css({
-			marginLeft : '0'
+			marginLeft : ""
 		});
+		navShow = false;
 	}
 	if ($(window).width() < 768) {
 		$("#nav").css({
-			marginLeft : "-=" + $("#nav").width()
+			marginLeft : "-" + $("#nav").width()
 		});
 	}
 });
@@ -168,11 +162,11 @@ var navShow = false;
 function navToggle() {
 	if (navShow) {
 		$("#nav").animate({
-			marginLeft : "-=" + $("#nav").width(),
+			marginLeft : "-" + $("#nav").width(),
 		}, 500);
 	} else {
 		$("#nav").animate({
-			marginLeft : '0',
+			marginLeft : '',
 		}, 500);
 	}
 	navShow = !navShow;
@@ -182,6 +176,14 @@ function navToggle() {
 $("#nav-toggle").click(function() {
 	navToggle();
 });
+
+function showHomeButton() {
+	$("#home-button").fadeIn();
+}
+
+function hideHomeButton() {
+	$("#home-button").fadeOut();
+}
 
 function showAlert(msg) {
 	$("div#alert-div").prepend("<div>" + msg + "</div>");
@@ -225,44 +227,73 @@ function socialButtonLoad() {
 }
 
 function contentsReset(func) {
-	$("#contents").show();
-	$("#contents").animate({
-		marginLeft : 0,
-	}, 500, function() {
-		startThumbsLoad();
-		if ( typeof (func) == "function") {
-			func();
-		}
-	})
+	$("#contents").fadeIn();
+	if (viewingArticle == true) {
+		//startThumbsLoad();
+		hideHomeButton();
+		$("#contents").hide();
+		$("#article").animate({
+			marginRight : '-=' + $(window).width() + 'px',
+		});
+		$("#contents").animate({
+			marginLeft : '+=' + 10 + 'px',
+		}, 20, function() {
+			$("#contents").fadeIn('fast');
+			$("#contents").animate({
+				marginLeft : '',
+			}, 250, function() {
+				$("#contents").css({
+					marginLeft : ''
+				});
+			});
+			if ( typeof (func) == "function") {
+				func();
+			}
+		})
+		viewingArticle = false;
+	}
+
 }
 
+var viewingArticle = false;
 function contentsLeft(func) {
-	$("#article").css({
-		marginRight : '0',
-	})
-	$("#contents").animate({
-		marginLeft : '-=' + $(window).width() + 'px',
-		opacity : '0',
-	}, 500, function() {
-		$("#contents").css({
-			opacity : '1',
-		});
-		resetThumbsLoad();
-		if ( typeof (func) == "function") {
-			func();
-		}
-	})
+	if (viewingArticle == false) {
+		viewingArticle = true;
+		showHomeButton();
+		$("#article").animate({
+			marginRight : '0',
+		})
+		$("#contents").animate({
+			marginLeft : '-=' + $(window).width() + 'px',
+			opacity : '0',
+		}, 500, function() {
+			$("#contents").css({
+				opacity : '1',
+			}, function() {
+				$("#contents").hide();
+			});
+			resetThumbsLoad();
+			if ( typeof (func) == "function") {
+				func();
+			}
+		})
+		viewingArticle = true;
+	}
 }
 
 function getRealUrl(url) {
 	var realUrl = url;
 	var vars = getSplit(url);
-	if (vars[0] == "p")
+	if (vars[0] == "p") {
 		realUrl = 'article.php' + url;
-	if (vars[0] == "admin")
+	} else if (vars[0] == "admin") {
 		realUrl = 'admin.php' + url;
-	if (vars[0] == "ajax") {
+	} else if (vars[0] == "ajax") {
 		realUrl = url.replace("?ajax=", "");
+	} else if (vars[0] == "tag") {
+		realUrl = 'data/tag-search.php' + url;
+	} else if (vars[0] == "author") {
+		realUrl = 'data/author-search.php' + url;
 	}
 	return realUrl;
 }
@@ -283,30 +314,24 @@ function articleLoadNoEffect(url) {
 
 function articleLoad(url, func) {
 	var realUrl = getRealUrl(url);
-	if (func != 'noscroll') {
-		var scrollTo;
-		scrollTo = 30;
-		$("html, body").animate({
-			scrollTop : scrollTo
-		});
-	}
 	contentsLeft(function() {
-		$("#article").load(realUrl, function() {
-			if (func == 'push') {
-				history.pushState(null, null, url);
-			}
-			changeTitle();
-			removeImgHeight();
-			if (adminMode) {
-				adminArticle(url);
-			}
-			if ($.isFunction(func)) {
-				func();
-			}
-			$(this).fadeIn("fast");
-			socialButtonLoad();
-		});
 	});
+	$("#article").load(realUrl, function() {
+		if (func == 'push') {
+			History.pushState(null, null, url);
+		}
+		changeTitle();
+		removeImgHeight();
+		if (adminMode) {
+			adminArticle(url);
+		}
+		if ($.isFunction(func)) {
+			func();
+		}
+		$(this).fadeIn("fast");
+		socialButtonLoad();
+	});
+
 }
 
 function thumbsReset(func) {
@@ -341,21 +366,24 @@ function articleClose(func) {
 	});
 }
 
-function tagSearchClose() {
-	$("div#tag-search").hide();
-}
-
 function reset(push) {
-	articleClose();
-	tagSearchClose();
-	contentsReset();
-	$(".active").removeClass("active");
+	removeSearchContainers();
 	if (push) {
-		history.pushState(null, null, './');
-		changeTitleTop();
+		History.pushState(null, null, './');
+		return true;
 	}
+	articleClose();
+	contentsReset();
 
 	$("#tags-li").load("./data/tags.php");
+}
+
+function scrollTop() {
+	var scrollTo;
+	scrollTo = 30;
+	$("html, body").animate({
+		scrollTop : scrollTo
+	}, 500);
 }
 
 
@@ -366,66 +394,60 @@ $("body").on("click", "a.reset", function() {
 
 $("body").on("click", ".ajax", function() {
 	var thishref = $(this).attr("href");
-	articleLoad(thishref, 'push');
-	$(".viewing").removeClass("viewing");
-	$(this).children().toggleClass("viewing");
+	History.pushState(null, null, thishref);
+	scrollTop();
 	return false;
 });
-
-$("body").on("click", ".ajaxthumbs", function() {
-	var thishref = $(this).attr("href");
-	articleClose();
-	return false;
-});
-
-function tagSearchLoad(url) {
-	if (url.indexOf("?tag") == 0) {
-		url = 'data/tag-search.php' + url;
-	} else if (url.indexOf("?author") == 0) {
-		url = 'data/author-search.php' + url;
-	}
-
-	$("div#tag-search").slideUp(function() {
-		$("div#tag-search").load(url, function() {
-			$(this).slideDown("fast");
-			changeTitle();
-		});
-	});
-
-}
-
-function closeTagSearch() {
-	$("div#tag-search").slideUp(function() {
-		history.pushState(null, null, './');
-		$("div#tag-search").empty();
-		changeTitle();
-		thumbsOpen();
-	});
-	$("li.active").removeClass("active");
-
-}
-
 
 $("body").on("click", "a.ajaxtags", function() {
-	$("li.active").removeClass("active");
-	$(this).parent().toggleClass("active");
-	var thishref = $(this).attr("href");
-	articleClose(function() {
-		history.pushState(null, null, thishref);
-		tagSearchLoad(thishref);
-	});
-	$("div#thumbs").slideUp();
+	var url = $(this).attr("href");
+	var objective = this;
+	if ($(objective).closest(".ar-thu-container").length == 0) {
+		History.pushState(null, null, url);
+	}
+	if (!viewingArticle) {
+		var realUrl = getRealUrl(url);
+		$.get(realUrl, function(res) {
+			$(objective).closest(".ar-thu-container").children(".search-container").slideUp(function() {
+				$(this).remove();
+			});
+			$(objective).closest(".ar-thu-container").prepend(res);
+			$(objective).closest(".ar-thu-container").children(".search-container").slideDown();
+			$("html, body").animate({
+				scrollTop : $(objective).closest(".ar-thu-container").offset().top
+			}, 500);
+		});
+	} else {
+		History.pushState(null, null, url);
+	}
+
 	return false;
 });
 
-function thumbsOpen() {
-	$("div#thumbs").fadeIn('normal', function() {
+function removeSearchContainers() {
+	var targets = $(".search-container");
+	$(".search-container").slideUp(function() {
+		$(targets).remove();
 	});
+}
+
+function tagSearchLoad(url) {
+	contentsReset();
+	url = getRealUrl(url);
+
+	$.get(url, function(res) {
+		removeSearchContainers();
+		$("#thumbs").prepend(res);
+		$(".search-container").slideDown();
+		changeTitle();
+	});
+
 }
 
 
 $("body").on("click", "button#closeTagSearch", function() {
-	closeTagSearch();
+	History.back();
+
 	return false;
 });
 

@@ -2,6 +2,7 @@
 require_once dirname(__FILE__) . '/admin/session.php';
 require_once dirname(__FILE__) . '/connect-db.php';
 require_once dirname(__FILE__) . '/aux-tag.php';
+require_once dirname(__FILE__) . '/make-preface.php';
 
 $db = connectDB();
 
@@ -18,16 +19,22 @@ if ($input['author'] == "") {
 array_map("ifUnSetDie", $input);
 $input['rowid'] = $_POST['rowid'];
 
-$input = array_map(array($db, 'escapeString'), $input);
-
 // 同じタイトルを持つ記事がないかチェックする
 if (empty($input['rowid'])) {
-	$sql = "SELECT title FROM article WHERE title = '" . $input['title'] . "';";
+	$sql = "SELECT COUNT(*) FROM article WHERE title = :title";
+	$stmt = $db -> prepare($sql);
+	$stmt -> bindValue(":title", $input['title']);
 } else {
-	$sql = "SELECT title FROM article WHERE title = '" . $input['title'] . "' AND id <> " . $input['rowid'] . ";";
+	$sql = "SELECT COUNT(*) FROM article WHERE title = :title AND id <> :id;";
+	$stmt = $db -> prepare($sql);
+	$stmt -> bindValue(":title", $input['title']);
+	$stmt -> bindValue(":id", $input['rowid']);
 }
+$result = $stmt -> execute();
+$row = $result -> fetchArray();
+$num = $row['COUNT(*)'];
 
-if (isExistDB($db, $sql))
+if ($num > 0)
 	die("既に同じタイトルを持つ記事があります。違うタイトルに変更してください。");
 
 // タグの文字列を整え、"タグ1¥nタグ2¥n" と言った並びにする
@@ -38,17 +45,34 @@ $input_tags = "\n" . $input_tags . "\n";
 
 // SQLiteに対する処理
 if (empty($input['rowid'])) {
-	$sql = "INSERT INTO article (title, body, headimage, tag, author) VALUES('" . $input['title'] . "', '" . $input['body'] . "', '" . $input['headimage'] . "', '" . $input_tags . "', '" . $input['author'] . "');";
+	$sql = "INSERT INTO article (title, body, preface, headimage, tag, author) VALUES(:title, :body, :preface, :headimage, :tag, :author);";
+	$stmt = $db -> prepare($sql);
 } else {
-	$sql = "SELECT author, tag FROM article WHERE rowid = " . $input['rowid'] . ";";
-	$row = queryFetchArrayDB($db, $sql);
-	if ($row['author'] != $input['author']) {
+	// 記事書き換えの場合、著者が同じか調べる
+	$sql = "SELECT author, tag FROM article WHERE rowid = :id";
+	$stmt = $db -> prepare($sql);
+	$stmt -> bindValue(":id", $input['rowid']);
+	$result = $stmt -> execute();
+	$row = $result -> fetchArray();
+	if (!isSysIdOrRoot($row['author'])) {
 		die("この記事を編集する権限を持っていません。");
 	}
+	
 	$old_tags = $row['tag'];
-	$sql = "UPDATE article SET title = '" . $input['title'] . "', body = '" . $input['body'] . "', headimage = '" . $input['headimage'] . "', tag = '" . $input_tags . "' WHERE rowid = " . $input['rowid'] . ";";
+	$sql = "UPDATE article SET title = :title, body = :body, preface = :preface, headimage = :headimage, tag = :tag WHERE rowid = :id;";
+	$stmt = $db -> prepare($sql);
+	$stmt -> bindValue(":id", $input['rowid']);
 }
-$result = $db -> query($sql);
+$stmt -> bindValue(":title", $input['title']);
+$stmt -> bindValue(":body", $input['body']);
+$stmt -> bindValue(":headimage", $input['headimage']);
+$stmt -> bindValue(":tag", $input_tags);
+$stmt -> bindValue(":author", $input['author']);
+// 序文を作る
+$input_preface = makePreface($input['body']);
+$stmt -> bindValue(":preface", $input_preface);
+
+$result = $stmt -> execute();
 
 if (!$result) {
 	die($input_rowid . '記事のインサートクエリーに失敗: ' . $sqlerror);
@@ -65,7 +89,6 @@ if (empty($input['rowid'])) {
 	$old_tags_arr = preg_split("/\s+/", $old_tags, -1, PREG_SPLIT_NO_EMPTY);
 	updateAuxTags($tags, $old_tags_arr);
 }
-
 
 if (empty($input['rowid'])) {
 	echo('OK: 記事「' . $title . '」の作成に成功');

@@ -18,7 +18,7 @@ function createTableArticle() {
 	if(isTableExists($db, "article")) {
 		return true;
 	}
-	$sql = "CREATE TABLE article (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp DEFAULT(datetime('now', 'localtime')), title TEXT, body TEXT, preface TEXT, headimage TEXT, tag TEXT, author TEXT);";
+	$sql = "CREATE TABLE article (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp DEFAULT(datetime('now', 'localtime')), title TEXT, body TEXT, preface TEXT, headimage TEXT, tag TEXT, author INTEGER);";
 
 	$ret = createTableAbs($db, $sql);
 	return $ret;

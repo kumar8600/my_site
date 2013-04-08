@@ -35,7 +35,6 @@ function fetchArrayDB($result) {
 	if (!$row) {
 		throw new Exception("クエリのフェッチ(配列への変換)に失敗");
 	}
-	$row = array_map("stripslashes", $row);
 	return $row;
 }
 
@@ -61,7 +60,7 @@ function isTableExists($db, $name) {
 	$stmt -> bindValue(':name', $name, SQLITE3_TEXT);
 	$result = $stmt -> execute();
 	$row = $result -> fetchArray(SQLITE3_NUM);
-	if($row[0] == 0) {
+	if ($row[0] == 0) {
 		return false;
 	}
 	return true;
@@ -86,7 +85,7 @@ function canRegister() {
 	$db = connectSettingsDB();
 	$sql = "SELECT allowregist FROM site WHERE id = 1;";
 	$row = $db -> querySingle($sql);
-	if($row == 1) {
+	if ($row == 1) {
 		return true;
 	}
 	return false;
@@ -104,6 +103,33 @@ function getSiteName() {
 	$result = $db -> query($sql);
 	$row = $result -> fetchArray();
 	return $row['name'];
+}
+
+function getAuthorById($id) {
+	$db = connectAuthDB();
+	$sql = "SELECT userid, name FROM user WHERE sysid = :id;";
+	$stmt = $db -> prepare($sql);
+	$stmt -> bindValue(":id", $id);
+	try {
+		$result = $stmt -> execute();
+		$author = $result -> fetchArray();
+	} catch(Exception $ex) {
+		$author = null;
+	}
+	$db -> close();
+	return $author;
+}
+
+function getAuthorByUserId($userid) {
+	$db = connectAuthDB();
+	$sql = "SELECT sysid, name FROM user WHERE userid = :userid";
+	$stmt = $db -> prepare($sql);
+	$stmt -> bindValue(":userid", $userid);
+	$result = $stmt -> execute();
+
+	$author = $result -> fetchArray();
+	$db -> close();
+	return $author;
 }
 
 function myCrypt($word) {

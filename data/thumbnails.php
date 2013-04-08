@@ -40,10 +40,8 @@ while ($row = $result -> fetchArray()) {
 	$dotpos = strrpos($row['headimage'], '.');
 	$headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x640' . substr($row['headimage'], $dotpos);
 	echo '<div class="ar-thu-container">';
-	echo '<div class="ar-main-thu">';
 	echo '<div class="ar-head-thu">';
-	echo '<span class="ar-headimage-thu"><a class="ajax" href="?p=' . $row['id'] . '"><img src="./data/' . $headimage_resized . '" /></a></span>';
-	echo '<div class="ar-meta ajax" href="?p=' . $row['id'] . '">';
+	echo '<div class="ar-meta">';
 	echo '<h1 class="ar-title-thu"><a class="ajax" href="?p='.$row['id'].'">'. $row['title']. '</a></h1>';
 	
 	echo '<span class="label label-info">' . $row['timestamp'] . '</span>';
@@ -60,9 +58,14 @@ while ($row = $result -> fetchArray()) {
 		echo '<a href="?author=' . $author['userid'] . '" class="ajaxtags ar-author"><span class="badge badge-warning"><i class="icon-user icon-white"></i>' . $author['name'] . '</span></a>';
 	}
 	echo '</span></div></div>';
-	echo '<div class="ar-preface">うんこっこっこっここ。うわぁ凄いいいですねぇ。';
+	
+	echo '<div class="ar-main-thu">';
+	echo '<span class="ar-headimage-thu"><a class="ajax" href="?p=' . $row['id'] . '"><img src="./data/' . $headimage_resized . '" /></a></span>';
+	
+	echo '<div class="ar-preface">';
+	echo $row['preface'];
 	echo '</div>';
-	echo '<a class="ajax" href="?p=' . $row['id'] . '"><span>続きを読む</span></a>';
+	echo '<a class="ajax" href="?p=' . $row['id'] . '"><span>...続きを読む</span></a>';
 	echo '</div>';
 	echo '<div class="ar-social-thu">';
 	showSocialButtons($row['id'], $row['title'], $name);
