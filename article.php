@@ -21,6 +21,7 @@ $author = getAuthorById($row['author']);
 
 $dotpos = strrpos($row['headimage'], '.');
 $headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x640' . substr($row['headimage'], $dotpos);
+echo '<div class="ar-main">';
 echo '<div class="ar-head">';
 echo '<h1 class="p-title ar-title"><a class="ajax" href=?p='. $row['id'] .'>'. $row['title']. '</a></h1>';
 echo '<div style="ar-meta"><span class="label label-info">'.$row['timestamp'].'</span>';
@@ -40,7 +41,6 @@ echo '</span>';
 echo '<div class="admin-article"></div>';
 showSmallSocialButtons($row['title']);
 echo '</div></div>';
-echo '<div class="ar-main">';
 echo '<div class="ar-headimage"><img src="./data/' . $headimage_resized . '" /></div>';
 echo '<div class="ar-body">' . $row['body'] . '</div>';
 echo '</div>';

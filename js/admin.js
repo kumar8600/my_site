@@ -29,18 +29,20 @@ function getSessionUserName() {
 }
 
 function administer() {
-
-	adminMode = true;
-	$(".login").hide();
-	$("#loginform").hide();
-	$("div.admin-menu").show();
-	$("a.userid").html(getSessionUserName() + "(" + getSessionUser() + ")");
-	$("a.userid").attr("href", "?author=" + getSessionUser());
-	if (getSessionUser() == "root") {
-		$(".root-only").show();
-	} else {
-		$(".root-only").hide();
-	}
+	loadAdminMenu(function() {
+		adminMode = true;
+		$(".login").hide();
+		$("#loginform").hide();
+		$("div.admin-menu").show();
+		$("a.userid").html(getSessionUserName() + "(" + getSessionUser() + ")");
+		$("a.userid").attr("href", "?author=" + getSessionUser());
+		if (getSessionUser() == "root") {
+			$(".root-only").show();
+		} else {
+			$(".root-only").hide();
+		}
+		hideAdminMenu();
+	})
 }
 
 var loginFormLoaded = false;
@@ -131,8 +133,7 @@ function envReset() {
 	removeSessionUser();
 	getSessionUser();
 	reloadAdminMenu();
-	thumbsReset();
-	closeTagSearch();
+	contentsReset();
 	loadNav();
 }
 
@@ -166,3 +167,40 @@ $("body").on("click", ".editorform input[type=submit]", function() {
 	ajaxForm(arr, path);
 	return false;
 });
+
+function loadAdminMenu(func) {
+	$("#admin-menu-container").load("./data/admin/admin-menu.php", function() {
+		if ( typeof (func) == "function") {
+			func();
+		}
+	});
+}
+
+function hideAdminMenu() {
+	$("#admin-menu").animate({
+		marginBottom : "-" + $("#admin-config").outerHeight() + "px"
+	});
+	adminMenuShowing = false;
+}
+
+function showAdminMenu() {
+	$("#admin-menu").animate({
+		marginBottom : "0"
+	});
+	adminMenuShowing = true;
+}
+
+var adminMenuShowing = false;
+function toggleAdminMenu() {
+	if (adminMenuShowing) {
+		hideAdminMenu();
+	} else {
+		showAdminMenu();
+	}
+}
+
+
+$("body").on("click", ".config-toggle", function() {
+	toggleAdminMenu();
+	return false;
+}); 

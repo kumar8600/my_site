@@ -21,7 +21,7 @@ function showArticleMeta($row, $author) {
 		echo '<a href="?author=' . $author['userid'] . '" class="ajaxtags ar-author"><span class="badge badge-warning"><i class="icon-user icon-white"></i>' . $author['name'] . '</span></a>';
 	}
 	echo '</span>';
-	echo('	<a href="?p=' . $row['id'] . '" class="ajax"><h2 class="search-title">' . $row['title'] . ' </h2></a>
+	echo('	<a href="?p=' . $row['id'] . '" class="ajax"><h4 class="search-title">' . $row['title'] . ' </h4></a>
 			</div>
 			</div>
 			');

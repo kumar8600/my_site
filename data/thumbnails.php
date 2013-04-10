@@ -40,6 +40,7 @@ while ($row = $result -> fetchArray()) {
 	$dotpos = strrpos($row['headimage'], '.');
 	$headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x640' . substr($row['headimage'], $dotpos);
 	echo '<div class="ar-thu-container">';
+	echo '<div class="ar-thu">';
 	echo '<div class="ar-head-thu">';
 	echo '<div class="ar-meta">';
 	echo '<h1 class="ar-title-thu"><a class="ajax" href="?p='.$row['id'].'">'. $row['title']. '</a></h1>';
@@ -67,11 +68,12 @@ while ($row = $result -> fetchArray()) {
 	echo '</div>';
 	echo '<a class="ajax" href="?p=' . $row['id'] . '"><span>...続きを読む</span></a>';
 	echo '</div>';
-	echo '<div class="ar-social-thu">';
-	showSocialButtons($row['id'], $row['title'], $name);
-	echo '</div>';
+	//echo '<div class="ar-social-thu">';
+	//showSocialButtons($row['id'], $row['title'], $name);
+	//echo '</div>';
 	$i++;
 	$c++;
+	echo '</div>';
 	echo '</div>';
 }
 $db -> close();

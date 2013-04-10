@@ -1,5 +1,6 @@
 var adminMode = false;
 var adminLoaded = false;
+var loadIndicator = '<div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div>';
 function autoLogin(func) {
 	$.get("./data/admin/auto-login.php", function(res) {
 		if (res) {
@@ -62,7 +63,6 @@ function loadByUrl(scr) {
 	} else if (vars[0] == "ajax") {
 		articleLoad(window.location.search);
 	} else {
-		startThumbsLoad();
 		reset();
 	}
 }
@@ -78,18 +78,18 @@ function changeSpan() {
 }
 
 function startThumbsLoad() {
-	$("#contents").fadeIn();
-	$("#thumbs").show();
 	allowToLoad = true;
 	loadIfYouInBottom();
 }
 
 function resetThumbsLoad() {
-	$("#thumbs").empty();
 	thumbsLoaded = 0;
 	nowLoading = false;
 	allowToLoad = false;
 	allLoaded = false;
+	$("#thumbs").fadeOut(function() {
+		$("#thumbs").empty();
+	});
 }
 
 var thumbsLoaded = 0;
@@ -106,6 +106,9 @@ function appendThumbs(force) {
 		}, function(res) {
 			$("div#thumbs").append('<div class="hide" id="t' + thumbsLoaded + '">' + res.echo + '</div>');
 			$("div#t" + thumbsLoaded).fadeIn(function() {
+				if (allowToLoad == false) {
+					return false;
+				}
 				socialButtonLoad();
 				$(this).removeClass("thumbs-buf");
 				thumbsLoaded += loadOnce;
@@ -227,31 +230,31 @@ function socialButtonLoad() {
 }
 
 function contentsReset(func) {
-	$("#contents").fadeIn();
-	if (viewingArticle == true) {
-		//startThumbsLoad();
-		hideHomeButton();
-		$("#contents").hide();
-		$("#article").animate({
-			marginRight : '-=' + $(window).width() + 'px',
-		});
+	//	if (viewingArticle == true) {
+	hideHomeButton();
+	articleClose(function() {
 		$("#contents").animate({
-			marginLeft : '+=' + 10 + 'px',
 		}, 20, function() {
-			$("#contents").fadeIn('fast');
 			$("#contents").animate({
 				marginLeft : '',
 			}, 250, function() {
+				$("#contents").fadeIn();
+				$("#thumbs").show();
+				if (func != "noLoad")
+					startThumbsLoad();
 				$("#contents").css({
 					marginLeft : ''
 				});
+				if ( typeof (func) == "function") {
+					func();
+				}
 			});
-			if ( typeof (func) == "function") {
-				func();
-			}
+
 		})
-		viewingArticle = false;
-	}
+	});
+
+	viewingArticle = false;
+	//	}
 
 }
 
@@ -259,20 +262,14 @@ var viewingArticle = false;
 function contentsLeft(func) {
 	if (viewingArticle == false) {
 		viewingArticle = true;
+		resetThumbsLoad();
 		showHomeButton();
 		$("#article").animate({
 			marginRight : '0',
 		})
 		$("#contents").animate({
-			marginLeft : '-=' + $(window).width() + 'px',
-			opacity : '0',
+			marginLeft : '-=' + $(window).width() + 'px'
 		}, 500, function() {
-			$("#contents").css({
-				opacity : '1',
-			}, function() {
-				$("#contents").hide();
-			});
-			resetThumbsLoad();
 			if ( typeof (func) == "function") {
 				func();
 			}
@@ -314,8 +311,10 @@ function articleLoadNoEffect(url) {
 
 function articleLoad(url, func) {
 	var realUrl = getRealUrl(url);
+	$("#article").show("fast");
 	contentsLeft(function() {
 	});
+	$("#article").html(loadIndicator);
 	$("#article").load(realUrl, function() {
 		if (func == 'push') {
 			History.pushState(null, null, url);
@@ -328,26 +327,10 @@ function articleLoad(url, func) {
 		if ($.isFunction(func)) {
 			func();
 		}
-		$(this).fadeIn("fast");
 		socialButtonLoad();
+
 	});
 
-}
-
-function thumbsReset(func) {
-	$("#thumbs").fadeOut("fast", function() {
-		$(this).empty().queue(function() {
-			thumbsLoaded = 0;
-			allLoaded = false;
-			appendThumbs();
-			$(this).dequeue();
-		});
-
-		$(this).fadeIn("fast");
-		if ($.isFunction(func)) {
-			func();
-		}
-	})
 }
 
 function articleClose(func) {
@@ -372,8 +355,8 @@ function reset(push) {
 		History.pushState(null, null, './');
 		return true;
 	}
-	articleClose();
 	contentsReset();
+	changeTitleTop();
 
 	$("#tags-li").load("./data/tags.php");
 }
@@ -413,9 +396,12 @@ $("body").on("click", "a.ajaxtags", function() {
 			});
 			$(objective).closest(".ar-thu-container").prepend(res);
 			$(objective).closest(".ar-thu-container").children(".search-container").slideDown();
-			$("html, body").animate({
-				scrollTop : $(objective).closest(".ar-thu-container").offset().top
-			}, 500);
+			if ($(document).scrollTop() > $(objective).closest(".ar-thu-container").offset().top) {
+				$("html, body").animate({
+					scrollTop : $(objective).closest(".ar-thu-container").offset().top
+				}, 500);
+			}
+
 		});
 	} else {
 		History.pushState(null, null, url);
@@ -432,7 +418,7 @@ function removeSearchContainers() {
 }
 
 function tagSearchLoad(url) {
-	contentsReset();
+	contentsReset("noLoad");
 	url = getRealUrl(url);
 
 	$.get(url, function(res) {

@@ -120,6 +120,9 @@ function htmlCut($str, $length) {
 		while (true) {
 			// タグ内に更にタグが書いてあるか調べ(<unko<tinko></tinko> >みたいな)、そうなら正しい$tag_endを探す
 			$buf_start = mb_strpos($str, "<", $buf_start + 1);
+			if ($buf_start === false) {
+				break;
+			}
 			if ($buf_start < $tag_end) {
 				$tag_end = mb_strpos($str, ">", $tag_end + 1);
 			} else {
