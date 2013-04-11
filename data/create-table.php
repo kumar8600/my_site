@@ -6,6 +6,11 @@ if (createTableArticle()) {
 } else {
 	die("記事用テーブルの作成に失敗。");
 }
+if (createTableMapTag()) {
+	//echo("タグ用テーブルの作成に成功。");
+} else {
+	die("タグ用テーブルの作成に失敗。");
+}
 if (createTableAuxTag()) {
 	//echo("タグ補助用テーブルの作成に成功。");
 } else {

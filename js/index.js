@@ -25,6 +25,7 @@ $(document).ready(function() {
 	autoLogin(function() {
 		loadByUrl();
 	});
+	loadFooter();
 	History.Adapter.bind(window, 'statechange', function() {
 		loadByUrl();
 		//var State = History.getState();
@@ -50,18 +51,14 @@ function getUrlVars() {
 
 function loadByUrl(scr) {
 	var vars = getUrlVars();
-	if (vars[0] == "p") {
+	if (vars[0] == "p" || vars[0] == "ajax") {
 		articleLoad(window.location.search);
-	} else if (vars[0] == "tag") {
-		tagSearchLoad(window.location.search);
-	} else if (vars[0] == "author") {
+	} else if (vars[0] == "tag" || vars[0] == "author" || vars[0] == "date") {
 		tagSearchLoad(window.location.search);
 	} else if (vars[0] == "admin") {
 		loadAdminJs(function() {
 			articleLoad(window.location.search);
 		});
-	} else if (vars[0] == "ajax") {
-		articleLoad(window.location.search);
 	} else {
 		reset();
 	}
@@ -225,37 +222,45 @@ function changeTitleTop() {
 function socialButtonLoad() {
 	if ("twttr" in window) {
 		twttr.widgets.load();
+	}
+	if ("gapi" in window) {
 		gapi.plusone.go();
 	}
 }
 
 function contentsReset(func) {
-	//	if (viewingArticle == true) {
-	hideHomeButton();
-	articleClose(function() {
-		$("#contents").animate({
-		}, 20, function() {
+	if (viewingArticle == true) {
+		hideHomeButton();
+		articleClose(function() {
 			$("#contents").animate({
-				marginLeft : '',
-			}, 250, function() {
-				$("#contents").fadeIn();
-				$("#thumbs").show();
-				if (func != "noLoad")
-					startThumbsLoad();
-				$("#contents").css({
-					marginLeft : ''
+			}, 20, function() {
+				$("#contents").animate({
+					marginLeft : '',
+				}, 250, function() {
+					$("#contents").css({
+						marginLeft : ''
+					});
+
+					$("#contents").fadeIn();
+					$("#thumbs").show();
+					if (func != "noLoad")
+						startThumbsLoad();
+
+					if ( typeof (func) == "function") {
+						func();
+					}
 				});
-				if ( typeof (func) == "function") {
-					func();
-				}
-			});
 
-		})
-	});
+			})
+		});
 
-	viewingArticle = false;
-	//	}
-
+		viewingArticle = false;
+	} else {
+$("#contents").fadeIn();
+					$("#thumbs").show();
+					if (func != "noLoad")
+						startThumbsLoad();
+	}
 }
 
 var viewingArticle = false;
@@ -291,6 +296,8 @@ function getRealUrl(url) {
 		realUrl = 'data/tag-search.php' + url;
 	} else if (vars[0] == "author") {
 		realUrl = 'data/author-search.php' + url;
+	} else if (vars[0] == "date") {
+		realUrl = 'data/date-search.php' + url;
 	}
 	return realUrl;
 }
@@ -364,9 +371,11 @@ function reset(push) {
 function scrollTop() {
 	var scrollTo;
 	scrollTo = 30;
-	$("html, body").animate({
-		scrollTop : scrollTo
-	}, 500);
+	if ($(document).scrollTop() > scrollTo) {
+		$("html, body").animate({
+			scrollTop : scrollTo
+		}, 500);
+	}
 }
 
 
@@ -462,6 +471,10 @@ function loadArticleFooter() {
 
 function loadArticleComments() {
 	$("div.comments").load("./data/comment/list-comments.php" + window.location.search);
+}
+
+function loadFooter() {
+	$("footer").load("./data/footer.php");
 }
 
 function commentForm(arr, path) {

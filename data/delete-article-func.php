@@ -20,7 +20,7 @@ function deleteArticle($id) {
 
 	// タグ補助テーブルに対する処理
 	$row['tag'] = preg_split("/\s+/", $row['tag'], -1, PREG_SPLIT_NO_EMPTY);
-	updateAuxTags(null, $row['tag']);
+	updateAuxTags($id, null, $row['tag']);
 
 	$db -> close();
 }

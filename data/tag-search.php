@@ -20,9 +20,11 @@
 
 	$db = connectDB();
 	// 該当する件数を調べる。
-	$sql = "SELECT COUNT(*) FROM article WHERE tag LIKE :tag";
+	//$sql = "SELECT COUNT(*) FROM article WHERE tag LIKE :tag";
+	$sql = "SELECT COUNT(*) FROM map_tag WHERE tagid = (SELECT id FROM aux_tag WHERE name = :name)";
 	$stmt = $db -> prepare($sql);
-	$stmt -> bindValue(":tag", "%" . $input_tag . "%");
+	//$stmt -> bindValue(":tag", "%" . $input_tag . "%");
+	$stmt -> bindValue(":name", $input_tag);
 	$result = $stmt -> execute();
 	$row = $result -> fetchArray();
 	$match_count = $row[0];
@@ -44,9 +46,11 @@
 		echo '<a class="ajaxtags" href="?tag=' . $input_tag . '&offset=' . $back_offset . '&limit=' . $limit . '"><div class="search-func color-blue">前の' . $back_limit . '件</div></a>';
 	}
 
-	$sql = "SELECT id, timestamp, title, headimage, tag, author FROM article WHERE tag LIKE :tag ORDER BY article.rowid DESC LIMIT :limit OFFSET :offset";
+	//$sql = "SELECT id, timestamp, title, headimage, tag, author FROM article WHERE tag LIKE :tag ORDER BY article.rowid DESC LIMIT :limit OFFSET :offset";
+	$sql = "SELECT id, timestamp, title, headimage, tag, author FROM article WHERE id = (SELECT articleid FROM map_tag WHERE tagid = (SELECT id FROM aux_tag WHERE name = :tag)) ORDER BY article.rowid DESC LIMIT :limit OFFSET :offset";
 	$stmt = $db -> prepare($sql);
-	$stmt -> bindValue(":tag", "%" . $input_tag . "%");
+	//$stmt -> bindValue(":tag", "%" . $input_tag . "%");
+	$stmt -> bindValue(":tag", $input_tag);
 	$stmt -> bindValue(":limit", $limit, SQLITE3_INTEGER);
 	$stmt -> bindValue(":offset", $offset, SQLITE3_INTEGER);
 	$result = $stmt -> execute();

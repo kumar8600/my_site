@@ -17,6 +17,7 @@
 		<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 		<!-- 自分で書いたやつ -->
 		<link href="css/mystyle.css" rel="stylesheet">
+		<script src="js/jquery-1.9.1.min.js"></script>
 	</head>
 	<body>
 		
@@ -60,12 +61,8 @@
 		</div>
 		<div id="admin-menu-container"></div>
 		<footer>
-			<?php
-			include dirname(__FILE__) . '/data/footer.php';
-			?>
 		</footer>
 		
-		<script src="js/jquery-1.9.1.min.js"></script>
 		<script src="js/history/scripts/bundled/html4+html5/jquery.history.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/index.js"></script>

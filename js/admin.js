@@ -57,7 +57,6 @@ function showLoginForm() {
 				}, function(res) {
 					if (res == true) {
 						showAlert("ログイン成功");
-						loadByUrl();
 						administer();
 					} else {
 						showAlert("ログイン失敗");
@@ -72,6 +71,7 @@ function showLoginForm() {
 
 function outAdminister() {
 	adminMode = false;
+	removeAdminMenu();
 	$(".login").show();
 	$("div.admin-menu").hide();
 	reset('push');
@@ -86,12 +86,6 @@ function logout() {
 		}
 	})
 }
-
-
-$("a.logout").click(function() {
-	logout();
-	return false;
-});
 
 function adminArticle(url) {
 	var id = url.substring(url.lastIndexOf('?p=') + 3);
@@ -126,7 +120,7 @@ function reloadAdminMenu() {
 }
 
 function reloadHeader() {
-	$("header.page-header").load("./data/header.php");
+	$("header").load("./data/header.php");
 }
 
 function envReset() {
@@ -176,6 +170,10 @@ function loadAdminMenu(func) {
 	});
 }
 
+function removeAdminMenu() {
+	$("#admin-menu-container").empty();
+}
+
 function hideAdminMenu() {
 	$("#admin-menu").animate({
 		marginBottom : "-" + $("#admin-config").outerHeight() + "px"
@@ -199,6 +197,11 @@ function toggleAdminMenu() {
 	}
 }
 
+
+$("body").on("click", "a.logout", function() {
+	logout();
+	return false;
+});
 
 $("body").on("click", ".config-toggle", function() {
 	toggleAdminMenu();

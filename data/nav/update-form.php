@@ -77,6 +77,7 @@ $db = connectSettingsDB();
 $sql = "SELECT * FROM nav ORDER BY id;";
 $result = $db -> query($sql);
 
+$using = null;
 if ($result) {
 	while ($row = $result -> fetchArray(SQLITE3_ASSOC)) {
 		$row = array_merge($row, getPluginIni($row['folder']));
@@ -125,6 +126,15 @@ function showPluginInfo($value) {
 	使用するプラグインを並べてください。並べた順番どおりに表示されます。未設定のプラグインは設定が必要です。
 </p>
 <div id="container">
+	<div style="width: 100%; float: left;">
+	<button class="btn btn-primary pull-right plugins-submit">
+	設定を保存
+	</button>
+	<div class="plugins-container">
+		<h5>ごみ箱</h5>
+		<ul class="sortable-notuse" id="notuse"></ul>
+	</div>
+	</div>
 	<div class="plugins-container">
 		<h5>使用中のプラグイン</h5>
 		<ul class="sortable" id="use">
@@ -161,14 +171,7 @@ foreach ($plugins as $value) {
 ?>
 </ul>
 </div>
-<div class="plugins-container">
-<h5>ごみ箱</h5>
-<ul class="sortable-notuse" id="notuse"></ul>
 </div>
-</div>
-<button class="btn btn-primary pull-right plugins-submit">
-設定を保存
-</button>
 <script src="./js/jquery-ui-1.10.2.custom.min.js"></script>
 <script>
 	$(function() {

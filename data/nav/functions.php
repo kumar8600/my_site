@@ -18,10 +18,10 @@ function showNav() {
 		require ($GLOBALS['plugins_nav_path'] . $row1['folder'] . '/' . $row1['page']);
 		echo "</div>";
 	}
-	$db -> close();
+	$db1 -> close();
 }
 
-function updateNavOrder($order) {
+function updateNavOrder($order = null) {
 	// $order[][]は ['folder']と['name']と['configid']を持つ
 	$db = connectSettingsDB();
 
@@ -29,6 +29,9 @@ function updateNavOrder($order) {
 	$result = $db -> query($sql);
 	if ($result == false) {
 		die("今までのナビゲーション設定の削除に失敗。");
+	}
+	if($order == null) {
+		return true;
 	}
 
 	$stmt = $db -> prepare("INSERT INTO nav (folder, page, configid) VALUES (:folder, :page, :configid)");

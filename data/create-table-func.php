@@ -24,13 +24,25 @@ function createTableArticle() {
 	return $ret;
 }
 
+function createTableMapTag() {
+	// タグ用テーブルを作る
+	$db = connectDB();
+	if(isTableExists($db, "map_tag")) {
+		return true;
+	}
+	$sql = "CREATE TABLE map_tag (tagid INTEGER, articleid INTEGER);";
+
+	$ret = createTableAbs($db, $sql);
+	return $ret;
+}
+
 function createTableAuxTag() {
 	// タグ補助用テーブルを作る
 	$db = connectDB();
 	if(isTableExists($db, "aux_tag")) {
 		return true;
 	}
-	$sql = "CREATE TABLE aux_tag (name TEXT, frequency INTEGER DEFAULT 1);";
+	$sql = "CREATE TABLE aux_tag (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, frequency INTEGER DEFAULT 1);";
 
 	$ret = createTableAbs($db, $sql);
 	return $ret;

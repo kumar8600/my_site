@@ -37,10 +37,13 @@ $num = $row['COUNT(*)'];
 if ($num > 0)
 	die("既に同じタイトルを持つ記事があります。違うタイトルに変更してください。");
 
-// タグの文字列を整え、"タグ1¥nタグ2¥n" と言った並びにする
+// タグの文字列を整え、"\nタグ1\nタグ2\n" と言った並びにする
 $input['tag'] = str_replace("　", " ", $input['tag']);
 $input['tag'] = preg_replace("/(^ +| +$)/", "", $input['tag']);
-$input_tags = str_replace(" ", "\n", $input['tag']);
+$tags = explode(" ", $input['tag']);
+$tags = array_unique($tags); // 重複するのは消す
+$input_tags = implode(" ", $tags);
+$input_tags = str_replace(" ", "\n", $input_tags);
 $input_tags = "\n" . $input_tags . "\n";
 
 // SQLiteに対する処理
@@ -78,16 +81,20 @@ if (!$result) {
 	die($input_rowid . '記事のインサートクエリーに失敗: ' . $sqlerror);
 	//TODO:失敗時にSQLエラーを出力しないこと
 }
+if (empty($input['rowid'])) {
+	$insert_rowid = $db -> lastInsertRowID();
+}
 
 $db -> close();
 
+
 // 分かち書きした文をexplodeしてタグ補助用テーブルへ
-$tags = explode(" ", $input['tag']);
+//$tags = explode(" ", $input['tag']);
 if (empty($input['rowid'])) {
-	updateAuxTags($tags);
+	updateAuxTags($insert_rowid, $tags);
 } else {
 	$old_tags_arr = preg_split("/\s+/", $old_tags, -1, PREG_SPLIT_NO_EMPTY);
-	updateAuxTags($tags, $old_tags_arr);
+	updateAuxTags($input['rowid'], $tags, $old_tags_arr);
 }
 
 if (empty($input['rowid'])) {
