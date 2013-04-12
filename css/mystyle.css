@@ -25,6 +25,7 @@ header h1 small {
 	position: fixed;
 	bottom: 10px;
 	right: 10px;
+	min-height: 0;
 }
 #article {
 	float: right;
@@ -80,10 +81,15 @@ div.admin-article {
 	float: right;
 }
 
+div.ar-date-title {
+	display:inline;
+}
+
 h1.ar-title {
 	border-bottom: solid 1px #e5e5e5;
 	margin-top: 0px;
-	font-size: 2em;
+	margin-left: 20px;
+	font-size: 2.4em;
 	line-height: 1.2;
 	letter-spacing: -1px;
 }
@@ -97,15 +103,15 @@ h1, h2, h3, h4 {
 	font-weight: normal;
 }
 
-.ar-body h1 {
+.ar-body h1, .ar-preface h1 {
 	font-size: 31.5px;
 }
 
-.ar-body h2 {
+.ar-body h2, .ar-preface h2  {
 	font-size: 24.5px;
 }
 
-.ar-body h3 {
+.ar-body h3, .ar-preface h3 {
 	font-size: 17.5px;
 }
 .ar-head {
@@ -131,8 +137,7 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover {
 	background: linear-gradient(#eeeeee, #f2f2f2);
 	background-color: #eeeeee;
 }
-h1 {
-	font-size: 1.7em;
+h1, h2, h3, h4, h5, h6 {
 	border-left: solid 8px #39C;
 	padding-left: 3px;
 }
@@ -143,9 +148,14 @@ legend {
 	border-left: solid 8px #8fb93d;
 	padding-left: 3px;
 }
+.ar-headimage {
+	float: left;
+	width: 100%;
+	margin-bottom: 20px;
+}
 .ar-headimage img {
 	display: block;
-	margin: auto;
+	margin: 0 auto;
 }
 .ar-headimage-thu img {
 	float: left;
@@ -154,7 +164,6 @@ legend {
 	margin-right: 10px;
 }
 .ar-thu-container {
-	overflow: hidden;
 	margin-bottom: 15px;
 	padding: 1px;
 }
@@ -172,7 +181,6 @@ legend {
 }
 .ar-main {
 	margin-bottom: 20px;
-	overflow: hidden;
 	box-shadow: 0px 1px 2px #AAA;
 	background-color: #FFFFFF;
 	padding: 10px;
@@ -180,14 +188,14 @@ legend {
 }
 
 .ar-body {
-	padding: 10px 20px;
+	padding: 0 20px;
 }
 
 .ar-preface {
+	overflow: hidden;
 }
 .ar-social {
 	padding: 15px;
-	margin: 0 auto;
 	overflow: hidden;
 	max-width: 600px;
 }
@@ -274,7 +282,6 @@ ul.social {
 	}
 	.ar-headimage {
 		background-color: #f9f9f9;
-		margin-bottom: 20px;
 	}
 	.ar-social-thu {
 		border-radius: 0 10px 10px 0;
@@ -291,7 +298,6 @@ ul.social {
 }
 .search {
 	padding: 10px 10px;
-	overflow: hidden;
 	border-bottom: solid 1px #BFBFBF;
 }
 .search img {
@@ -328,6 +334,12 @@ ul.social {
 	}
 	.ar-body h3, h3 {
 		font-size: 1.2em;
+	}
+	.ar-body {
+		padding: 0;
+	}
+	.hidden-small-phone {
+		display: none;
 	}
 }
 
@@ -393,6 +405,39 @@ table.comment textarea {
 	height: 148px;
 	width: 100%;
 	resize: vertical;
+}
+.date-container {
+	background: #39C;
+	float: left;
+	color: #FAFAFA;
+	text-align: center;
+	width: 46px;
+	margin-left: -50px;
+}
+.date-container .month {
+	font-size: 0.6em;
+	margin: 4px 0;
+	line-height: 1;
+}
+.date-container .day {
+	font-size: 1.5em;
+	margin: 0;
+	line-height: 1;
+}
+.date-container .year {
+	font-size: 0.5em;
+	margin: 4px;
+	line-height: 1;
+}
+.date-container .time {
+	font-size: 0.5em;
+	margin: 4px 0;
+	line-height: 1;
+}
+
+.ar-main .date-container {
+	margin: 0 0 0 -35px;
+	margin-right: 20px;
 }
 
 .dark {
@@ -512,5 +557,9 @@ table.comment textarea {
 		cursor: pointer;
 		padding: 25px 5px;
 		border-radius: 0 10px 10px 0;
+	}
+	
+	.date-container {
+		margin-left: 0;
 	}
 }

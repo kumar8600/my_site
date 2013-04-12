@@ -5,10 +5,11 @@ function autoLogin(func) {
 	$.get("./data/admin/auto-login.php", function(res) {
 		if (res) {
 			loadAdminJs(function() {
-				administer();
+				administer(func);
 			});
+		} else {
+			func();
 		}
-		func();
 	});
 }
 
@@ -20,7 +21,6 @@ $(document).ready(function() {
 		});
 		return false;
 	});
-
 	$("#tags-li").load("./data/tags.php");
 	autoLogin(function() {
 		loadByUrl();
@@ -75,6 +75,7 @@ function changeSpan() {
 }
 
 function startThumbsLoad() {
+	$(".end-of-world").remove();
 	allowToLoad = true;
 	loadIfYouInBottom();
 }
@@ -256,10 +257,10 @@ function contentsReset(func) {
 
 		viewingArticle = false;
 	} else {
-$("#contents").fadeIn();
-					$("#thumbs").show();
-					if (func != "noLoad")
-						startThumbsLoad();
+		$("#contents").fadeIn();
+		$("#thumbs").show();
+		if (func != "noLoad")
+			startThumbsLoad();
 	}
 }
 
@@ -396,8 +397,7 @@ $("body").on("click", "a.ajaxtags", function() {
 	var objective = this;
 	if ($(objective).closest(".ar-thu-container").length == 0) {
 		History.pushState(null, null, url);
-	}
-	if (!viewingArticle) {
+	} else if (!viewingArticle) {
 		var realUrl = getRealUrl(url);
 		$.get(realUrl, function(res) {
 			$(objective).closest(".ar-thu-container").children(".search-container").slideUp(function() {
@@ -434,6 +434,11 @@ function tagSearchLoad(url) {
 		removeSearchContainers();
 		$("#thumbs").prepend(res);
 		$(".search-container").slideDown();
+		if ($(document).scrollTop() > $("#thumbs").offset().top) {
+			$("html, body").animate({
+				scrollTop : $("#thumbs").offset().top
+			}, 500);
+		}
 		changeTitle();
 	});
 

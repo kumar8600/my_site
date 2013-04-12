@@ -11,7 +11,8 @@
 	</head>
 	<body>
 		<div class="container">
-			<div id="article" style="max-width: 800px; margin: 0 auto;">
+			
+			<div class="ar-main" style="max-width: 800px; margin: 0 auto;">
 				<?php
 				require dirname(__FILE__) . '/admin/start-up-form.php';
 				?>

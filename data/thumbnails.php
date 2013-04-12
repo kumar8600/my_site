@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__) . '/connect-db.php';
 require_once dirname(__FILE__) . '/thum-social-buttons.php';
+require_once dirname(__FILE__) . '/show-article-meta.php';
 //JSONをつかぅょ、だからechoをすべてバッファリングするょ
 ob_start();
 
@@ -37,15 +38,15 @@ while ($row = $result -> fetchArray()) {
 	$row = array_map("stripslashes", $row);
 	$dotpos = strrpos($row['headimage'], '.');
 	$headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x320' . substr($row['headimage'], $dotpos);
-	$dotpos = strrpos($row['headimage'], '.');
-	$headimage_resized = substr($row['headimage'], 0, $dotpos) . 'x640' . substr($row['headimage'], $dotpos);
 	echo '<div class="ar-thu-container">';
 	echo '<div class="ar-thu">';
 	echo '<div class="ar-head-thu">';
 	echo '<div class="ar-meta">';
-	echo '<h1 class="ar-title-thu"><a class="ajax" href="?p='.$row['id'].'">'. $row['title']. '</a></h1>';
+	showTimeStamp($row['timestamp']);
+	echo '<h1 class="ar-title-thu">';
+	echo '<a class="ajax" href="?p='.$row['id'].'">'. $row['title']. '</a></h1>';
 	
-	echo '<span class="label label-info">' . $row['timestamp'] . '</span>';
+	//echo '<span class="label label-info">' . $row['timestamp'] . '</span>';
 	$tags = preg_split("/\s+/", $row['tag'], -1, PREG_SPLIT_NO_EMPTY);
 	echo '<span>';
 	for ($i = 0; $i < count($tags); $i++) {

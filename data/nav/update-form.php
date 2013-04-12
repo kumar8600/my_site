@@ -2,6 +2,7 @@
 	.plugins-container {
 		width: 50%;
 		float: left;
+		font-size: 12px;
 	}
 	.plugins-container h5 {
 		text-align: center;

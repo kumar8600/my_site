@@ -28,7 +28,7 @@ function getSessionUserName() {
 	return session_user_name;
 }
 
-function administer() {
+function administer(func) {
 	loadAdminMenu(function() {
 		adminMode = true;
 		$(".login").hide();
@@ -42,6 +42,9 @@ function administer() {
 			$(".root-only").hide();
 		}
 		hideAdminMenu();
+		if(typeof(func) == "function") {
+			func();
+		}
 	})
 }
 

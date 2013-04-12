@@ -6,7 +6,15 @@ function h($str) {
 	return htmlspecialchars($str, ENT_QUOTES, "UTF-8");
 }
 
-function resize_image(array $options) {
+function isImage($path = "") {
+	if (!file_exists($path) || !($type = exif_imagetype($path))) {
+		return false;
+	}
+	return $type;
+}
+
+
+function resizeImage(array $options) {
 	// デフォルト値の設定
 	$defaults = array('image_path' => null, // 画像ファイルのパス
 	'save_path' => null, // 画像を保存するパス
@@ -15,6 +23,8 @@ function resize_image(array $options) {
 	'quality' => 90 // PNG、JPEG時のクオリティー
 	);
 	extract($options + $defaults);
+	
+	
 	// 画像の情報を取得
 	$size = getimagesize($image_path);
 
@@ -33,19 +43,40 @@ function resize_image(array $options) {
 		default :
 			return false;
 	}
-
-	// 指定したサイズ以上のものを縮小
-
+	
 	$width = $size[0];
 	$height = $size[1];
-
-	if ($width > $max_width) {
-		$height *= $max_width / $width;
-		$width = $max_width;
+	
+	// アスペクト比の設定
+	if(isset($options['aspect_ratio_w']) && isset($options['aspect_ratio_h'])) {
+		$aspect_ratio_w = $options['aspect_ratio_w'];
+		$aspect_ratio_h = $options['aspect_ratio_h'];
+	} else {
+		$aspect_ratio_w = $width;
+		$aspect_ratio_h = $height;
+	}
+	
+	// アスペクト比を守るべく元の画像から切り出す座標を計算。
+	if($width / $height < $aspect_ratio_w / $aspect_ratio_h) {
+		$src_w = $width;
+		$src_h = $width * $aspect_ratio_h / $aspect_ratio_w;
+		$src_x = 0;
+		$src_y = $height / 2.0 - $src_h / 2.0;
+	} else {
+		$src_w = $height * $aspect_ratio_w / $aspect_ratio_h;
+		$src_h = $height;
+		$src_x = $width / 2.0 - $src_w / 2.0;
+		$src_y = 0;
 	}
 
+	// 出力サイズを計算
+
+	if ($width > $max_width) {
+		$height = $max_width * $aspect_ratio_h / $aspect_ratio_w;
+		$width = $max_width;
+	} 
 	if ($height > $max_height) {
-		$width *= $max_height / $height;
+		$width = $max_height * $aspect_ratio_w / $aspect_ratio_h;
 		$height = $max_height;
 	}
 
@@ -72,7 +103,7 @@ function resize_image(array $options) {
 
 	// リサンプル
 
-	imagecopyresampled($new_image, $image, 0, 0, 0, 0, $width, $height, $size[0], $size[1]);
+	imagecopyresampled($new_image, $image, 0, 0, $src_x, $src_y, $width, $height, $src_w, $src_h);
 
 	// 保存しない場合出力するためにHTTPヘッダを送信
 

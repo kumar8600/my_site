@@ -20,7 +20,7 @@
 		echo($row['description']);
 		?></small></h1> </a>
 	<span class="pull-right">
-		<ul class="social">
+		<ul class="social hidden-small-phone">
 			<li>
 				<a href="http://twitter.com/share?count=horizontal&amp;original_referer=<?php echo $url; ?>&amp;text=<?php echo $text ?>&amp;url=<?php echo $url; ?>&amp;via=<?php echo $tw_account; ?>" onclick="window.open(this.href, ‘tweetwindow’, ‘width=550, height=450,personalbar=0,toolbar=0,scrollbars=1,resizable=1′); return false;"><img src="./img/social/twitter@2x.png" /></a>
 			</li>
