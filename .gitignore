@@ -1,4 +1,2 @@
-*.class
-*.pyc
-*.pyo
+.DS_Store
 */.git/*
