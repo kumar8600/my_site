@@ -1,0 +1,6 @@
+Options -Indexes
+
+<Files ~ "\.sqlite3$">
+  deny from all
+</Files>
+
