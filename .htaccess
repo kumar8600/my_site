@@ -1,0 +1,4 @@
+<Files ~ "\.sqlite3$">
+  deny from all
+</Files>
+
