@@ -13,7 +13,6 @@ function isImage($path = "") {
 	return $type;
 }
 
-
 function resizeImage(array $options) {
 	// デフォルト値の設定
 	$defaults = array('image_path' => null, // 画像ファイルのパス
@@ -23,8 +22,7 @@ function resizeImage(array $options) {
 	'quality' => 90 // PNG、JPEG時のクオリティー
 	);
 	extract($options + $defaults);
-	
-	
+
 	// 画像の情報を取得
 	$size = getimagesize($image_path);
 
@@ -43,39 +41,46 @@ function resizeImage(array $options) {
 		default :
 			return false;
 	}
-	
+
 	$width = $size[0];
 	$height = $size[1];
-	
+
 	// アスペクト比の設定
-	if(isset($options['aspect_ratio_w']) && isset($options['aspect_ratio_h'])) {
+	if (isset($options['aspect_ratio_w']) && isset($options['aspect_ratio_h'])) {
 		$aspect_ratio_w = $options['aspect_ratio_w'];
 		$aspect_ratio_h = $options['aspect_ratio_h'];
 	} else {
 		$aspect_ratio_w = $width;
 		$aspect_ratio_h = $height;
 	}
-	
+
 	// アスペクト比を守るべく元の画像から切り出す座標を計算。
-	if($width / $height < $aspect_ratio_w / $aspect_ratio_h) {
-		$src_w = $width;
-		$src_h = $width * $aspect_ratio_h / $aspect_ratio_w;
-		$src_x = 0;
-		$src_y = $height / 2.0 - $src_h / 2.0;
+	if ($width >= $max_width || $height >= $max_height) {
+		if ($width / $height < $aspect_ratio_w / $aspect_ratio_h) {
+			$src_w = $width;
+			$src_h = $width * $aspect_ratio_h / $aspect_ratio_w;
+			$src_x = 0;
+			$src_y = $height / 2.0 - $src_h / 2.0;
+		} else {
+			$src_w = $height * $aspect_ratio_w / $aspect_ratio_h;
+			$src_h = $height;
+			$src_x = $width / 2.0 - $src_w / 2.0;
+			$src_y = 0;
+		}
 	} else {
-		$src_w = $height * $aspect_ratio_w / $aspect_ratio_h;
-		$src_h = $height;
-		$src_x = $width / 2.0 - $src_w / 2.0;
+		$src_x = 0;
 		$src_y = 0;
+		$src_w = $width;
+		$src_h = $height;
 	}
 
 	// 出力サイズを計算
 
-	if ($width > $max_width) {
+	if ($width >= $max_width) {
 		$height = $max_width * $aspect_ratio_h / $aspect_ratio_w;
 		$width = $max_width;
-	} 
-	if ($height > $max_height) {
+	}
+	if ($height >= $max_height) {
 		$width = $max_height * $aspect_ratio_w / $aspect_ratio_h;
 		$height = $max_height;
 	}

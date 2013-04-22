@@ -3,7 +3,7 @@ require_once dirname(__FILE__) . '/../connect-db.php';
 require_once dirname(__FILE__) . '/auth.php';
 require_once dirname(__FILE__) . '/session.php';
 require_once dirname(__FILE__) . '/is-string-safe.php';
-
+$_POST = array_map("strip_tags", $_POST);
 $input['olduserid'] = $_POST['olduserid'];
 $input['userid'] = $_POST['userid'];
 

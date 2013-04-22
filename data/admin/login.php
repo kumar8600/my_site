@@ -2,6 +2,7 @@
 require_once dirname(__FILE__) . '/auth.php';
 require_once dirname(__FILE__) . '/session.php';
 
+$_POST = array_map("strip_tags", $_POST);
 $input['userid'] = $_POST['userid'];
 $input['password'] = $_POST['password'];
 array_map("ifUnSetDie", $input);

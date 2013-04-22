@@ -68,7 +68,11 @@ function isTableExists($db, $name) {
 
 function isRootExists() {
 	//rootユーザーが存在するか調べる関数。
-	$db = connectAuthDB();
+	try {
+		$db = connectAuthDB();
+	} catch(Exception $ex) {
+		return false;
+	}
 	$sql = "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = 'user';";
 	$row = $db -> querySingle($sql);
 	if ($row != 0) {

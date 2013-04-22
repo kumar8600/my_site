@@ -58,6 +58,8 @@ function htmlCut($str, $length) {
 	// 空白も一文字としてカウントするので、正確に文字数を反映させるには無駄な空白、改行、タブスペース等は削除しておくこと。
 	// おせっかいかもしれないが標準でする。
 	$str = removeIndents($str);
+	$str = removeScript($str);
+	$str = removeBrokenTag($str);
 	// マルチバイトに対応したhtmlタグを破壊せずに$length文の文字を取り出す関数
 	mb_internal_encoding("UTF-8");
 	// オフセットの実装はめんどくさいし使わないからやめた
@@ -108,13 +110,19 @@ function htmlCut($str, $length) {
 		}
 	}
 	// この時点で、正しい$posを求め終わっている。あとは、$posの時点で閉じられていないタグを探し、閉じタグを追加する。
-	$t_pos = 0;
+	$ret = "";
+	$end_pos = $pos;
+	$pos = 0;
 	$el_names = array();
+	$tag_end = -1;
 	while (true) {
-		$tag_start = mb_strpos($str, "<", $t_pos);
-		if ($tag_start === false || $tag_start >= $pos) {
+		$tag_start = mb_strpos($str, "<", $pos);
+		if ($tag_start === false || $end_pos <= $pos) {
+			$ret .= mb_substr($str, $tag_end + 1, $pos - $tag_end - 1);
 			break;
 		}
+		$ret .= mb_substr($str, $tag_end + 1, $tag_start - $tag_end - 1);
+
 		$tag_end = mb_strpos($str, ">", $tag_start);
 		$buf_start = $tag_start;
 		while (true) {
@@ -129,21 +137,88 @@ function htmlCut($str, $length) {
 				break;
 			}
 		}
+		// <unko ~~~~~~~~> をサブストリング
 		$tag = mb_substr($str, $tag_start, $tag_end - $tag_start + 1);
+		$tag = removeXSSTag($tag);
+		$ret .= $tag;
 
-		if (!isNoElementsTag($tag)) {
-			if (!isEndTag($tag)) {
-				array_unshift($el_names, getElementName($tag));
-			} else {// もし閉じタグなら
-				$key = array_search(getElementName($tag), $el_names);
-				array_splice($el_names, $key, 1);
+		$pos = $tag_end + 1;
+	}
+	//閉じていないタグは閉じる
+	foreach ($el_names as $value) {
+		$ret = $ret . "</" . $value . ">";
+	}
+	return $ret;
+}
+
+function removeClassAndId($str) {
+	// class、idを削除
+	return preg_replace("/(class|id)\s*=\s*(\".*\"|'.*')(?=[^<]*>)/s", '', $str);
+}
+
+function isComment($str) {
+	if (preg_match('/^[\s<]*!/', $str)) {
+		return true;
+	}
+	return false;
+}
+
+function removeScript($str) {
+	return preg_replace("/<\s*?script[^<]*?>.*?<\s*?\/\s*?script[^<]*?>(?!.*<\s*?\/\s*?script[^<]*?>(?=.*<\s*?script[^<]*?>))/s", '', $str);
+}
+
+function removeXSSTag($str) {
+	//<うんこ class="sex">みたいなのを引数にとり、XSSの危険があるものを除去する。
+	if (isComment($str)) {
+		$str = "";
+	}
+	$str = removeClassAndId($str);
+	return $str;
+}
+
+function removeBrokenTag($str) {
+	// < しか無いタグは消す。
+	return preg_replace('/<(?![^<]*>).*$/s', '', $str);
+}
+
+function antiXSS($str) {
+	// タグにクラス属性等をつけることを許さず、閉じていないタグは閉じる
+	$str = removeScript($str);
+	$str = removeBrokenTag($str);
+
+	$ret = "";
+	$pos = 0;
+	$el_names = array();
+	$tag_end = -1;
+	while (true) {
+		$tag_start = strpos($str, "<", $pos);
+		if ($tag_start === false) {
+			$ret .= substr($str, $tag_end + 1);
+			break;
+		}
+		$ret .= substr($str, $tag_end + 1, $tag_start - $tag_end - 1);
+		$tag_end = strpos($str, ">", $tag_start);
+		$buf_start = $tag_start;
+		while (true) {
+			// タグ内に更にタグが書いてあるか調べ(<unko<tinko></tinko> >みたいな)、そうなら正しい$tag_endを探す
+			$buf_start = strpos($str, "<", $buf_start + 1);
+			if ($buf_start === false) {
+				break;
+			}
+			if ($buf_start < $tag_end) {
+				$tag_end = strpos($str, ">", $tag_end + 1);
+			} else {
+				break;
 			}
 		}
+		// <unko ~~~~~~~~> をサブストリング
+		$tag = substr($str, $tag_start, $tag_end - $tag_start + 1);
+		$tag = removeXSSTag($tag);
+		$ret .= $tag;
 
-		$t_pos = $tag_end + 1;
+		$pos = $tag_end + 1;
 	}
-	// 上記の処理により、配列$el_nameには閉じられなかったタグの要素名のみが残っているので、あとはそれを閉じタグとして追加する。
-	$ret = mb_substr($str, $offset, $pos);
+	//閉じていないタグは閉じる
 	foreach ($el_names as $value) {
 		$ret = $ret . "</" . $value . ">";
 	}

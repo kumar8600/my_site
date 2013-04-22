@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/thum-social-buttons.php';
 require_once dirname(__FILE__) . '/show-article-meta.php';
 //JSONをつかぅょ、だからechoをすべてバッファリングするょ
 ob_start();
-
+$_GET = array_map("strip_tags", $_GET);
 if (isset($_GET['offset'])) {
 	$offset = $_GET['offset'];
 } else {
@@ -45,7 +45,7 @@ while ($row = $result -> fetchArray()) {
 	showTimeStamp($row['timestamp']);
 	echo '<h1 class="ar-title-thu">';
 	echo '<a class="ajax" href="?p='.$row['id'].'">'. $row['title']. '</a></h1>';
-	
+	echo '<div style="clear: both;"></div>';
 	//echo '<span class="label label-info">' . $row['timestamp'] . '</span>';
 	$tags = preg_split("/\s+/", $row['tag'], -1, PREG_SPLIT_NO_EMPTY);
 	echo '<span>';
@@ -74,6 +74,7 @@ while ($row = $result -> fetchArray()) {
 	//echo '</div>';
 	$i++;
 	$c++;
+	echo '<div style="clear: both;"></div>';
 	echo '</div>';
 	echo '</div>';
 }

@@ -10,6 +10,7 @@ if (isRootExists()) {
 		}
 	}
 }
+$_POST = array_map("strip_tags", $_POST);
 
 $input['userid'] = $_POST['userid'];
 $input['password'] = $_POST['password'];

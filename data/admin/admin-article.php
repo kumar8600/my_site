@@ -2,6 +2,7 @@
 require_once dirname(__FILE__) . '/session.php';
 require_once dirname(__FILE__) . '/../connect-db.php';
 
+$_POST = array_map("strip_tags", $_POST);
 if(isset($_POST['id'])) {
 	$input_id = $_POST['id'];
 } else {

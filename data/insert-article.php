@@ -4,11 +4,8 @@ require_once dirname(__FILE__) . '/connect-db.php';
 require_once dirname(__FILE__) . '/aux-tag.php';
 require_once dirname(__FILE__) . '/make-preface.php';
 
-$db = connectDB();
-
 $input['title'] = htmlspecialchars($_POST['title']);
 $title = htmlspecialchars($_POST['title']);
-$input['body'] = $_POST['body'];
 $input['headimage'] = $_POST['headimage'];
 $input['tag'] = htmlspecialchars($_POST['tag']);
 $input['author'] = getSessionSysId();
@@ -18,7 +15,13 @@ if ($input['author'] == "") {
 
 array_map("ifUnSetDie", $input);
 $input['rowid'] = $_POST['rowid'];
+array_map("strip_tags", $input);
+$input['body'] = $_POST['body'];
 
+$input_preface = makePreface($input['body']);
+$input_body = antiXSS($input['body']); 
+
+$db = connectDB();
 // 同じタイトルを持つ記事がないかチェックする
 if (empty($input['rowid'])) {
 	$sql = "SELECT COUNT(*) FROM article WHERE title = :title";
@@ -67,12 +70,12 @@ if (empty($input['rowid'])) {
 	$stmt -> bindValue(":id", $input['rowid']);
 }
 $stmt -> bindValue(":title", $input['title']);
-$stmt -> bindValue(":body", $input['body']);
+// XSS対策済みのbodyを準備する。
+$stmt -> bindValue(":body", $input_body);
 $stmt -> bindValue(":headimage", $input['headimage']);
 $stmt -> bindValue(":tag", $input_tags);
 $stmt -> bindValue(":author", $input['author']);
 // 序文を作る
-$input_preface = makePreface($input['body']);
 $stmt -> bindValue(":preface", $input_preface);
 
 $result = $stmt -> execute();

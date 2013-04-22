@@ -1,6 +1,12 @@
 <?php
 require_once dirname(__FILE__) . '/create-table-func.php';
 
+if (initPrivateDB()) {
+	//die("プライベートDBディレクトリの作成に成功。");
+} else {
+	die("プライベートDBディレクトリの作成に失敗。");
+}
+
 if (createTableArticle()) {
 	//echo("記事用テーブルの作成に成功。");
 } else {

@@ -138,6 +138,7 @@ h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover {
 	background-color: #eeeeee;
 }
 h1, h2, h3, h4, h5, h6 {
+	margin: 20px 0;
 	border-left: solid 8px #39C;
 	padding-left: 3px;
 }
@@ -147,6 +148,11 @@ h1 small {
 legend {
 	border-left: solid 8px #8fb93d;
 	padding-left: 3px;
+}
+blockquote {
+	margin: 20px 50px;
+	font-style: italic;
+	font-family: Georgia, Times, "Times New Roman", serif;
 }
 .ar-headimage {
 	float: left;
@@ -274,9 +280,6 @@ ul.social {
 }
 
 @media (min-width: 1200px) {
-	body {
-		font-size: 16px;
-	}
 	.ar-main-thu {
 		float: left;
 	}

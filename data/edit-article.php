@@ -1,13 +1,13 @@
 <?php
 require_once dirname(__FILE__) . '/connect-db.php';
 // GET変数に"p"があるなら、編集。でなければ追加を行う。
+$_GET = array_map("strip_tags", $_GET);
 if (isset($_GET['p'])) {
 	$db = connectDB();
 	$stmt = $db -> prepare("SELECT * FROM article WHERE id = :id");
 	$stmt -> bindValue(":id", $_GET['p'], SQLITE3_INTEGER);
 	$result = $stmt -> execute();
 	$row = $result -> fetchArray();
-	$row = array_map("stripslashes", $row);
 	$row['title'] = htmlspecialchars_decode($row['title']);
 	$row['tag'] = preg_replace("/\s+/", " ", $row['tag']);
 	$row['tag'] = preg_replace("/(^ +| +$)/", "", $row['tag']);
@@ -70,7 +70,7 @@ if (isset($_GET['p'])) {
 <script type="text/javascript">
 	$('input[type=file]').change(function() {
 		$(this).upload('./data/upload-image.php', function(res) {
-			var dotpos = res['filename'].indexOf('.');
+			var dotpos = res['filename'].lastIndexOf('.');
 			var img_mini = res['filename'].substring(0, dotpos) + 'x320' + res['filename'].substring(dotpos);
 			$('#thumb').html(res['error']);
 			$('#thumb').html('<img src="' + 'data/' + img_mini + '" />');

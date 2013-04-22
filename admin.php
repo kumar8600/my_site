@@ -2,6 +2,7 @@
 require_once dirname(__FILE__) . '/data/admin/session.php';
 $sesuserid = getSessionUser();
 $ses_sysid = getSessionSysId();
+$_GET = array_map("strip_tags", $_GET);
 $get = $_GET['admin'];
 if($get == "") {
 	die('<meta charset="UTF-8" />URLがおかしいです');

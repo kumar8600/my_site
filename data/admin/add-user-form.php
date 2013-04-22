@@ -14,7 +14,7 @@ if (!isRootUser()) {
 	<div class="control-group">
 		<label class="control-label" for="inputUserId">ユーザID</label>
 		<div class="controls">
-			<input type="text" name="userid" id="inputUserId" value="<?php echo($row['userid']) ?>" />
+			<input type="text" name="userid" id="inputUserId" value="" />
 			<span class="help-block">使用可能な文字列「0-9a-zA-Z_-」で、3文字以上20文字以内</span>
 		</div>
 	</div>
@@ -36,19 +36,19 @@ if (!isRootUser()) {
 	<div class="control-group">
 		<label class="control-label" for="inputName">名前</label>
 		<div class="controls">
-			<input type="text" name="name" id="inputName" value="<?php echo($row['name']) ?>" />
+			<input type="text" name="name" id="inputName" value="" />
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label" for="inputEmail">メールアドレス</label>
 		<div class="controls">
-			<input type="text" name="email" id="inputEmail" value="<?php echo($row['email']) ?>" />
+			<input type="text" name="email" id="inputEmail" value="" />
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label" for="inputWebsite">自分のサイト</label>
 		<div class="controls">
-			<input type="text" name="website" id="inputWebsite" value="<?php echo($row['website']) ?>" />
+			<input type="text" name="website" id="inputWebsite" value="" />
 		</div>
 	</div>
 	<hr />

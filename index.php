@@ -1,3 +1,6 @@
+<?php
+$_GET = array_map("strip_tags", $_GET);
+?>
 <!DOCTYPE html>
 <html lang="ja">
 	<head>
@@ -52,7 +55,6 @@
 				<div id="tags-li"></div>
 				<a href="?p=About" class="ajax"><span class="label label-info"><i class="icon-info-sign icon-white"></i>About(このサイトについて)</span></a>
 				<a href=""><span class="label label-warning login"><i class="icon-user icon-white"></i>ログイン</span></a>
-				
 				<div id="loginform" class="dark hide"></div>
 			</div>
 		</div>

@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__) . '/session.php';
 
+$_GET = array_map("strip_tags", $_GET);
 $ses_sysid = $GLOBALS['ses_sysid'];
 if ($ses_sysid == "") {
 	$ses_sysid = getSessionSysId();

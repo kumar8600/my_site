@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__) . '/../connect-db.php';
 require_once dirname(__FILE__) . '/session.php';
-
+$_POST = array_map("strip_tags", $_POST);
 // rootユーザーとしてログインしてるかチェック
 if (isset($GLOBALS['sesuserid'])) {
 	$sesuserid = $GLOBALS['sesuserid'];

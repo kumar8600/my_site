@@ -2,6 +2,7 @@
 	<?php
 	require_once dirname(__FILE__) . '/connect-db.php';
 	require_once dirname(__FILE__) . '/show-article-meta.php';
+	$_GET = array_map("strip_tags", $_GET);
 	if (!isset($_GET['date'])) {
 		die("日付を指定してください。");
 	} else {

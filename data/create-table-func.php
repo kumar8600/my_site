@@ -1,6 +1,15 @@
 <?php
 require_once dirname(__FILE__) . '/connect-db.php';
 
+function initPrivateDB() {
+	if(is_dir($GLOBALS['db_private_path'])) {
+		return true;
+	}
+	if(mkdir($GLOBALS['db_private_path'], 0700)) {
+		return true;
+	}
+}
+
 function createTableAbs($db, $sql) {
 	// テーブル作成を抽象化した関数。
 	$result = $db -> query($sql);
