@@ -47,7 +47,7 @@
 		echo '<a class="ajaxtags" href="?date=' . $date . '&offset=' . $back_offset . '&limit=' . $limit . '"><div class="search-func color-blue">前の' . $back_limit . '件</div></a>';
 	}
 
-	$sql = "SELECT id, timestamp, title, headimage, tag, author FROM article WHERE date(timestamp) = :ts ORDER BY article.rowid DESC LIMIT :limit OFFSET :offset";
+	$sql = "SELECT id, datetime(timestamp, 'localtime') as timestamp, title, headimage, tag, author FROM article WHERE date(timestamp, 'localtime') = :ts ORDER BY article.rowid DESC LIMIT :limit OFFSET :offset";
 	$stmt = $db -> prepare($sql);
 	$stmt -> bindValue(":ts", $date);
 	$stmt -> bindValue(":limit", $limit, SQLITE3_INTEGER);

@@ -17,7 +17,12 @@ function connectSettingsDB() {
 }
 
 function connectCommentsDB() {
-	$db = new SQLite3($GLOBALS['set_comments_path']);
+	$db = new SQLite3($GLOBALS['comments_db_path']);
+	return $db;
+}
+
+function connectLogsDB() {
+	$db = new SQLite3($GLOBALS['logs_db_path']);
 	return $db;
 }
 

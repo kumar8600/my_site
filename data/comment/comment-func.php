@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/../connect-db.php';
 function listComments($ar_id, $start, $count) {
 	$db = connectCommentsDB();
 	
-	$sql = "SELECT * FROM comment WHERE articleid = :arid ORDER BY id LIMIT :lim OFFSET :off";
+	$sql = "SELECT *, datetime(timestamp, 'localtime') as timestamp FROM comment WHERE articleid = :arid ORDER BY id LIMIT :lim OFFSET :off";
 	$stmt = $db -> prepare($sql);
 	$stmt -> bindValue(":arid", $ar_id, SQLITE3_INTEGER);
 	$stmt -> bindValue(":lim", $count, SQLITE3_INTEGER);

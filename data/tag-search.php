@@ -48,7 +48,7 @@
 	}
 
 	//$sql = "SELECT id, timestamp, title, headimage, tag, author FROM article WHERE tag LIKE :tag ORDER BY article.rowid DESC LIMIT :limit OFFSET :offset";
-	$sql = "SELECT id, timestamp, title, headimage, tag, author FROM article WHERE id = (SELECT articleid FROM map_tag WHERE tagid = (SELECT id FROM aux_tag WHERE name = :tag)) ORDER BY article.rowid DESC LIMIT :limit OFFSET :offset";
+	$sql = "SELECT id, datetime(timestamp, 'localtime') as timestamp, title, headimage, tag, author FROM article WHERE id = (SELECT articleid FROM map_tag WHERE tagid = (SELECT id FROM aux_tag WHERE name = :tag)) ORDER BY article.rowid DESC LIMIT :limit OFFSET :offset";
 	$stmt = $db -> prepare($sql);
 	//$stmt -> bindValue(":tag", "%" . $input_tag . "%");
 	$stmt -> bindValue(":tag", $input_tag);

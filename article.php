@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . '/data/show-article-meta.php';
 $db = connectDB();
 
 // SQLiteに対する処理
-$sql = "SELECT id, timestamp, author, tag, title, body, headimage FROM article WHERE id = :id OR title = :id";
+$sql = "SELECT id, datetime(timestamp, 'localtime') as timestamp, author, tag, title, body, headimage FROM article WHERE id = :id OR title = :id";
 $stmt = $db -> prepare($sql);
 $stmt -> bindValue(":id", $_GET['p']);
 $result = $stmt -> execute();
@@ -52,4 +52,6 @@ echo '</div>';
 echo '<div class="ar-footer">';
 require dirname(__FILE__) . '/data/article-footer.php';
 echo '</div>';
+require_once dirname(__FILE__) . '/data/log/functions.php';
+logAccess($row['id']);
 ?>

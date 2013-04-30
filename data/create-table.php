@@ -12,6 +12,21 @@ if (createTableArticle()) {
 } else {
 	die("記事用テーブルの作成に失敗。");
 }
+if (createTableLog()) {
+	//echo("タグ用テーブルの作成に成功。");
+} else {
+	die("アクセスログ用テーブルの作成に失敗。");
+}
+if (createTableRankLog()) {
+	//echo("タグ用テーブルの作成に成功。");
+} else {
+	die("ランキングログ用テーブルの作成に失敗。");
+}
+if (createTableAuxRank()) {
+	//echo("タグ用テーブルの作成に成功。");
+} else {
+	die("ランキング補助用テーブルの作成に失敗。");
+}
 if (createTableMapTag()) {
 	//echo("タグ用テーブルの作成に成功。");
 } else {

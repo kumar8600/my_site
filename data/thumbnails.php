@@ -17,7 +17,7 @@ if (isset($_GET['limit'])) {
 }
 
 $db = connectDB();
-$sql = "SELECT * FROM article ORDER BY id desc LIMIT :limit OFFSET :offset;";
+$sql = "SELECT id, datetime(timestamp, 'localtime') as timestamp, author, tag, title, preface, headimage FROM article ORDER BY id desc LIMIT :limit OFFSET :offset;";
 $stmt = $db -> prepare($sql);
 $stmt -> bindValue(":limit", $limit);
 $stmt -> bindValue(":offset", $offset);

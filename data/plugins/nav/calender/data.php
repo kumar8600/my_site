@@ -5,7 +5,7 @@ function articlesExistInDay($month, $day, $year) {
 	// 指定された日に記事があるか調べる関数。
 	$timestamp = sprintf("%04d-%02d-%02d", $year, $month, $day);
 	$db = connectDB();
-	$sql = "SELECT COUNT(*) FROM article WHERE date(timestamp) = :ts";
+	$sql = "SELECT COUNT(*) FROM article WHERE date(timestamp, 'localtime') = :ts";
 	$stmt = $db -> prepare($sql);
 	$stmt -> bindValue(":ts", $timestamp);
 	$result = $stmt -> execute();
